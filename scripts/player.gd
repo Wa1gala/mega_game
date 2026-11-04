@@ -8,6 +8,14 @@ const RUN_ANIM_SPEED := 4.7
 const LOOK_SENSITIVITY := 0.0025
 const PITCH_MIN := deg_to_rad(-55.0)
 const PITCH_MAX := deg_to_rad(25.0)
+const FIRE_RANGE := 60.0
+const FIRE_INTERVAL := 0.18
+const DAMAGE_MIN := 8
+const DAMAGE_MAX := 18
+const AIM_FOV := 42.0
+const AIM_SPRING_SCALE := 0.6
+const AIM_LOOK_SCALE := 0.45
+const AIM_BLEND := 12.0
 
 @onready var camera: Camera3D = $SpringArm3D/Camera3D
 @onready var spring_arm: SpringArm3D = $SpringArm3D
@@ -17,6 +25,11 @@ var _animation_player: AnimationPlayer
 var _previous_position := Vector3.ZERO
 var _yaw := 0.0
 var _pitch := deg_to_rad(-18.0)
+var _fire_cooldown := 0.0
+var _block_fire := false
+var _crosshair: CanvasLayer
+var _hip_spring := 2.0
+var _hip_fov := 75.0
 
 
 func _enter_tree() -> void:
@@ -30,12 +43,14 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	camera.current = is_multiplayer_authority()
+	_hip_spring = spring_arm.spring_length
+	_hip_fov = camera.fov
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		_apply_camera_rotation()
+		_setup_crosshair()
 	_previous_position = global_position
 	_setup_animations()
-	_setup_weapon()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -44,10 +59,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			_block_fire = true
 	elif event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		_yaw -= event.relative.x * LOOK_SENSITIVITY
-		_pitch = clampf(_pitch - event.relative.y * LOOK_SENSITIVITY, PITCH_MIN, PITCH_MAX)
+		var look := LOOK_SENSITIVITY * (AIM_LOOK_SCALE if _is_aiming() else 1.0)
+		_yaw -= event.relative.x * look
+		_pitch = clampf(_pitch - event.relative.y * look, PITCH_MIN, PITCH_MAX)
 		_apply_camera_rotation()
 
 
@@ -58,6 +76,8 @@ func _apply_camera_rotation() -> void:
 func _physics_process(delta: float) -> void:
 	if is_multiplayer_authority():
 		_move(delta)
+		_update_aim(delta)
+		_update_fire(delta)
 	_update_animation(delta)
 	_previous_position = global_position
 
@@ -88,50 +108,14 @@ func _setup_animations() -> void:
 	_animation_player.root_node = NodePath("..")
 	model.add_child(_animation_player)
 	var library := AnimationLibrary.new()
-	library.add_animation("idle", _take_animation("res://art/characters/player/Idle.fbx"))
+	library.add_animation("idle", _take_animation("res://art/characters/player/Idle.fbx", true))
 	library.add_animation("walk", _take_animation("res://art/characters/player/Walk Forward.fbx"))
 	library.add_animation("run", _take_animation("res://art/characters/player/Run Forward.fbx"))
 	_animation_player.add_animation_library(&"", library)
 	_animation_player.play(&"idle")
 
 
-func _setup_weapon() -> void:
-	var weapon := model.get_node_or_null("Rifle") as Node3D
-	if weapon == null:
-		push_warning("Weapon: 'Rifle' node not found under model")
-		return
-
-	var skeleton := _find_skeleton()
-	if skeleton == null:
-		push_warning("Weapon: Skeleton3D not found in player model")
-		return
-
-	var bone_idx := skeleton.find_bone("hand_right")
-	if bone_idx == -1:
-		push_warning("Weapon: bone 'hand_right' not found")
-		return
-
-	var attachment := BoneAttachment3D.new()
-	attachment.name = "WeaponAttachment"
-	attachment.bone_name = "hand_right"
-	skeleton.add_child(attachment)
-
-	# Даём привязке кадр, чтобы она встала по кости, затем переносим
-	# винтовку под неё, сохранив текущую мировую трансформацию.
-	await get_tree().process_frame
-	var world_transform := weapon.global_transform
-	weapon.get_parent().remove_child(weapon)
-	attachment.add_child(weapon)
-	weapon.global_transform = world_transform
-
-
-func _find_skeleton() -> Skeleton3D:
-	for child in model.find_children("*", "Skeleton3D", true, false):
-		return child as Skeleton3D
-	return null
-
-
-func _take_animation(path: String) -> Animation:
+func _take_animation(path: String, seamless_loop := false) -> Animation:
 	var packed := load(path) as PackedScene
 	var root := packed.instantiate()
 	var source := root.get_node("AnimationPlayer") as AnimationPlayer
@@ -141,8 +125,25 @@ func _take_animation(path: String) -> Animation:
 		var track_path := String(animation.track_get_path(track))
 		if track_path == "rig" and animation.track_get_type(track) == Animation.TYPE_POSITION_3D:
 			animation.remove_track(track)
+	if seamless_loop:
+		_make_loop_seamless(animation, 0.7)
 	root.free()
 	return animation
+
+
+func _make_loop_seamless(animation: Animation, blend_window: float) -> void:
+	var blend_start := maxf(animation.length - blend_window, 0.0)
+	for track in animation.get_track_count():
+		if animation.track_get_key_count(track) < 2:
+			continue
+		var first_value = animation.track_get_key_value(track, 0)
+		for key in range(animation.track_get_key_count(track) - 1, -1, -1):
+			if animation.track_get_key_time(track, key) > blend_start:
+				animation.track_remove_key(track, key)
+		animation.track_insert_key(track, animation.length, first_value)
+		animation.track_set_interpolation_loop_wrap(track, true)
+		if animation.track_get_type(track) == Animation.TYPE_ROTATION_3D:
+			animation.track_set_interpolation_type(track, Animation.INTERPOLATION_CUBIC_ANGLE)
 
 
 func _update_animation(delta: float) -> void:
@@ -164,7 +165,152 @@ func _update_animation(delta: float) -> void:
 
 	if _animation_player.current_animation != String(next):
 		_animation_player.play(next, 0.12)
-	_animation_player.speed_scale = 1.0 if next == &"idle" else clampf(speed / reference_speed, 0.75, 1.6)
+	_animation_player.speed_scale = 0.55 if next == &"idle" else clampf(speed / reference_speed, 0.75, 1.6)
+
+
+func _is_aiming() -> bool:
+	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+
+
+func _update_aim(delta: float) -> void:
+	var aiming := _is_aiming()
+	var target_fov := AIM_FOV if aiming else _hip_fov
+	var target_spring := _hip_spring * AIM_SPRING_SCALE if aiming else _hip_spring
+	var blend := 1.0 - exp(-AIM_BLEND * delta)
+	camera.fov = lerpf(camera.fov, target_fov, blend)
+	spring_arm.spring_length = lerpf(spring_arm.spring_length, target_spring, blend)
+
+
+func _update_fire(delta: float) -> void:
+	_fire_cooldown = maxf(_fire_cooldown - delta, 0.0)
+	if _crosshair:
+		_crosshair.visible = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
+	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		return
+	if _block_fire:
+		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			_block_fire = false
+		return
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and _fire_cooldown <= 0.0:
+		_shoot()
+		_fire_cooldown = FIRE_INTERVAL
+
+
+func _shoot() -> void:
+	var origin := camera.global_position
+	var forward := -camera.global_transform.basis.z
+	var query := PhysicsRayQueryParameters3D.create(origin, origin + forward * FIRE_RANGE)
+	query.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+	var end := origin + forward * FIRE_RANGE
+	if not hit.is_empty():
+		end = hit.position
+		var damageable := _damageable_from_hit(hit.collider)
+		if damageable:
+			var dealt := int(damageable.call("take_damage", randi_range(DAMAGE_MIN, DAMAGE_MAX)))
+			if dealt > 0:
+				_spawn_damage_number(end + (hit.normal as Vector3) * 0.08, dealt)
+	_spawn_tracer(_tracer_origin(), end)
+
+
+func _damageable_from_hit(collider: Object) -> Object:
+	var node := collider as Node
+	if node == null:
+		return null
+	var current: Node = node
+	while current:
+		if current.has_method("take_damage"):
+			return current
+		current = current.get_parent()
+	return _find_damageable_in_children(node)
+
+
+func _find_damageable_in_children(node: Node) -> Object:
+	for child in node.get_children():
+		if child.has_method("take_damage"):
+			return child
+		var found := _find_damageable_in_children(child)
+		if found:
+			return found
+	return null
+
+
+func _tracer_origin() -> Vector3:
+	var rifle := get_node_or_null("male_casual/rig/Skeleton3D/WeaponAttachment/Rifle") as Node3D
+	if rifle:
+		return rifle.global_position
+	return camera.global_position
+
+
+func _spawn_damage_number(at: Vector3, amount: int) -> void:
+	var label := Label3D.new()
+	label.text = str(amount)
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.fixed_size = true
+	label.font_size = 40
+	label.outline_size = 10
+	label.outline_modulate = Color(0, 0, 0, 1)
+	label.no_depth_test = true
+	var strength := clampf(float(amount - DAMAGE_MIN) / float(DAMAGE_MAX - DAMAGE_MIN), 0.0, 1.0)
+	label.modulate = Color(1.0, lerpf(0.9, 0.3, strength), 0.15)
+	var parent := get_tree().current_scene if get_tree().current_scene else get_tree().root
+	parent.add_child(label)
+	label.global_position = at + Vector3(randf_range(-0.12, 0.12), randf_range(0.0, 0.15), randf_range(-0.12, 0.12))
+	var tween := label.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(label, "global_position:y", label.global_position.y + 0.75, 0.55) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(label, "modulate:a", 0.0, 0.4).set_delay(0.18)
+	tween.chain().tween_callback(label.queue_free)
+
+
+func _spawn_tracer(from: Vector3, to: Vector3) -> void:
+	var length := from.distance_to(to)
+	if length < 0.05:
+		return
+	var mesh_instance := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = Vector3(0.02, 0.02, length)
+	mesh_instance.mesh = box
+	var material := StandardMaterial3D.new()
+	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.albedo_color = Color(1.0, 0.86, 0.35)
+	mesh_instance.material_override = material
+	var parent := get_tree().current_scene if get_tree().current_scene else get_tree().root
+	parent.add_child(mesh_instance)
+	mesh_instance.global_position = (from + to) * 0.5
+	if absf(from.direction_to(to).dot(Vector3.UP)) > 0.98:
+		mesh_instance.look_at(to, Vector3.RIGHT)
+	else:
+		mesh_instance.look_at(to)
+	var tween := mesh_instance.create_tween()
+	tween.tween_property(material, "albedo_color:a", 0.0, 0.07)
+	tween.tween_callback(mesh_instance.queue_free)
+
+
+func _setup_crosshair() -> void:
+	var layer := CanvasLayer.new()
+	var root_control := Control.new()
+	root_control.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root_control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	layer.add_child(root_control)
+	_add_crosshair_bar(root_control, Vector2(14, 2))
+	_add_crosshair_bar(root_control, Vector2(2, 14))
+	add_child(layer)
+	_crosshair = layer
+
+
+func _add_crosshair_bar(parent: Control, size: Vector2) -> void:
+	var bar := ColorRect.new()
+	bar.color = Color(1, 1, 1, 0.9)
+	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar.set_anchors_preset(Control.PRESET_CENTER)
+	bar.offset_left = -size.x * 0.5
+	bar.offset_top = -size.y * 0.5
+	bar.offset_right = size.x * 0.5
+	bar.offset_bottom = size.y * 0.5
+	parent.add_child(bar)
 
 
 func _horizontal_velocity(delta: float) -> Vector3:
