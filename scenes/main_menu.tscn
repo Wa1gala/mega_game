@@ -1,0 +1,215 @@
+[gd_scene format=3 uid="uid://bc0qcpdcjcj6f"]
+
+[ext_resource type="Script" uid="uid://c85y5wh5jsbgh" path="res://scripts/main_menu.gd" id="1_main_menu"]
+
+[sub_resource type="StyleBoxFlat" id="panel_style"]
+content_margin_left = 28.0
+content_margin_top = 28.0
+content_margin_right = 28.0
+content_margin_bottom = 28.0
+bg_color = Color(0.02, 0.05, 0.03, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.5, 0.25, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="lineedit_normal"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.01, 0.03, 0.02, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.5, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="lineedit_focus"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.02, 0.05, 0.03, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 1, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_normal"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.03, 0.08, 0.05, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.55, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_pressed"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.2, 0.12, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 1, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_hover"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06, 0.14, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.95, 0.55, 1)
+
+[sub_resource type="Shader" id="scanline_shader"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	float row = SCREEN_UV.y / SCREEN_PIXEL_SIZE.y;
+	float line = float(int(row) % 3 == 0);
+	COLOR = vec4(0.0, 0.0, 0.0, line * 0.18);
+}"
+
+[sub_resource type="ShaderMaterial" id="scanline_material"]
+shader = SubResource("scanline_shader")
+
+[node name="MainMenu" type="Control" unique_id=1850869535]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main_menu")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2055431217]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0.02, 0.015, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=1386627727]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=904396342]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_style")
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel" unique_id=649140843]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Center/Panel/VBox" unique_id=1505309371]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 44
+text = "ZERO"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/Panel/VBox" unique_id=830277385]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.6, 0.35, 1)
+theme_override_font_sizes/font_size = 15
+text = "{СЕТЕВОЙ ТЕРМИНАЛ}"
+horizontal_alignment = 1
+
+[node name="IPLabel" type="Label" parent="Center/Panel/VBox" unique_id=1262105488]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.7, 0.45, 1)
+theme_override_font_sizes/font_size = 13
+text = "IP-АДРЕС ХОСТА"
+
+[node name="IPAddress" type="LineEdit" parent="Center/Panel/VBox" unique_id=1819238749]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.65, 1)
+theme_override_colors/font_placeholder_color = Color(0.3, 0.5, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("lineedit_normal")
+theme_override_styles/focus = SubResource("lineedit_focus")
+placeholder_text = "127.0.0.1"
+
+[node name="HostButton" type="Button" parent="Center/Panel/VBox" unique_id=184622097]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.55, 1)
+theme_override_colors/font_hover_color = Color(0.85, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("button_normal")
+theme_override_styles/pressed = SubResource("button_pressed")
+theme_override_styles/hover = SubResource("button_hover")
+text = "СОЗДАТЬ СЕРВЕР"
+
+[node name="JoinButton" type="Button" parent="Center/Panel/VBox" unique_id=1737387980]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.55, 1)
+theme_override_colors/font_hover_color = Color(0.85, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("button_normal")
+theme_override_styles/pressed = SubResource("button_pressed")
+theme_override_styles/hover = SubResource("button_hover")
+text = "ПОДКЛЮЧИТЬСЯ"
+
+[node name="SingleplayerButton" type="Button" parent="Center/Panel/VBox" unique_id=437397562]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.55, 1)
+theme_override_colors/font_hover_color = Color(0.85, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("button_normal")
+theme_override_styles/pressed = SubResource("button_pressed")
+theme_override_styles/hover = SubResource("button_hover")
+text = "ОДИНОЧНАЯ ИГРА"
+
+[node name="ExitButton" type="Button" parent="Center/Panel/VBox" unique_id=1068257808]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.5, 0.45, 1)
+theme_override_colors/font_hover_color = Color(1, 0.7, 0.6, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("button_normal")
+theme_override_styles/pressed = SubResource("button_pressed")
+theme_override_styles/hover = SubResource("button_hover")
+text = "ВЫХОД"
+
+[node name="Scanlines" type="ColorRect" parent="." unique_id=183161053]
+material = SubResource("scanline_material")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

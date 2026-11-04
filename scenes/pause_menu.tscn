@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://dgaitm8l3pp6"]
+
+[ext_resource type="Script" uid="uid://cdyih4mwgepi4" path="res://scripts/pause_menu.gd" id="1_pause"]
+
+[sub_resource type="StyleBoxFlat" id="panel_style"]
+content_margin_left = 24.0
+content_margin_top = 24.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+bg_color = Color(0.02, 0.05, 0.03, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.5, 0.25, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_normal"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.03, 0.08, 0.05, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.55, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_pressed"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.2, 0.12, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 1, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="button_hover"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06, 0.14, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.95, 0.55, 1)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1517936614]
+process_mode = 3
+script = ExtResource("1_pause")
+
+[node name="Overlay" type="Control" parent="." unique_id=848318759]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Overlay" unique_id=499614627]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="Overlay" unique_id=836507159]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Overlay/Center" unique_id=2099465418]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_style")
+
+[node name="VBox" type="VBoxContainer" parent="Overlay/Center/Panel" unique_id=205659951]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Overlay/Center/Panel/VBox" unique_id=1998205874]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 1, 0.5, 1)
+theme_override_font_sizes/font_size = 32
+text = "ПАУЗА"
+horizontal_alignment = 1
+
+[node name="ExitToLobbyButton" type="Button" parent="Overlay/Center/Panel/VBox" unique_id=735537486]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.55, 1)
+theme_override_colors/font_hover_color = Color(0.85, 1, 0.9, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("button_normal")
+theme_override_styles/pressed = SubResource("button_pressed")
+theme_override_styles/hover = SubResource("button_hover")
+text = "ВЫЙТИ В ЛОББИ"
