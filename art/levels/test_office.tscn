@@ -63,8 +63,24 @@ size = Vector3(0.5, 4, 0.5)
 
 [node name="test_office" type="Node3D" unique_id=543343743]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=439250323]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 8, 0)
+[node name="SpotLightOffice" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 2.85, 5.8)
+light_color = Color(0.45, 0.9, 0.65, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 2.0
+spot_range = 12.0
+spot_angle = 50.0
+spot_attenuation = 0.8
+shadow_enabled = true
+
+[node name="SpotLightWarmCorner" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -9, 2.8, -5)
+light_color = Color(1.0, 0.5, 0.15, 1)
+light_energy = 1.5
+light_volumetric_fog_energy = 1.5
+spot_range = 7.0
+spot_angle = 60.0
+spot_attenuation = 1.0
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1444349364]
