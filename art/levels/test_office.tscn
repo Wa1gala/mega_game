@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dlr28i1jca1ww"]
+[gd_scene load_steps=19 format=3 uid="uid://dlr28i1jca1ww"]
+
+[ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="1_player"]
 
 [sub_resource type="Environment" id="env_greybox"]
 background_mode = 1
@@ -161,3 +163,6 @@ mesh = SubResource("mesh_column")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Column" unique_id=1819721191]
 shape = SubResource("shape_column")
+
+[node name="Player" parent="." unique_id=1778528221 instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 3.5)
