@@ -29,6 +29,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	add_to_group("player")
 	camera.current = is_multiplayer_authority()
 	if is_multiplayer_authority():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
