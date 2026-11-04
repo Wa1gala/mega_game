@@ -23,7 +23,7 @@ shape = SubResource("CapsuleShape3D_body")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=903021500]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
-spring_length = 3.5
+spring_length = 2.0
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1552112852]
 
@@ -33,5 +33,12 @@ replication_config = SubResource("SceneReplicationConfig_sync")
 [node name="male_casual" parent="." unique_id=1927968805 instance=ExtResource("2_model")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.001034379, 0)
 
-[node name="Rifle" parent="male_casual" instance=ExtResource("3_weapon")]
-transform = Transform3D(0, 0, -0.22, 0, 0.22, 0, 0.22, 0, 0, 0.3, 1.1, 0.1)
+[node name="WeaponAttachment" type="BoneAttachment3D" parent="male_casual/rig/Skeleton3D" parent_id_path=PackedInt32Array(1927968805, 1577021229) index="1" unique_id=838087093]
+transform = Transform3D(-0.9765064, -0.1869654, -0.10714042, 0.12881216, -0.10787326, -0.98578423, 0.17275006, -0.97642595, 0.12942241, -0.3053566, 0.023826946, 0.8953216)
+bone_name = "hand_right"
+bone_idx = 15
+
+[node name="Rifle" parent="male_casual/rig/Skeleton3D/WeaponAttachment" unique_id=1137737437 instance=ExtResource("3_weapon")]
+transform = Transform3D(0.03573664, -0.061400425, 0.20821424, 0.20258306, 0.085248426, -0.009631084, -0.07799354, 0.19329458, 0.07038709, -0.0048627555, 0.13356692, -0.117396444)
+
+[editable path="male_casual"]

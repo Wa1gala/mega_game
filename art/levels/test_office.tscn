@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dgaitm8l3pp6" path="res://scenes/pause_menu.tscn" id="pause_menu"]
 [ext_resource type="PackedScene" uid="uid://ykhqgskglwyd" path="res://art/levels/office/couches/armchair_blue.glb" id="r_armchair"]
 [ext_resource type="PackedScene" uid="uid://bsx4udgu2dxv3" path="res://art/levels/office/book_things/book_case.glb" id="r_bookcase"]
+[ext_resource type="PackedScene" uid="uid://c83ujjccvjpq4" path="res://art/levels/office/book_things/book_case_with_back.glb" id="r_bookcase_back"]
 [ext_resource type="PackedScene" uid="uid://r2qkj2jirbvl" path="res://art/levels/office/book_things/books.glb" id="r_books"]
 [ext_resource type="PackedScene" uid="uid://ubwulshv5sk8" path="res://art/levels/office/file_cabinets/file_cabinet_large.glb" id="r_cabinet_large"]
 [ext_resource type="PackedScene" uid="uid://d0kfp86lw0kr0" path="res://art/levels/office/file_cabinets/file_cabinet_small.glb" id="r_cabinet_small"]
@@ -15,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://w3tavcew48by" path="res://art/levels/office/couches/couch_blue.glb" id="r_couch"]
 [ext_resource type="PackedScene" uid="uid://bdoxva85rv1c1" path="res://art/levels/office/desks/desk1.glb" id="r_desk1"]
 [ext_resource type="PackedScene" uid="uid://dvb71goy3or8m" path="res://art/levels/office/desks/desk2.glb" id="r_desk2"]
+[ext_resource type="PackedScene" uid="uid://rwfr04ysrg25" path="res://art/levels/office/carpet_floor/floor_3x3.glb" id="r_floor3x3"]
 [ext_resource type="PackedScene" uid="uid://caiqb7801dupv" path="res://art/levels/office/computers/computer_keyboard.glb" id="r_keyboard"]
 [ext_resource type="PackedScene" uid="uid://cddhy1wuevdrk" path="res://art/levels/office/extras/square_desklamp.glb" id="r_lamp"]
 [ext_resource type="PackedScene" uid="uid://dly8th71j4wnf" path="res://art/levels/office/computers/computer_monitor.glb" id="r_monitor"]
@@ -23,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://c2i260p2tfrjw" path="res://art/levels/office/extras/desk_phone.glb" id="r_phone"]
 [ext_resource type="PackedScene" uid="uid://bi0ro6e5b8kkt" path="res://art/levels/office/extras/water_cooler.glb" id="r_watercooler"]
 [ext_resource type="PackedScene" uid="uid://dxynib1acdx02" path="res://art/levels/office/extras/whiteboard.glb" id="r_whiteboard"]
+[ext_resource type="Script" uid="uid://f5aune1xwd8o" path="res://scripts/damageable.gd" id="s_damage"]
 
 [sub_resource type="Environment" id="env_greybox"]
 background_mode = 1
@@ -355,6 +358,7 @@ shape = SubResource("bs_whiteboard")
 
 [node name="WallClock" parent="." unique_id=1727941900 instance=ExtResource("r_clock")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7405033, 1.2058822, -4.410913)
+script = ExtResource("s_damage")
 
 [node name="BookcaseWest" type="StaticBody3D" parent="." unique_id=1854411607]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.5, 0, -1)
