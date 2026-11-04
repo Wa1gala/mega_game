@@ -1,29 +1,17 @@
 extends Node3D
 
 # Повесь на модель, по которой нужно стрелять.
-# Если у неё нет коллайдера, скрипт соберёт хитбокс по её мешам.
-
-signal died
-
-@export var max_health := 100
-
-var health := 0
+# Цифры урона показываются на каждом попадании, без запаса здоровья.
+# Если у модели нет коллайдера, скрипт соберёт хитбокс по её мешам.
 
 
 func _ready() -> void:
-	health = max_health
 	add_to_group("damageable")
 	_ensure_hit_box()
 
 
 func take_damage(amount: int) -> int:
-	if health <= 0:
-		return 0
-	var dealt := mini(amount, health)
-	health -= dealt
-	if health == 0:
-		died.emit()
-	return dealt
+	return amount
 
 
 func _ensure_hit_box() -> void:

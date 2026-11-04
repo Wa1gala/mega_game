@@ -111,6 +111,9 @@ func _setup_animations() -> void:
 	library.add_animation("idle", _take_animation("res://art/characters/player/Idle.fbx", true))
 	library.add_animation("walk", _take_animation("res://art/characters/player/Walk Forward.fbx"))
 	library.add_animation("run", _take_animation("res://art/characters/player/Run Forward.fbx"))
+	var jump := _take_animation("res://art/characters/player/Jump Up.fbx")
+	jump.loop_mode = Animation.LOOP_NONE
+	library.add_animation("jump", jump)
 	_animation_player.add_animation_library(&"", library)
 	_animation_player.play(&"idle")
 
@@ -156,7 +159,9 @@ func _update_animation(delta: float) -> void:
 
 	var next := &"idle"
 	var reference_speed := 1.0
-	if speed > WALK_SPEED + 0.4:
+	if _is_airborne():
+		next = &"jump"
+	elif speed > WALK_SPEED + 0.4:
 		next = &"run"
 		reference_speed = RUN_ANIM_SPEED
 	elif speed > 0.2:
@@ -165,7 +170,18 @@ func _update_animation(delta: float) -> void:
 
 	if _animation_player.current_animation != String(next):
 		_animation_player.play(next, 0.12)
-	_animation_player.speed_scale = 0.55 if next == &"idle" else clampf(speed / reference_speed, 0.75, 1.6)
+	if next == &"idle":
+		_animation_player.speed_scale = 0.55
+	elif next == &"jump":
+		_animation_player.speed_scale = 1.0
+	else:
+		_animation_player.speed_scale = clampf(speed / reference_speed, 0.75, 1.6)
+
+
+func _is_airborne() -> bool:
+	if is_multiplayer_authority():
+		return not is_on_floor()
+	return absf(global_position.y - _previous_position.y) > 0.02
 
 
 func _is_aiming() -> bool:

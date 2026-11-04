@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://c2i260p2tfrjw" path="res://art/levels/OFFICE/extras/desk_phone.glb" id="r_phone"]
 [ext_resource type="PackedScene" uid="uid://bi0ro6e5b8kkt" path="res://art/levels/OFFICE/extras/water_cooler.glb" id="r_watercooler"]
 [ext_resource type="PackedScene" uid="uid://dxynib1acdx02" path="res://art/levels/OFFICE/extras/whiteboard.glb" id="r_whiteboard"]
+[ext_resource type="Script" uid="uid://f5aune1xwd8o" path="res://scripts/damageable.gd" id="s_damage"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="pause_menu"]
 
 [sub_resource type="Environment" id="env_greybox"]
@@ -380,6 +381,7 @@ shape = SubResource("bs_whiteboard")
 
 [node name="WallClock" parent="." unique_id=1727941900 instance=ExtResource("r_clock")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7405033, 1.2058822, -4.410913)
+script = ExtResource("s_damage")
 
 [node name="BookcaseWest" type="StaticBody3D" parent="." unique_id=1854411607]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9.5, 0, -1)
