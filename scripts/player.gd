@@ -35,7 +35,6 @@ func _ready() -> void:
 		_apply_camera_rotation()
 	_previous_position = global_position
 	_setup_animations()
-	_setup_weapon()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -88,50 +87,14 @@ func _setup_animations() -> void:
 	_animation_player.root_node = NodePath("..")
 	model.add_child(_animation_player)
 	var library := AnimationLibrary.new()
-	library.add_animation("idle", _take_animation("res://art/characters/player/Idle.fbx"))
+	library.add_animation("idle", _take_animation("res://art/characters/player/Idle.fbx", true))
 	library.add_animation("walk", _take_animation("res://art/characters/player/Walk Forward.fbx"))
 	library.add_animation("run", _take_animation("res://art/characters/player/Run Forward.fbx"))
 	_animation_player.add_animation_library(&"", library)
 	_animation_player.play(&"idle")
 
 
-func _setup_weapon() -> void:
-	var weapon := model.get_node_or_null("Rifle") as Node3D
-	if weapon == null:
-		push_warning("Weapon: 'Rifle' node not found under model")
-		return
-
-	var skeleton := _find_skeleton()
-	if skeleton == null:
-		push_warning("Weapon: Skeleton3D not found in player model")
-		return
-
-	var bone_idx := skeleton.find_bone("hand_right")
-	if bone_idx == -1:
-		push_warning("Weapon: bone 'hand_right' not found")
-		return
-
-	var attachment := BoneAttachment3D.new()
-	attachment.name = "WeaponAttachment"
-	attachment.bone_name = "hand_right"
-	skeleton.add_child(attachment)
-
-	# Даём привязке кадр, чтобы она встала по кости, затем переносим
-	# винтовку под неё, сохранив текущую мировую трансформацию.
-	await get_tree().process_frame
-	var world_transform := weapon.global_transform
-	weapon.get_parent().remove_child(weapon)
-	attachment.add_child(weapon)
-	weapon.global_transform = world_transform
-
-
-func _find_skeleton() -> Skeleton3D:
-	for child in model.find_children("*", "Skeleton3D", true, false):
-		return child as Skeleton3D
-	return null
-
-
-func _take_animation(path: String) -> Animation:
+func _take_animation(path: String, seamless_loop := false) -> Animation:
 	var packed := load(path) as PackedScene
 	var root := packed.instantiate()
 	var source := root.get_node("AnimationPlayer") as AnimationPlayer
@@ -141,8 +104,25 @@ func _take_animation(path: String) -> Animation:
 		var track_path := String(animation.track_get_path(track))
 		if track_path == "rig" and animation.track_get_type(track) == Animation.TYPE_POSITION_3D:
 			animation.remove_track(track)
+	if seamless_loop:
+		_make_loop_seamless(animation, 0.7)
 	root.free()
 	return animation
+
+
+func _make_loop_seamless(animation: Animation, blend_window: float) -> void:
+	var blend_start := maxf(animation.length - blend_window, 0.0)
+	for track in animation.get_track_count():
+		if animation.track_get_key_count(track) < 2:
+			continue
+		var first_value = animation.track_get_key_value(track, 0)
+		for key in range(animation.track_get_key_count(track) - 1, -1, -1):
+			if animation.track_get_key_time(track, key) > blend_start:
+				animation.track_remove_key(track, key)
+		animation.track_insert_key(track, animation.length, first_value)
+		animation.track_set_interpolation_loop_wrap(track, true)
+		if animation.track_get_type(track) == Animation.TYPE_ROTATION_3D:
+			animation.track_set_interpolation_type(track, Animation.INTERPOLATION_CUBIC_ANGLE)
 
 
 func _update_animation(delta: float) -> void:
@@ -164,7 +144,7 @@ func _update_animation(delta: float) -> void:
 
 	if _animation_player.current_animation != String(next):
 		_animation_player.play(next, 0.12)
-	_animation_player.speed_scale = 1.0 if next == &"idle" else clampf(speed / reference_speed, 0.75, 1.6)
+	_animation_player.speed_scale = 0.55 if next == &"idle" else clampf(speed / reference_speed, 0.75, 1.6)
 
 
 func _horizontal_velocity(delta: float) -> Vector3:
