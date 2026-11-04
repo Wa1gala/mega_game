@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7p4pwmofbrwe"
-path="res://.godot/imported/books.jpg-941b4b932f305d60b0b4ee12cf82381c.ctex"
+uid="uid://cfwswfc3lbens"
+path="res://.godot/imported/books.jpg-32c3bd87d5c36a71de109413c0ae8d8d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/books.jpg"
-dest_files=["res://.godot/imported/books.jpg-941b4b932f305d60b0b4ee12cf82381c.ctex"]
+source_file="res://art/levels/office/textures/books.jpg"
+dest_files=["res://.godot/imported/books.jpg-32c3bd87d5c36a71de109413c0ae8d8d.ctex"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dipyjj4a45pu0"
-path="res://.godot/imported/wall_clock.fbx-02c4a1bb0f281e271bf1a96a699fc2ea.scn"
+uid="uid://48flcsbea722"
+path="res://.godot/imported/wall_clock.fbx-8300eb9259d6734b24c37b19dfe4b42c.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/wall_clock.fbx"
-dest_files=["res://.godot/imported/wall_clock.fbx-02c4a1bb0f281e271bf1a96a699fc2ea.scn"]
+source_file="res://art/levels/office/extras/wall_clock.fbx"
+dest_files=["res://.godot/imported/wall_clock.fbx-8300eb9259d6734b24c37b19dfe4b42c.scn"]
 
 [params]
 

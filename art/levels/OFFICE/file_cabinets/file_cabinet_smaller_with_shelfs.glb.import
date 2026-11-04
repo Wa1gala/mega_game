@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d0wdlj4uarnhv"
-path="res://.godot/imported/file_cabinet_smaller_with_shelfs.glb-44de12806ab3b4e70d417a655bba1ebb.scn"
+uid="uid://cu4pagw55nqyq"
+path="res://.godot/imported/file_cabinet_smaller_with_shelfs.glb-ffc6adb353f5980628ed435e251e0a35.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/file_cabinets/file_cabinet_smaller_with_shelfs.glb"
-dest_files=["res://.godot/imported/file_cabinet_smaller_with_shelfs.glb-44de12806ab3b4e70d417a655bba1ebb.scn"]
+source_file="res://art/levels/office/file_cabinets/file_cabinet_smaller_with_shelfs.glb"
+dest_files=["res://.godot/imported/file_cabinet_smaller_with_shelfs.glb-ffc6adb353f5980628ed435e251e0a35.scn"]
 
 [params]
 

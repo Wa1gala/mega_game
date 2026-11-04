@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baf04vj8art46"
-path.s3tc="res://.godot/imported/armchair_red_couches.png-59f4d2515e2053fbabac986095b42043.s3tc.ctex"
+uid="uid://co4k2vk0t6jfc"
+path.s3tc="res://.godot/imported/armchair_red_couches.png-3958b41274aef1b28f8eb24466ce120e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "f65961cb8fec0a525be720fde8483a14"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/armchair_red_couches.png"
-dest_files=["res://.godot/imported/armchair_red_couches.png-59f4d2515e2053fbabac986095b42043.s3tc.ctex"]
+source_file="res://art/levels/office/couches/armchair_red_couches.png"
+dest_files=["res://.godot/imported/armchair_red_couches.png-3958b41274aef1b28f8eb24466ce120e.s3tc.ctex"]
 
 [params]
 

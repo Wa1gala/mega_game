@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfoew4dfbwtj0"
-path.s3tc="res://.godot/imported/square_desklamp_0.png-fb7da66b15bf3c4498f06fc6a90aca57.s3tc.ctex"
+uid="uid://cf30j4ma3l0kk"
+path.s3tc="res://.godot/imported/square_desklamp_0.png-0d94247e35a3d029865bfbb667d6b83f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "d4f3a1e7ac44133765ad9d010ff407c9"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/square_desklamp_0.png"
-dest_files=["res://.godot/imported/square_desklamp_0.png-fb7da66b15bf3c4498f06fc6a90aca57.s3tc.ctex"]
+source_file="res://art/levels/office/extras/square_desklamp_0.png"
+dest_files=["res://.godot/imported/square_desklamp_0.png-0d94247e35a3d029865bfbb667d6b83f.s3tc.ctex"]
 
 [params]
 

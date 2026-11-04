@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bd4qxiqyxgtkw"
-path.s3tc="res://.godot/imported/divider_full_h_lue_desk_dividers.jpg-452673bd1eff9001309a1c2324a25fc2.s3tc.ctex"
+uid="uid://bpe753ax8t5n1"
+path.s3tc="res://.godot/imported/divider_full_h_lue_desk_dividers.jpg-13a4ef2c10d37e26d0fa61515723f112.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_full_h_lue_desk_dividers.jpg"
-dest_files=["res://.godot/imported/divider_full_h_lue_desk_dividers.jpg-452673bd1eff9001309a1c2324a25fc2.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_full_h_lue_desk_dividers.jpg"
+dest_files=["res://.godot/imported/divider_full_h_lue_desk_dividers.jpg-13a4ef2c10d37e26d0fa61515723f112.s3tc.ctex"]
 
 [params]
 

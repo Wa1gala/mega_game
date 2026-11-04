@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tiviv6fg6f24"
-path.s3tc="res://.godot/imported/file_cabinet_small_open_0.png-9ca15a65e91afc49a26ba93bdf3536b7.s3tc.ctex"
+uid="uid://b5ih3nb0wjlwu"
+path.s3tc="res://.godot/imported/file_cabinet_small_open_0.png-35bb260c2578d6d989b7eea7cfb52a9b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "29d23293f8e0ddf78a77f3261b5679d7"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/file_cabinets/file_cabinet_small_open_0.png"
-dest_files=["res://.godot/imported/file_cabinet_small_open_0.png-9ca15a65e91afc49a26ba93bdf3536b7.s3tc.ctex"]
+source_file="res://art/levels/office/file_cabinets/file_cabinet_small_open_0.png"
+dest_files=["res://.godot/imported/file_cabinet_small_open_0.png-35bb260c2578d6d989b7eea7cfb52a9b.s3tc.ctex"]
 
 [params]
 

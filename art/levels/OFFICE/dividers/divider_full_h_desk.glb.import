@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dl0cq2681my7h"
-path="res://.godot/imported/divider_full_h_desk.glb-591dccf2e82f7689dfff1a30a1ae2258.scn"
+uid="uid://c7fcdvnoqibei"
+path="res://.godot/imported/divider_full_h_desk.glb-229a2dd64bca455c440a65e220420b36.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_full_h_desk.glb"
-dest_files=["res://.godot/imported/divider_full_h_desk.glb-591dccf2e82f7689dfff1a30a1ae2258.scn"]
+source_file="res://art/levels/office/dividers/divider_full_h_desk.glb"
+dest_files=["res://.godot/imported/divider_full_h_desk.glb-229a2dd64bca455c440a65e220420b36.scn"]
 
 [params]
 

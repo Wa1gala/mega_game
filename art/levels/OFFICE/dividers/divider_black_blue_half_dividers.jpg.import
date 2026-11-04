@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b8dqdk6ne8v8c"
-path.s3tc="res://.godot/imported/divider_black_blue_half_dividers.jpg-9d5224e198464a2d236465782bb42a4e.s3tc.ctex"
+uid="uid://o4266r2iagb7"
+path.s3tc="res://.godot/imported/divider_black_blue_half_dividers.jpg-400b373129ecd7eb73d067754abc4fd4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_black_blue_half_dividers.jpg"
-dest_files=["res://.godot/imported/divider_black_blue_half_dividers.jpg-9d5224e198464a2d236465782bb42a4e.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_black_blue_half_dividers.jpg"
+dest_files=["res://.godot/imported/divider_black_blue_half_dividers.jpg-400b373129ecd7eb73d067754abc4fd4.s3tc.ctex"]
 
 [params]
 

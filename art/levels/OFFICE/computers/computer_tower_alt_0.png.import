@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2jjc08s85byf"
-path.s3tc="res://.godot/imported/computer_tower_alt_0.png-91809e238ea9456f8403a82e8972a392.s3tc.ctex"
+uid="uid://ca0lp3nashtpo"
+path.s3tc="res://.godot/imported/computer_tower_alt_0.png-a6a6d2e27840b4dfd479d44684ca9cfa.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b62f94791f89e7a9d3456059edafea"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_tower_alt_0.png"
-dest_files=["res://.godot/imported/computer_tower_alt_0.png-91809e238ea9456f8403a82e8972a392.s3tc.ctex"]
+source_file="res://art/levels/office/computers/computer_tower_alt_0.png"
+dest_files=["res://.godot/imported/computer_tower_alt_0.png-a6a6d2e27840b4dfd479d44684ca9cfa.s3tc.ctex"]
 
 [params]
 

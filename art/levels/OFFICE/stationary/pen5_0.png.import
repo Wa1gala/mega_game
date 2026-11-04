@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhukfejly4dpp"
-path.s3tc="res://.godot/imported/pen5_0.png-3ab7cae60040964e7dc81be1c294b62b.s3tc.ctex"
+uid="uid://lj3th38ei0g"
+path.s3tc="res://.godot/imported/pen5_0.png-170dadc8f2d7e799762b87599753a1f0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3baed5cf8a1bbe0522bf3261c7ca2527"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/pen5_0.png"
-dest_files=["res://.godot/imported/pen5_0.png-3ab7cae60040964e7dc81be1c294b62b.s3tc.ctex"]
+source_file="res://art/levels/office/stationary/pen5_0.png"
+dest_files=["res://.godot/imported/pen5_0.png-170dadc8f2d7e799762b87599753a1f0.s3tc.ctex"]
 
 [params]
 

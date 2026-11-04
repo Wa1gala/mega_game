@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn65eu0kjvmwq"
-path.s3tc="res://.godot/imported/water_cooler_bottle_watercooler.png-93effe97ada0abfec94d1f8a6943b78a.s3tc.ctex"
+uid="uid://c32j6abt3r32i"
+path.s3tc="res://.godot/imported/water_cooler_bottle_watercooler.png-f7230754793c5d68da1c7611c4c5e950.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "de868cd3775b02f88b430fc37910eaeb"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/water_cooler_bottle_watercooler.png"
-dest_files=["res://.godot/imported/water_cooler_bottle_watercooler.png-93effe97ada0abfec94d1f8a6943b78a.s3tc.ctex"]
+source_file="res://art/levels/office/extras/water_cooler_bottle_watercooler.png"
+dest_files=["res://.godot/imported/water_cooler_bottle_watercooler.png-f7230754793c5d68da1c7611c4c5e950.s3tc.ctex"]
 
 [params]
 

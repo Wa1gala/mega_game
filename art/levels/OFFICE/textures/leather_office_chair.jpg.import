@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bodi2jf6al1ui"
-path="res://.godot/imported/leather_office_chair.jpg-ff544fb531548fe26f1cf8399986aa01.ctex"
+uid="uid://bwxdnulm5pxk6"
+path="res://.godot/imported/leather_office_chair.jpg-37144cf865021ab825b68976b47b475e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/leather_office_chair.jpg"
-dest_files=["res://.godot/imported/leather_office_chair.jpg-ff544fb531548fe26f1cf8399986aa01.ctex"]
+source_file="res://art/levels/office/textures/leather_office_chair.jpg"
+dest_files=["res://.godot/imported/leather_office_chair.jpg-37144cf865021ab825b68976b47b475e.ctex"]
 
 [params]
 

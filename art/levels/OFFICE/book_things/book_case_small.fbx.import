@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ci85vg5ipsoe7"
-path="res://.godot/imported/book_case_small.fbx-1c5c56ad1fe4ab6d5d1eecdbb453074b.scn"
+uid="uid://bl54aknemcr41"
+path="res://.godot/imported/book_case_small.fbx-a82e558d78964849fb0018f42ccf9df1.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/book_things/book_case_small.fbx"
-dest_files=["res://.godot/imported/book_case_small.fbx-1c5c56ad1fe4ab6d5d1eecdbb453074b.scn"]
+source_file="res://art/levels/office/book_things/book_case_small.fbx"
+dest_files=["res://.godot/imported/book_case_small.fbx-a82e558d78964849fb0018f42ccf9df1.scn"]
 
 [params]
 

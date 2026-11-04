@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be3c5qmocrma2"
-path="res://.godot/imported/pots.png-73975d0a581f1e615400831569ec9ea0.ctex"
+uid="uid://d4bdci7uwbtkq"
+path="res://.godot/imported/pots.png-980c61036920710f02d68d67e6d7d52b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/pots.png"
-dest_files=["res://.godot/imported/pots.png-73975d0a581f1e615400831569ec9ea0.ctex"]
+source_file="res://art/levels/office/textures/pots.png"
+dest_files=["res://.godot/imported/pots.png-980c61036920710f02d68d67e6d7d52b.ctex"]
 
 [params]
 

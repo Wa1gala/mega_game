@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ct2tuo06ujnan"
-path="res://.godot/imported/divider_veneer.glb-dd16fb8188a4c5e3305c74585b037eea.scn"
+uid="uid://c3fdhind6jm2w"
+path="res://.godot/imported/divider_veneer.glb-71c7b7db38618bac186043909d4d4893.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_veneer.glb"
-dest_files=["res://.godot/imported/divider_veneer.glb-dd16fb8188a4c5e3305c74585b037eea.scn"]
+source_file="res://art/levels/office/dividers/divider_veneer.glb"
+dest_files=["res://.godot/imported/divider_veneer.glb-71c7b7db38618bac186043909d4d4893.scn"]
 
 [params]
 

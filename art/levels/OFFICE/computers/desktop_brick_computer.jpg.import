@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cq1vpt61dq7nw"
-path.s3tc="res://.godot/imported/desktop_brick_computer.jpg-9f4e5bae0c326bc1e28c04bb14339318.s3tc.ctex"
+uid="uid://cimcur508qcu2"
+path.s3tc="res://.godot/imported/desktop_brick_computer.jpg-6c88a06ff01dad1bc8ae3646e7ed7082.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b62f94791f89e7a9d3456059edafea"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/desktop_brick_computer.jpg"
-dest_files=["res://.godot/imported/desktop_brick_computer.jpg-9f4e5bae0c326bc1e28c04bb14339318.s3tc.ctex"]
+source_file="res://art/levels/office/computers/desktop_brick_computer.jpg"
+dest_files=["res://.godot/imported/desktop_brick_computer.jpg-6c88a06ff01dad1bc8ae3646e7ed7082.s3tc.ctex"]
 
 [params]
 

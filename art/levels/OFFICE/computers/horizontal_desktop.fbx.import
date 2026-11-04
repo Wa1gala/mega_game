@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c6yygbkgpbosr"
-path="res://.godot/imported/horizontal_desktop.fbx-a7b02afe1f1eea3162ca5d2471ccfa07.scn"
+uid="uid://ua8mf0c0lu3l"
+path="res://.godot/imported/horizontal_desktop.fbx-c6c2279bb5dd8efbf67651d94ea471ae.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/horizontal_desktop.fbx"
-dest_files=["res://.godot/imported/horizontal_desktop.fbx-a7b02afe1f1eea3162ca5d2471ccfa07.scn"]
+source_file="res://art/levels/office/computers/horizontal_desktop.fbx"
+dest_files=["res://.godot/imported/horizontal_desktop.fbx-c6c2279bb5dd8efbf67651d94ea471ae.scn"]
 
 [params]
 

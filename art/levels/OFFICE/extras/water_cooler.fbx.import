@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://y4hsoxndla2y"
-path="res://.godot/imported/water_cooler.fbx-314a9fa8a356c7218cc86683fe022313.scn"
+uid="uid://dr5l3r3h4y27o"
+path="res://.godot/imported/water_cooler.fbx-a953d9961a9ef1b485d9fdc9926c116a.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/water_cooler.fbx"
-dest_files=["res://.godot/imported/water_cooler.fbx-314a9fa8a356c7218cc86683fe022313.scn"]
+source_file="res://art/levels/office/extras/water_cooler.fbx"
+dest_files=["res://.godot/imported/water_cooler.fbx-a953d9961a9ef1b485d9fdc9926c116a.scn"]
 
 [params]
 

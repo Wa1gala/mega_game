@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bprr7mgdrslqn"
-path="res://.godot/imported/mugs.jpg-cded3ad48364f9dfdbd106df7fcbd9eb.ctex"
+uid="uid://d4nhid383kqrk"
+path="res://.godot/imported/mugs.jpg-e6ad66fcd3f9d2c6f497d6537f386d4a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/mugs.jpg"
-dest_files=["res://.godot/imported/mugs.jpg-cded3ad48364f9dfdbd106df7fcbd9eb.ctex"]
+source_file="res://art/levels/office/textures/mugs.jpg"
+dest_files=["res://.godot/imported/mugs.jpg-e6ad66fcd3f9d2c6f497d6537f386d4a.ctex"]
 
 [params]
 

@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cb063tsygku8t"
-path.s3tc="res://.godot/imported/whiteboard_whiteboard_text.png-bd8d18fcea53ec72cdf1fcba687401e9.s3tc.ctex"
+uid="uid://clkbwobgb72gr"
+path.s3tc="res://.godot/imported/whiteboard_whiteboard_text.png-33b229da8e144f1fd43b3a645bc83346.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "4113e979cad7ba4fd27f36fc7a441efe"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/whiteboard_whiteboard_text.png"
-dest_files=["res://.godot/imported/whiteboard_whiteboard_text.png-bd8d18fcea53ec72cdf1fcba687401e9.s3tc.ctex"]
+source_file="res://art/levels/office/extras/whiteboard_whiteboard_text.png"
+dest_files=["res://.godot/imported/whiteboard_whiteboard_text.png-33b229da8e144f1fd43b3a645bc83346.s3tc.ctex"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c32ib8bc8mxb2"
-path="res://.godot/imported/computer_mouse.glb-44fc6e75e40a314f0f01e2dc043e2f26.scn"
+uid="uid://c7rgxgsnii4nk"
+path="res://.godot/imported/computer_mouse.glb-2e87f82dab8b992de9fd0a2c713fe075.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_mouse.glb"
-dest_files=["res://.godot/imported/computer_mouse.glb-44fc6e75e40a314f0f01e2dc043e2f26.scn"]
+source_file="res://art/levels/office/computers/computer_mouse.glb"
+dest_files=["res://.godot/imported/computer_mouse.glb-2e87f82dab8b992de9fd0a2c713fe075.scn"]
 
 [params]
 

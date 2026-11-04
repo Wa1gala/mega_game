@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dmx52xsu6od5g"
-path="res://.godot/imported/circular_desklamp.glb-e57c4b920bfc6aa87ea072f98ad99cd9.scn"
+uid="uid://cifycsms7gu40"
+path="res://.godot/imported/circular_desklamp.glb-4b5a0c066fad4578b5dd36bb2787c32a.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/circular_desklamp.glb"
-dest_files=["res://.godot/imported/circular_desklamp.glb-e57c4b920bfc6aa87ea072f98ad99cd9.scn"]
+source_file="res://art/levels/office/extras/circular_desklamp.glb"
+dest_files=["res://.godot/imported/circular_desklamp.glb-4b5a0c066fad4578b5dd36bb2787c32a.scn"]
 
 [params]
 

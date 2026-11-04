@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpl3npqp23376"
-path.s3tc="res://.godot/imported/couch_large_blue_0.png-f17a48ed88c1045cdaffa3e47b1156e2.s3tc.ctex"
+uid="uid://c4jp1iu2guhkp"
+path.s3tc="res://.godot/imported/couch_large_blue_0.png-21f2aac6d8238c43e94517792e7ac68f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "f65961cb8fec0a525be720fde8483a14"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/couch_large_blue_0.png"
-dest_files=["res://.godot/imported/couch_large_blue_0.png-f17a48ed88c1045cdaffa3e47b1156e2.s3tc.ctex"]
+source_file="res://art/levels/office/couches/couch_large_blue_0.png"
+dest_files=["res://.godot/imported/couch_large_blue_0.png-21f2aac6d8238c43e94517792e7ac68f.s3tc.ctex"]
 
 [params]
 

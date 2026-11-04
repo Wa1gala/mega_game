@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwkj6aq6ef42e"
-path.s3tc="res://.godot/imported/floor_corner_round_half_carpet.jpg-744f215ab830fed13ed57ce9ff1d771f.s3tc.ctex"
+uid="uid://cm7uoiuftbvvx"
+path.s3tc="res://.godot/imported/floor_corner_round_half_carpet.jpg-afd2dc15c1556fb1e05958f76b454094.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "da70a6342f6ae6787db07734f8567746"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/carpet_floor/floor_corner_round_half_carpet.jpg"
-dest_files=["res://.godot/imported/floor_corner_round_half_carpet.jpg-744f215ab830fed13ed57ce9ff1d771f.s3tc.ctex"]
+source_file="res://art/levels/office/carpet_floor/floor_corner_round_half_carpet.jpg"
+dest_files=["res://.godot/imported/floor_corner_round_half_carpet.jpg-afd2dc15c1556fb1e05958f76b454094.s3tc.ctex"]
 
 [params]
 

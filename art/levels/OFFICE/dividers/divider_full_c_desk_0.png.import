@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://scpwdt74s386"
-path.s3tc="res://.godot/imported/divider_full_c_desk_0.png-fe1498d9576b2402408dcd7e23846455.s3tc.ctex"
+uid="uid://cnbltrc0p5vqp"
+path.s3tc="res://.godot/imported/divider_full_c_desk_0.png-3af19156e938dbd2bd043ac379303c08.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_full_c_desk_0.png"
-dest_files=["res://.godot/imported/divider_full_c_desk_0.png-fe1498d9576b2402408dcd7e23846455.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_full_c_desk_0.png"
+dest_files=["res://.godot/imported/divider_full_c_desk_0.png-3af19156e938dbd2bd043ac379303c08.s3tc.ctex"]
 
 [params]
 

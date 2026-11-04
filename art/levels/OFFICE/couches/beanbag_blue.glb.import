@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://2carwwdw2xgu"
-path="res://.godot/imported/beanbag_blue.glb-a0be4928b0a7e64ee5779fac2073670a.scn"
+uid="uid://c1twcw35ggswf"
+path="res://.godot/imported/beanbag_blue.glb-39a811a836a0e66953c1fe3d6f2831fa.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/beanbag_blue.glb"
-dest_files=["res://.godot/imported/beanbag_blue.glb-a0be4928b0a7e64ee5779fac2073670a.scn"]
+source_file="res://art/levels/office/couches/beanbag_blue.glb"
+dest_files=["res://.godot/imported/beanbag_blue.glb-39a811a836a0e66953c1fe3d6f2831fa.scn"]
 
 [params]
 

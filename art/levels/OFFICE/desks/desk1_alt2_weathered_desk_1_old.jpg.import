@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://di0w75h37y1o"
-path.s3tc="res://.godot/imported/desk1_alt2_weathered_desk_1_old.jpg-4fb7041d11b08b19dd4742627f270b61.s3tc.ctex"
+uid="uid://dsoki10kc2kcn"
+path.s3tc="res://.godot/imported/desk1_alt2_weathered_desk_1_old.jpg-e96a4a7faeaa60c3faf2fedec5ba5133.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "7866e09d083f13245ad943cbd32f54a3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/desk1_alt2_weathered_desk_1_old.jpg"
-dest_files=["res://.godot/imported/desk1_alt2_weathered_desk_1_old.jpg-4fb7041d11b08b19dd4742627f270b61.s3tc.ctex"]
+source_file="res://art/levels/office/desks/desk1_alt2_weathered_desk_1_old.jpg"
+dest_files=["res://.godot/imported/desk1_alt2_weathered_desk_1_old.jpg-e96a4a7faeaa60c3faf2fedec5ba5133.s3tc.ctex"]
 
 [params]
 

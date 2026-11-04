@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://opwppw6n03c3"
-path="res://.godot/imported/tv.jpg-6cc1883a40de32c5c62bc78c3ce98610.ctex"
+uid="uid://376rj1172pfw"
+path="res://.godot/imported/tv.jpg-35900def5820fdf440aa56bc0a819c72.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/tv.jpg"
-dest_files=["res://.godot/imported/tv.jpg-6cc1883a40de32c5c62bc78c3ce98610.ctex"]
+source_file="res://art/levels/office/textures/tv.jpg"
+dest_files=["res://.godot/imported/tv.jpg-35900def5820fdf440aa56bc0a819c72.ctex"]
 
 [params]
 

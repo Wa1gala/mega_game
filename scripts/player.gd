@@ -35,6 +35,7 @@ func _ready() -> void:
 		_apply_camera_rotation()
 	_previous_position = global_position
 	_setup_animations()
+	_setup_weapon()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -92,6 +93,42 @@ func _setup_animations() -> void:
 	library.add_animation("run", _take_animation("res://art/characters/player/Run Forward.fbx"))
 	_animation_player.add_animation_library(&"", library)
 	_animation_player.play(&"idle")
+
+
+func _setup_weapon() -> void:
+	var weapon := model.get_node_or_null("Rifle") as Node3D
+	if weapon == null:
+		push_warning("Weapon: 'Rifle' node not found under model")
+		return
+
+	var skeleton := _find_skeleton()
+	if skeleton == null:
+		push_warning("Weapon: Skeleton3D not found in player model")
+		return
+
+	var bone_idx := skeleton.find_bone("hand_right")
+	if bone_idx == -1:
+		push_warning("Weapon: bone 'hand_right' not found")
+		return
+
+	var attachment := BoneAttachment3D.new()
+	attachment.name = "WeaponAttachment"
+	attachment.bone_name = "hand_right"
+	skeleton.add_child(attachment)
+
+	# Даём привязке кадр, чтобы она встала по кости, затем переносим
+	# винтовку под неё, сохранив текущую мировую трансформацию.
+	await get_tree().process_frame
+	var world_transform := weapon.global_transform
+	weapon.get_parent().remove_child(weapon)
+	attachment.add_child(weapon)
+	weapon.global_transform = world_transform
+
+
+func _find_skeleton() -> Skeleton3D:
+	for child in model.find_children("*", "Skeleton3D", true, false):
+		return child as Skeleton3D
+	return null
 
 
 func _take_animation(path: String) -> Animation:

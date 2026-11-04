@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dlvg6uouwmgfy"
-path="res://.godot/imported/divider_black_red.fbx-ee648daae3020ad3f1859dad66bb4993.scn"
+uid="uid://sleiii3wyaud"
+path="res://.godot/imported/divider_black_red.fbx-1f73b83aa7df8b8a29817c2e9a580901.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_black_red.fbx"
-dest_files=["res://.godot/imported/divider_black_red.fbx-ee648daae3020ad3f1859dad66bb4993.scn"]
+source_file="res://art/levels/office/dividers/divider_black_red.fbx"
+dest_files=["res://.godot/imported/divider_black_red.fbx-1f73b83aa7df8b8a29817c2e9a580901.scn"]
 
 [params]
 

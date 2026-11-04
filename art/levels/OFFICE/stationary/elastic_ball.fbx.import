@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c5sg7ipptrbul"
-path="res://.godot/imported/elastic_ball.fbx-59caa9c5f86d17392f4ea2e890bff2ad.scn"
+uid="uid://cx178wn0ohcw5"
+path="res://.godot/imported/elastic_ball.fbx-dd3ebb723c8edac8d30b940e822fc93d.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/elastic_ball.fbx"
-dest_files=["res://.godot/imported/elastic_ball.fbx-59caa9c5f86d17392f4ea2e890bff2ad.scn"]
+source_file="res://art/levels/office/stationary/elastic_ball.fbx"
+dest_files=["res://.godot/imported/elastic_ball.fbx-dd3ebb723c8edac8d30b940e822fc93d.scn"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cenwvimoyi6wr"
-path="res://.godot/imported/floor_corner_round.fbx-8259458c08591ce5989362cee9a4f40d.scn"
+uid="uid://vf3tswswc4nl"
+path="res://.godot/imported/floor_corner_round.fbx-4a699f35422c18bb3431c2efbe319c1b.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/carpet_floor/floor_corner_round.fbx"
-dest_files=["res://.godot/imported/floor_corner_round.fbx-8259458c08591ce5989362cee9a4f40d.scn"]
+source_file="res://art/levels/office/carpet_floor/floor_corner_round.fbx"
+dest_files=["res://.godot/imported/floor_corner_round.fbx-4a699f35422c18bb3431c2efbe319c1b.scn"]
 
 [params]
 

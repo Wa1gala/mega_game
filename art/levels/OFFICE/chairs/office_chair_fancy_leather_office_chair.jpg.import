@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bp05558df4v0f"
-path.s3tc="res://.godot/imported/office_chair_fancy_leather_office_chair.jpg-3cde8e16806cd931ab0fde523e26d74b.s3tc.ctex"
+uid="uid://bo2i4viktajf7"
+path.s3tc="res://.godot/imported/office_chair_fancy_leather_office_chair.jpg-aba32af8e068bd2185cc3606f447ada9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "b963f5706edbd234100834dab0d22210"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/chairs/office_chair_fancy_leather_office_chair.jpg"
-dest_files=["res://.godot/imported/office_chair_fancy_leather_office_chair.jpg-3cde8e16806cd931ab0fde523e26d74b.s3tc.ctex"]
+source_file="res://art/levels/office/chairs/office_chair_fancy_leather_office_chair.jpg"
+dest_files=["res://.godot/imported/office_chair_fancy_leather_office_chair.jpg-aba32af8e068bd2185cc3606f447ada9.s3tc.ctex"]
 
 [params]
 

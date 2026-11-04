@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c44m8efgtfeba"
-path.s3tc="res://.godot/imported/horizontal_desktop_computer.jpg-ca814246fbc243ff202c34f60610e218.s3tc.ctex"
+uid="uid://c3jsdnxi4gldi"
+path.s3tc="res://.godot/imported/horizontal_desktop_computer.jpg-6699c7b2fde823200378751d38b4e73e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b62f94791f89e7a9d3456059edafea"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/horizontal_desktop_computer.jpg"
-dest_files=["res://.godot/imported/horizontal_desktop_computer.jpg-ca814246fbc243ff202c34f60610e218.s3tc.ctex"]
+source_file="res://art/levels/office/computers/horizontal_desktop_computer.jpg"
+dest_files=["res://.godot/imported/horizontal_desktop_computer.jpg-6699c7b2fde823200378751d38b4e73e.s3tc.ctex"]
 
 [params]
 

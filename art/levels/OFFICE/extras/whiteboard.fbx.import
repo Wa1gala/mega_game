@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bhnbo27dk0rsm"
-path="res://.godot/imported/whiteboard.fbx-602ec1cde246896014cc487a9158e170.scn"
+uid="uid://cegp53p3ngoy0"
+path="res://.godot/imported/whiteboard.fbx-94c6d312064024e44ceccbe75362ee8e.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/whiteboard.fbx"
-dest_files=["res://.godot/imported/whiteboard.fbx-602ec1cde246896014cc487a9158e170.scn"]
+source_file="res://art/levels/office/extras/whiteboard.fbx"
+dest_files=["res://.godot/imported/whiteboard.fbx-94c6d312064024e44ceccbe75362ee8e.scn"]
 
 [params]
 

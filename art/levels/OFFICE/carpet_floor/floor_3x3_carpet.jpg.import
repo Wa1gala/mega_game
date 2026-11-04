@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://e4x2sm77twfg"
-path.s3tc="res://.godot/imported/floor_3x3_carpet.jpg-0e1e977cb95d24475de97b2e31f6b210.s3tc.ctex"
+uid="uid://dytk5go0rpimi"
+path.s3tc="res://.godot/imported/floor_3x3_carpet.jpg-f950787b71d93a885978cebdf76a7b8d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "da70a6342f6ae6787db07734f8567746"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/carpet_floor/floor_3x3_carpet.jpg"
-dest_files=["res://.godot/imported/floor_3x3_carpet.jpg-0e1e977cb95d24475de97b2e31f6b210.s3tc.ctex"]
+source_file="res://art/levels/office/carpet_floor/floor_3x3_carpet.jpg"
+dest_files=["res://.godot/imported/floor_3x3_carpet.jpg-f950787b71d93a885978cebdf76a7b8d.s3tc.ctex"]
 
 [params]
 

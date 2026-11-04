@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cmgdof66o54u3"
-path="res://.godot/imported/armchair_blue.glb-d447b34632d3ae8351fcee66d0ac31d3.scn"
+uid="uid://ykhqgskglwyd"
+path="res://.godot/imported/armchair_blue.glb-55612500c50be994aa43a9d7b9ac0bb1.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/armchair_blue.glb"
-dest_files=["res://.godot/imported/armchair_blue.glb-d447b34632d3ae8351fcee66d0ac31d3.scn"]
+source_file="res://art/levels/office/couches/armchair_blue.glb"
+dest_files=["res://.godot/imported/armchair_blue.glb-55612500c50be994aa43a9d7b9ac0bb1.scn"]
 
 [params]
 

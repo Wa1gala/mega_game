@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bxs0x28k78sv1"
-path="res://.godot/imported/paper_stack.glb-4ea8d4c733c0910e8c959a799d3f0d16.scn"
+uid="uid://c3ryl8ludi0s8"
+path="res://.godot/imported/paper_stack.glb-6403940127b3b126368f59883013167c.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/paper_stack.glb"
-dest_files=["res://.godot/imported/paper_stack.glb-4ea8d4c733c0910e8c959a799d3f0d16.scn"]
+source_file="res://art/levels/office/stationary/paper_stack.glb"
+dest_files=["res://.godot/imported/paper_stack.glb-6403940127b3b126368f59883013167c.scn"]
 
 [params]
 

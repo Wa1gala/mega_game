@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://blbe7i43c58dl"
-path="res://.godot/imported/desk1_alt_weathered.fbx-979dba49a40e6c3a08d313c5f4e1fa37.scn"
+uid="uid://0x2k1lb6823b"
+path="res://.godot/imported/desk1_alt_weathered.fbx-6f8156b02d5d8e04aaff7eac187398ce.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/desk1_alt_weathered.fbx"
-dest_files=["res://.godot/imported/desk1_alt_weathered.fbx-979dba49a40e6c3a08d313c5f4e1fa37.scn"]
+source_file="res://art/levels/office/desks/desk1_alt_weathered.fbx"
+dest_files=["res://.godot/imported/desk1_alt_weathered.fbx-6f8156b02d5d8e04aaff7eac187398ce.scn"]
 
 [params]
 

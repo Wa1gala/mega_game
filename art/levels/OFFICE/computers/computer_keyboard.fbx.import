@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://chxwc8wnw8gys"
-path="res://.godot/imported/computer_keyboard.fbx-845371fd385e3881d2f63b138bf8948e.scn"
+uid="uid://btslc0j2xt7hg"
+path="res://.godot/imported/computer_keyboard.fbx-23995c59bd12d1a6471a29e202f28bb2.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_keyboard.fbx"
-dest_files=["res://.godot/imported/computer_keyboard.fbx-845371fd385e3881d2f63b138bf8948e.scn"]
+source_file="res://art/levels/office/computers/computer_keyboard.fbx"
+dest_files=["res://.godot/imported/computer_keyboard.fbx-23995c59bd12d1a6471a29e202f28bb2.scn"]
 
 [params]
 
