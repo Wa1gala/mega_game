@@ -39,6 +39,6 @@ bone_name = "hand_right"
 bone_idx = 15
 
 [node name="Rifle" parent="male_casual/rig/Skeleton3D/WeaponAttachment" unique_id=1137737437 instance=ExtResource("3_weapon")]
-transform = Transform3D(0.041666575, -0.06510752, 0.20597365, 0.18794365, 0.11433965, -0.0018768241, -0.10649423, 0.17631644, 0.07727583, -0.013820499, 0.18419921, -0.124107555)
+transform = Transform3D(0.03573664, -0.061400425, 0.20821424, 0.20258306, 0.085248426, -0.009631084, -0.07799354, 0.19329458, 0.07038709, -0.0048627555, 0.13356692, -0.117396444)
 
 [editable path="male_casual"]
