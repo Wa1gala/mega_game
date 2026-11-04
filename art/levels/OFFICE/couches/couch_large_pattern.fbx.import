@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://d1v8pgdl8nx11"
-path="res://.godot/imported/couch_large_pattern.fbx-26b93c6d71a075b1efdc5efa7c1e1c55.scn"
+uid="uid://ek1w1i6i6hkc"
+path="res://.godot/imported/couch_large_pattern.fbx-18f75025d555fa755cbec91cb11271e6.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/couch_large_pattern.fbx"
-dest_files=["res://.godot/imported/couch_large_pattern.fbx-26b93c6d71a075b1efdc5efa7c1e1c55.scn"]
+source_file="res://art/levels/office/couches/couch_large_pattern.fbx"
+dest_files=["res://.godot/imported/couch_large_pattern.fbx-18f75025d555fa755cbec91cb11271e6.scn"]
 
 [params]
 

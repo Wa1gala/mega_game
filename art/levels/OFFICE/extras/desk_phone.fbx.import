@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://8rthxidqigmm"
-path="res://.godot/imported/desk_phone.fbx-b9533d9a98f51eb59ad345917a1845fd.scn"
+uid="uid://8fjuvei86i8h"
+path="res://.godot/imported/desk_phone.fbx-4527a32cbf87cbde879bcfe6fbbe5449.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/desk_phone.fbx"
-dest_files=["res://.godot/imported/desk_phone.fbx-b9533d9a98f51eb59ad345917a1845fd.scn"]
+source_file="res://art/levels/office/extras/desk_phone.fbx"
+dest_files=["res://.godot/imported/desk_phone.fbx-4527a32cbf87cbde879bcfe6fbbe5449.scn"]
 
 [params]
 

@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://butxwydjk3v4m"
-path.s3tc="res://.godot/imported/conference_chair_0.png-f55edfb1fe514a5937e8855fdac85504.s3tc.ctex"
+uid="uid://c86ala0dxpa78"
+path.s3tc="res://.godot/imported/conference_chair_0.png-7ca00192459557df6774e3c74dec8dcb.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "8caa0a118072775e9284157bbe2a1c4d"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/chairs/conference_chair_0.png"
-dest_files=["res://.godot/imported/conference_chair_0.png-f55edfb1fe514a5937e8855fdac85504.s3tc.ctex"]
+source_file="res://art/levels/office/chairs/conference_chair_0.png"
+dest_files=["res://.godot/imported/conference_chair_0.png-7ca00192459557df6774e3c74dec8dcb.s3tc.ctex"]
 
 [params]
 

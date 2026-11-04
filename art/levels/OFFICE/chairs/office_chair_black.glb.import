@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://db34o3j0b0rxy"
-path="res://.godot/imported/office_chair_black.glb-4c8f2008078d8b41f0e9c08f536cb5f1.scn"
+uid="uid://baap3k5jtrdv6"
+path="res://.godot/imported/office_chair_black.glb-843ade30c4755fe7dcba9563983c4d55.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/chairs/office_chair_black.glb"
-dest_files=["res://.godot/imported/office_chair_black.glb-4c8f2008078d8b41f0e9c08f536cb5f1.scn"]
+source_file="res://art/levels/office/chairs/office_chair_black.glb"
+dest_files=["res://.godot/imported/office_chair_black.glb-843ade30c4755fe7dcba9563983c4d55.scn"]
 
 [params]
 

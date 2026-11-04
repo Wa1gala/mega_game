@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cda0eni3h6u82"
-path.s3tc="res://.godot/imported/pen_mugs.jpg-24c1dc2a195a88677720e53fe1e096c5.s3tc.ctex"
+uid="uid://f3x6v57gnv7e"
+path.s3tc="res://.godot/imported/pen_mugs.jpg-78f65d2bba65e9649193961815192987.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3baed5cf8a1bbe0522bf3261c7ca2527"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/pen_mugs.jpg"
-dest_files=["res://.godot/imported/pen_mugs.jpg-24c1dc2a195a88677720e53fe1e096c5.s3tc.ctex"]
+source_file="res://art/levels/office/stationary/pen_mugs.jpg"
+dest_files=["res://.godot/imported/pen_mugs.jpg-78f65d2bba65e9649193961815192987.s3tc.ctex"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dsq5xm6u3djvy"
-path="res://.godot/imported/file_cabinet_larger.fbx-a714bdc2150366f2e8e6b32a196ba43f.scn"
+uid="uid://cu0ynr82gasi3"
+path="res://.godot/imported/file_cabinet_larger.fbx-243aae938cce9d16acfb4441e230747f.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/file_cabinets/file_cabinet_larger.fbx"
-dest_files=["res://.godot/imported/file_cabinet_larger.fbx-a714bdc2150366f2e8e6b32a196ba43f.scn"]
+source_file="res://art/levels/office/file_cabinets/file_cabinet_larger.fbx"
+dest_files=["res://.godot/imported/file_cabinet_larger.fbx-243aae938cce9d16acfb4441e230747f.scn"]
 
 [params]
 

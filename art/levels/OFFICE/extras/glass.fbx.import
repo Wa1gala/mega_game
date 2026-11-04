@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://edbhcy6hredl"
-path="res://.godot/imported/glass.fbx-1b97405ef8f7130ecad7c96b489f4636.scn"
+uid="uid://b47wmnomi6wxs"
+path="res://.godot/imported/glass.fbx-2924038e4e4a049159da7f42ab0eb460.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/glass.fbx"
-dest_files=["res://.godot/imported/glass.fbx-1b97405ef8f7130ecad7c96b489f4636.scn"]
+source_file="res://art/levels/office/extras/glass.fbx"
+dest_files=["res://.godot/imported/glass.fbx-2924038e4e4a049159da7f42ab0eb460.scn"]
 
 [params]
 

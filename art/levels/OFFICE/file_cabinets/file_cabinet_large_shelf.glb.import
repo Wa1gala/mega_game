@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://t32rbo6307uf"
-path="res://.godot/imported/file_cabinet_large_shelf.glb-fc452ea33fe294873dca5cd6dc034acd.scn"
+uid="uid://d0li80201bujh"
+path="res://.godot/imported/file_cabinet_large_shelf.glb-a4f683bceba53ff336d106155af4c20c.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/file_cabinets/file_cabinet_large_shelf.glb"
-dest_files=["res://.godot/imported/file_cabinet_large_shelf.glb-fc452ea33fe294873dca5cd6dc034acd.scn"]
+source_file="res://art/levels/office/file_cabinets/file_cabinet_large_shelf.glb"
+dest_files=["res://.godot/imported/file_cabinet_large_shelf.glb-a4f683bceba53ff336d106155af4c20c.scn"]
 
 [params]
 

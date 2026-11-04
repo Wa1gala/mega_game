@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlarg6klal3x3"
-path.s3tc="res://.godot/imported/divider_wood_blue_half_0.png-5a19d8bcae473d83fc1d3606d01717b7.s3tc.ctex"
+uid="uid://cv7d11k0fngrc"
+path.s3tc="res://.godot/imported/divider_wood_blue_half_0.png-bb064d249b655f9adb11fbe49685261a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_wood_blue_half_0.png"
-dest_files=["res://.godot/imported/divider_wood_blue_half_0.png-5a19d8bcae473d83fc1d3606d01717b7.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_wood_blue_half_0.png"
+dest_files=["res://.godot/imported/divider_wood_blue_half_0.png-bb064d249b655f9adb11fbe49685261a.s3tc.ctex"]
 
 [params]
 

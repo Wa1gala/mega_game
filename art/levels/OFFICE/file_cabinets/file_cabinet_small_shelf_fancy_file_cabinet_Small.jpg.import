@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://diumciaes4lov"
-path.s3tc="res://.godot/imported/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg-de20c2b781ee7a69cd1321454b309471.s3tc.ctex"
+uid="uid://dsdjq8ejp4gqn"
+path.s3tc="res://.godot/imported/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg-09fc55b86cd09138b03e28d25c1bb3dc.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "29d23293f8e0ddf78a77f3261b5679d7"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/file_cabinets/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg"
-dest_files=["res://.godot/imported/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg-de20c2b781ee7a69cd1321454b309471.s3tc.ctex"]
+source_file="res://art/levels/office/file_cabinets/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg"
+dest_files=["res://.godot/imported/file_cabinet_small_shelf_fancy_file_cabinet_Small.jpg-09fc55b86cd09138b03e28d25c1bb3dc.s3tc.ctex"]
 
 [params]
 

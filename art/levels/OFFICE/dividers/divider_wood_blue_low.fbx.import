@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c3cxprv7nbu06"
-path="res://.godot/imported/divider_wood_blue_low.fbx-35fe7578ee6319069001c039d8acb290.scn"
+uid="uid://m03w3aiqrhxs"
+path="res://.godot/imported/divider_wood_blue_low.fbx-e1734f8592c29ba07e949415754c4ecd.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_wood_blue_low.fbx"
-dest_files=["res://.godot/imported/divider_wood_blue_low.fbx-35fe7578ee6319069001c039d8acb290.scn"]
+source_file="res://art/levels/office/dividers/divider_wood_blue_low.fbx"
+dest_files=["res://.godot/imported/divider_wood_blue_low.fbx-e1734f8592c29ba07e949415754c4ecd.scn"]
 
 [params]
 

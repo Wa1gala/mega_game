@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clp8iaq8umo2b"
-path.s3tc="res://.godot/imported/wall_clock_0.png-2e40e62ec2bcd166bacdd375980b5d42.s3tc.ctex"
+uid="uid://dies0o0qp2lgv"
+path.s3tc="res://.godot/imported/wall_clock_0.png-36389084baad7a331fa729188d51bb76.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "e0875d2395900c3cf44fd34c5672a5e6"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/wall_clock_0.png"
-dest_files=["res://.godot/imported/wall_clock_0.png-2e40e62ec2bcd166bacdd375980b5d42.s3tc.ctex"]
+source_file="res://art/levels/office/extras/wall_clock_0.png"
+dest_files=["res://.godot/imported/wall_clock_0.png-36389084baad7a331fa729188d51bb76.s3tc.ctex"]
 
 [params]
 

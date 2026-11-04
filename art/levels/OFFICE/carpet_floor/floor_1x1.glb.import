@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b2ouc8rlcc36h"
-path="res://.godot/imported/floor_1x1.glb-d7d65cd86c08def924119fe34e7ab0b3.scn"
+uid="uid://bc0kamhuoruri"
+path="res://.godot/imported/floor_1x1.glb-eaf51082b59d5e9ff8dde276f5a16bb7.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/carpet_floor/floor_1x1.glb"
-dest_files=["res://.godot/imported/floor_1x1.glb-d7d65cd86c08def924119fe34e7ab0b3.scn"]
+source_file="res://art/levels/office/carpet_floor/floor_1x1.glb"
+dest_files=["res://.godot/imported/floor_1x1.glb-eaf51082b59d5e9ff8dde276f5a16bb7.scn"]
 
 [params]
 

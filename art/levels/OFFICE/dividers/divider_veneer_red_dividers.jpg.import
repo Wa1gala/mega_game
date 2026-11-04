@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbvk7karnf7am"
-path.s3tc="res://.godot/imported/divider_veneer_red_dividers.jpg-3cb24e16ab7869e104be00e1ce5b720a.s3tc.ctex"
+uid="uid://c4w8el77u6xxp"
+path.s3tc="res://.godot/imported/divider_veneer_red_dividers.jpg-aa4caaf6e65ca6ec12f990b3cb481d2e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_veneer_red_dividers.jpg"
-dest_files=["res://.godot/imported/divider_veneer_red_dividers.jpg-3cb24e16ab7869e104be00e1ce5b720a.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_veneer_red_dividers.jpg"
+dest_files=["res://.godot/imported/divider_veneer_red_dividers.jpg-aa4caaf6e65ca6ec12f990b3cb481d2e.s3tc.ctex"]
 
 [params]
 

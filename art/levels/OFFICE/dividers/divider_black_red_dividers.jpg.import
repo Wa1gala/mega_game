@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4jj8ohc0n7vi"
-path.s3tc="res://.godot/imported/divider_black_red_dividers.jpg-67cf9db8d9c07093afd96ea36a00b3ba.s3tc.ctex"
+uid="uid://cbildinsrjdpm"
+path.s3tc="res://.godot/imported/divider_black_red_dividers.jpg-bdc5f6e50bcb099d373b7150fa72f8ff.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b63b66dc8859e364941f6e841084c3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/dividers/divider_black_red_dividers.jpg"
-dest_files=["res://.godot/imported/divider_black_red_dividers.jpg-67cf9db8d9c07093afd96ea36a00b3ba.s3tc.ctex"]
+source_file="res://art/levels/office/dividers/divider_black_red_dividers.jpg"
+dest_files=["res://.godot/imported/divider_black_red_dividers.jpg-bdc5f6e50bcb099d373b7150fa72f8ff.s3tc.ctex"]
 
 [params]
 

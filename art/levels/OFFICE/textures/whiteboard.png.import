@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://kle8ti3ek8p1"
-path="res://.godot/imported/whiteboard.png-901e1d581e0679cd99ef68cd338469e7.ctex"
+uid="uid://bc31c1a3f5ru2"
+path="res://.godot/imported/whiteboard.png-931453a3a20639c41f62ade314dcfa5f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/whiteboard.png"
-dest_files=["res://.godot/imported/whiteboard.png-901e1d581e0679cd99ef68cd338469e7.ctex"]
+source_file="res://art/levels/office/textures/whiteboard.png"
+dest_files=["res://.godot/imported/whiteboard.png-931453a3a20639c41f62ade314dcfa5f.ctex"]
 
 [params]
 

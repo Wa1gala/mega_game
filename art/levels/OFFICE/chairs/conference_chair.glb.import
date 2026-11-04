@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dykepr8ypn8f7"
-path="res://.godot/imported/conference_chair.glb-1c15a0b2eb00b565875a46a266cb0a81.scn"
+uid="uid://cntv22y05m6vk"
+path="res://.godot/imported/conference_chair.glb-c94a953141a9dcf9716b8c1de343e051.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/chairs/conference_chair.glb"
-dest_files=["res://.godot/imported/conference_chair.glb-1c15a0b2eb00b565875a46a266cb0a81.scn"]
+source_file="res://art/levels/office/chairs/conference_chair.glb"
+dest_files=["res://.godot/imported/conference_chair.glb-c94a953141a9dcf9716b8c1de343e051.scn"]
 
 [params]
 

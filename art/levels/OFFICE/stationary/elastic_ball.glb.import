@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://brbel7so676s3"
-path="res://.godot/imported/elastic_ball.glb-21210270c38ee9206db06d1d40f1f0e9.scn"
+uid="uid://vdhal142cw51"
+path="res://.godot/imported/elastic_ball.glb-6626a896e45999b559dcfa6bd13c7bba.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/elastic_ball.glb"
-dest_files=["res://.godot/imported/elastic_ball.glb-21210270c38ee9206db06d1d40f1f0e9.scn"]
+source_file="res://art/levels/office/stationary/elastic_ball.glb"
+dest_files=["res://.godot/imported/elastic_ball.glb-6626a896e45999b559dcfa6bd13c7bba.scn"]
 
 [params]
 

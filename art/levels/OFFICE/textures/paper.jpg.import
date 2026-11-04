@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5cdndlsr4in"
-path="res://.godot/imported/paper.jpg-74a29f9728b9edae2bfe7682fc2f7be5.ctex"
+uid="uid://dj1pwhv71vd24"
+path="res://.godot/imported/paper.jpg-25a87c7746f575ae3d231cacc85b100b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/paper.jpg"
-dest_files=["res://.godot/imported/paper.jpg-74a29f9728b9edae2bfe7682fc2f7be5.ctex"]
+source_file="res://art/levels/office/textures/paper.jpg"
+dest_files=["res://.godot/imported/paper.jpg-25a87c7746f575ae3d231cacc85b100b.ctex"]
 
 [params]
 

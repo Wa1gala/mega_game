@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://omcylne4k08y"
-path.s3tc="res://.godot/imported/mug_alt3_mugs.jpg-48f6e8e45e0f9231c88a4c7107bcc146.s3tc.ctex"
+uid="uid://mjwyk3du4u8m"
+path.s3tc="res://.godot/imported/mug_alt3_mugs.jpg-b3061f61d2e30085761928d6a63b1b05.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3baed5cf8a1bbe0522bf3261c7ca2527"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/mug_alt3_mugs.jpg"
-dest_files=["res://.godot/imported/mug_alt3_mugs.jpg-48f6e8e45e0f9231c88a4c7107bcc146.s3tc.ctex"]
+source_file="res://art/levels/office/extras/mug_alt3_mugs.jpg"
+dest_files=["res://.godot/imported/mug_alt3_mugs.jpg-b3061f61d2e30085761928d6a63b1b05.s3tc.ctex"]
 
 [params]
 

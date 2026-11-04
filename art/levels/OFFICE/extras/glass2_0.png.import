@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://techmp1l33bv"
-path.s3tc="res://.godot/imported/glass2_0.png-58ec8cbd4e6847db807a4623bc98759a.s3tc.ctex"
+uid="uid://dq4orltahpg22"
+path.s3tc="res://.godot/imported/glass2_0.png-f23f251be22a9953e7f62fc2f84e28f4.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3baed5cf8a1bbe0522bf3261c7ca2527"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/glass2_0.png"
-dest_files=["res://.godot/imported/glass2_0.png-58ec8cbd4e6847db807a4623bc98759a.s3tc.ctex"]
+source_file="res://art/levels/office/extras/glass2_0.png"
+dest_files=["res://.godot/imported/glass2_0.png-f23f251be22a9953e7f62fc2f84e28f4.s3tc.ctex"]
 
 [params]
 

@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cumulgnou0lye"
-path.s3tc="res://.godot/imported/computer_monitor_computer.jpg-2e835c4d67ac3907d3930b20fc76c8de.s3tc.ctex"
+uid="uid://2oea1jiy8dap"
+path.s3tc="res://.godot/imported/computer_monitor_computer.jpg-36a2e92796893b54529076d03e78d696.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b62f94791f89e7a9d3456059edafea"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_monitor_computer.jpg"
-dest_files=["res://.godot/imported/computer_monitor_computer.jpg-2e835c4d67ac3907d3930b20fc76c8de.s3tc.ctex"]
+source_file="res://art/levels/office/computers/computer_monitor_computer.jpg"
+dest_files=["res://.godot/imported/computer_monitor_computer.jpg-36a2e92796893b54529076d03e78d696.s3tc.ctex"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cftw4l4armtuu"
-path="res://.godot/imported/computer_monitor.fbx-a7d69a5fd9f91f4f162e912023fedaab.scn"
+uid="uid://bgqhagqguo2x8"
+path="res://.godot/imported/computer_monitor.fbx-332caa1052d2109f0baf7ca5989fa74e.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_monitor.fbx"
-dest_files=["res://.godot/imported/computer_monitor.fbx-a7d69a5fd9f91f4f162e912023fedaab.scn"]
+source_file="res://art/levels/office/computers/computer_monitor.fbx"
+dest_files=["res://.godot/imported/computer_monitor.fbx-332caa1052d2109f0baf7ca5989fa74e.scn"]
 
 [params]
 

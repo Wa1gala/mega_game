@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v7brpycg3d23"
-path="res://.godot/imported/dividers.jpg-f18e366b4b6c47b2c25bda3425127bcb.ctex"
+uid="uid://bae5xtc88a5gs"
+path="res://.godot/imported/dividers.jpg-5402f5a0e838a6fe1dbb846fc63abe7a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/dividers.jpg"
-dest_files=["res://.godot/imported/dividers.jpg-f18e366b4b6c47b2c25bda3425127bcb.ctex"]
+source_file="res://art/levels/office/textures/dividers.jpg"
+dest_files=["res://.godot/imported/dividers.jpg-5402f5a0e838a6fe1dbb846fc63abe7a.ctex"]
 
 [params]
 

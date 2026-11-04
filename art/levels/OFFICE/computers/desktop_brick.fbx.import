@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c33afs1xa4cpk"
-path="res://.godot/imported/desktop_brick.fbx-fc51688d6667a13d0a2de978df5430f7.scn"
+uid="uid://cd1jn2pfrv43m"
+path="res://.godot/imported/desktop_brick.fbx-debe56a31feb1d5b4f270c253dc06842.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/desktop_brick.fbx"
-dest_files=["res://.godot/imported/desktop_brick.fbx-fc51688d6667a13d0a2de978df5430f7.scn"]
+source_file="res://art/levels/office/computers/desktop_brick.fbx"
+dest_files=["res://.godot/imported/desktop_brick.fbx-debe56a31feb1d5b4f270c253dc06842.scn"]
 
 [params]
 

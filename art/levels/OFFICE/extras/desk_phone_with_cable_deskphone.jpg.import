@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://f36xekdtbvq5"
-path.s3tc="res://.godot/imported/desk_phone_with_cable_deskphone.jpg-10563640e390445d3de8bcc77ed3b12b.s3tc.ctex"
+uid="uid://hgnm7wr50kkx"
+path.s3tc="res://.godot/imported/desk_phone_with_cable_deskphone.jpg-be6c4c9380fd7cb28f76d77ff2e35245.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3c5e12f9aaa99ce46f6c094f24482e91"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/desk_phone_with_cable_deskphone.jpg"
-dest_files=["res://.godot/imported/desk_phone_with_cable_deskphone.jpg-10563640e390445d3de8bcc77ed3b12b.s3tc.ctex"]
+source_file="res://art/levels/office/extras/desk_phone_with_cable_deskphone.jpg"
+dest_files=["res://.godot/imported/desk_phone_with_cable_deskphone.jpg-be6c4c9380fd7cb28f76d77ff2e35245.s3tc.ctex"]
 
 [params]
 

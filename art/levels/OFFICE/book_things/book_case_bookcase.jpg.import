@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpvwm4l8g4bdg"
-path.s3tc="res://.godot/imported/book_case_bookcase.jpg-29aa4614dc4bef9a5fbff5be850f5fda.s3tc.ctex"
+uid="uid://biinmyb851c78"
+path.s3tc="res://.godot/imported/book_case_bookcase.jpg-d7adef8d0be54b80b00b259520956da6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "5294ab2dd48cb52819e808b486e30f27"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/book_things/book_case_bookcase.jpg"
-dest_files=["res://.godot/imported/book_case_bookcase.jpg-29aa4614dc4bef9a5fbff5be850f5fda.s3tc.ctex"]
+source_file="res://art/levels/office/book_things/book_case_bookcase.jpg"
+dest_files=["res://.godot/imported/book_case_bookcase.jpg-d7adef8d0be54b80b00b259520956da6.s3tc.ctex"]
 
 [params]
 

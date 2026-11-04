@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bex1ix3vsypi2"
-path.s3tc="res://.godot/imported/paper_stack_large_0.png-dc6b746db5c42b54a2f4d5c390e5acb4.s3tc.ctex"
+uid="uid://dnycgawowk3q5"
+path.s3tc="res://.godot/imported/paper_stack_large_0.png-b25b8ce61a69c52e3ed8904d5759afc3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "e278fff6043a3a65f7b58ea572772dd3"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/paper_stack_large_0.png"
-dest_files=["res://.godot/imported/paper_stack_large_0.png-dc6b746db5c42b54a2f4d5c390e5acb4.s3tc.ctex"]
+source_file="res://art/levels/office/stationary/paper_stack_large_0.png"
+dest_files=["res://.godot/imported/paper_stack_large_0.png-b25b8ce61a69c52e3ed8904d5759afc3.s3tc.ctex"]
 
 [params]
 

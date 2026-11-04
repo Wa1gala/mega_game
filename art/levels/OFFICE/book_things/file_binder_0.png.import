@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cew45je2jhlqn"
-path.s3tc="res://.godot/imported/file_binder_0.png-1f333ebfaa615b546c4602ad62f76503.s3tc.ctex"
+uid="uid://8jnbj2k1r3qu"
+path.s3tc="res://.godot/imported/file_binder_0.png-1aae1ded9b474ac43c91b4d8cb2df012.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "a0de70a218b318c31aa7f61feaf9e00b"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/book_things/file_binder_0.png"
-dest_files=["res://.godot/imported/file_binder_0.png-1f333ebfaa615b546c4602ad62f76503.s3tc.ctex"]
+source_file="res://art/levels/office/book_things/file_binder_0.png"
+dest_files=["res://.godot/imported/file_binder_0.png-1aae1ded9b474ac43c91b4d8cb2df012.s3tc.ctex"]
 
 [params]
 

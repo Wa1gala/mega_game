@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bj0pl307ke7q0"
-path.s3tc="res://.godot/imported/elastic_ball_0.png-451e255c15e9962fea722b7b780cc95e.s3tc.ctex"
+uid="uid://we6rfwb3htik"
+path.s3tc="res://.godot/imported/elastic_ball_0.png-9e66fc23041786541d43d3cb1eae0b79.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "b1d5c9b24d7a0fc88a7cf96aeb6569aa"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/stationary/elastic_ball_0.png"
-dest_files=["res://.godot/imported/elastic_ball_0.png-451e255c15e9962fea722b7b780cc95e.s3tc.ctex"]
+source_file="res://art/levels/office/stationary/elastic_ball_0.png"
+dest_files=["res://.godot/imported/elastic_ball_0.png-9e66fc23041786541d43d3cb1eae0b79.s3tc.ctex"]
 
 [params]
 

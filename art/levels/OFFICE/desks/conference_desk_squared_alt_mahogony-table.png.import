@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0343r1debyfm"
-path.s3tc="res://.godot/imported/conference_desk_squared_alt_mahogony-table.png-c924fc84bcb8319b9505da11edb1ca5a.s3tc.ctex"
+uid="uid://d31omdtal83eq"
+path.s3tc="res://.godot/imported/conference_desk_squared_alt_mahogony-table.png-44a7df1a63ec3d177ace4f8f5e410640.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "2259f801c72f1c876e8c072126e37519"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/conference_desk_squared_alt_mahogony-table.png"
-dest_files=["res://.godot/imported/conference_desk_squared_alt_mahogony-table.png-c924fc84bcb8319b9505da11edb1ca5a.s3tc.ctex"]
+source_file="res://art/levels/office/desks/conference_desk_squared_alt_mahogony-table.png"
+dest_files=["res://.godot/imported/conference_desk_squared_alt_mahogony-table.png-44a7df1a63ec3d177ace4f8f5e410640.s3tc.ctex"]
 
 [params]
 

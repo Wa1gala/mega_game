@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dwa5jkopyhqku"
-path="res://.godot/imported/square_desklamp_alt.fbx-84dd03230e8d1c4bb28fe6a85bae64cc.scn"
+uid="uid://bslu8buxjn6w"
+path="res://.godot/imported/square_desklamp_alt.fbx-94dc4c2cd78a933882fb68f6348b3eda.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/square_desklamp_alt.fbx"
-dest_files=["res://.godot/imported/square_desklamp_alt.fbx-84dd03230e8d1c4bb28fe6a85bae64cc.scn"]
+source_file="res://art/levels/office/extras/square_desklamp_alt.fbx"
+dest_files=["res://.godot/imported/square_desklamp_alt.fbx-94dc4c2cd78a933882fb68f6348b3eda.scn"]
 
 [params]
 

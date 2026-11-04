@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl18tngfu7l26"
-path.s3tc="res://.godot/imported/conference_desk_0.png-cbe8279f5abb61815b67bc4a0fefa912.s3tc.ctex"
+uid="uid://bshwfdj87p4su"
+path.s3tc="res://.godot/imported/conference_desk_0.png-2fe76710d4395184152dbc7bcc2e8a2f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "2259f801c72f1c876e8c072126e37519"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/conference_desk_0.png"
-dest_files=["res://.godot/imported/conference_desk_0.png-cbe8279f5abb61815b67bc4a0fefa912.s3tc.ctex"]
+source_file="res://art/levels/office/desks/conference_desk_0.png"
+dest_files=["res://.godot/imported/conference_desk_0.png-2fe76710d4395184152dbc7bcc2e8a2f.s3tc.ctex"]
 
 [params]
 

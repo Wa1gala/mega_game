@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddrajikmy1blg"
-path="res://.godot/imported/carpet.jpg-a29175b97c8bfb7f39dd8d2522ccf4c8.ctex"
+uid="uid://dd7n8njs2vgir"
+path="res://.godot/imported/carpet.jpg-40ae615ed7a4dd054377262a2686f805.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/carpet.jpg"
-dest_files=["res://.godot/imported/carpet.jpg-a29175b97c8bfb7f39dd8d2522ccf4c8.ctex"]
+source_file="res://art/levels/office/textures/carpet.jpg"
+dest_files=["res://.godot/imported/carpet.jpg-40ae615ed7a4dd054377262a2686f805.ctex"]
 
 [params]
 

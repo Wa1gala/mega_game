@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bjgrewjbqdmpc"
-path="res://.godot/imported/computer_tower.fbx-d05f37c82b11dabce89a6874cf1199cd.scn"
+uid="uid://cx4uc3aeex8wc"
+path="res://.godot/imported/computer_tower.fbx-71cb920bd3c65dd58e6588718541971e.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_tower.fbx"
-dest_files=["res://.godot/imported/computer_tower.fbx-d05f37c82b11dabce89a6874cf1199cd.scn"]
+source_file="res://art/levels/office/computers/computer_tower.fbx"
+dest_files=["res://.godot/imported/computer_tower.fbx-71cb920bd3c65dd58e6588718541971e.scn"]
 
 [params]
 

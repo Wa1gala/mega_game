@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de2nu5rlmuff1"
-path.s3tc="res://.godot/imported/glass_mugs.jpg-716bc66bbb230a9a6294ec951fdad610.s3tc.ctex"
+uid="uid://8l6ggyirjqp5"
+path.s3tc="res://.godot/imported/glass_mugs.jpg-22cfff274c8a4e0fba9356e2e3e9ff08.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "3baed5cf8a1bbe0522bf3261c7ca2527"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/extras/glass_mugs.jpg"
-dest_files=["res://.godot/imported/glass_mugs.jpg-716bc66bbb230a9a6294ec951fdad610.s3tc.ctex"]
+source_file="res://art/levels/office/extras/glass_mugs.jpg"
+dest_files=["res://.godot/imported/glass_mugs.jpg-22cfff274c8a4e0fba9356e2e3e9ff08.s3tc.ctex"]
 
 [params]
 

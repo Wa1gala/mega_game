@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://58g5w21h2g7h"
-path="res://.godot/imported/leaf.png-3fd650dba45cb70d4cca4894d14736fb.ctex"
+uid="uid://s1otk1xbre8w"
+path="res://.godot/imported/leaf.png-de587132ee0f39591a5c0a63aa259c4d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/leaf.png"
-dest_files=["res://.godot/imported/leaf.png-3fd650dba45cb70d4cca4894d14736fb.ctex"]
+source_file="res://art/levels/office/textures/leaf.png"
+dest_files=["res://.godot/imported/leaf.png-de587132ee0f39591a5c0a63aa259c4d.ctex"]
 
 [params]
 

@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4ct7tiwk4bv"
-path.s3tc="res://.godot/imported/computer_keyboard_computer.jpg-28a2eff151940bb6541ef6cc902bb3eb.s3tc.ctex"
+uid="uid://bdkj6i2hv3p5x"
+path.s3tc="res://.godot/imported/computer_keyboard_computer.jpg-08da659681d3a8020f14391476fd539f.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "81b62f94791f89e7a9d3456059edafea"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/computers/computer_keyboard_computer.jpg"
-dest_files=["res://.godot/imported/computer_keyboard_computer.jpg-28a2eff151940bb6541ef6cc902bb3eb.s3tc.ctex"]
+source_file="res://art/levels/office/computers/computer_keyboard_computer.jpg"
+dest_files=["res://.godot/imported/computer_keyboard_computer.jpg-08da659681d3a8020f14391476fd539f.s3tc.ctex"]
 
 [params]
 

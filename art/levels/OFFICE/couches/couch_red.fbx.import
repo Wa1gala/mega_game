@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://5anjav6hieft"
-path="res://.godot/imported/couch_red.fbx-8edfb892a039465ae0478620ee58b26d.scn"
+uid="uid://cv4gupypt6vxh"
+path="res://.godot/imported/couch_red.fbx-4ff61880b1ff9c9adce4c6edbfdd1674.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/couch_red.fbx"
-dest_files=["res://.godot/imported/couch_red.fbx-8edfb892a039465ae0478620ee58b26d.scn"]
+source_file="res://art/levels/office/couches/couch_red.fbx"
+dest_files=["res://.godot/imported/couch_red.fbx-4ff61880b1ff9c9adce4c6edbfdd1674.scn"]
 
 [params]
 

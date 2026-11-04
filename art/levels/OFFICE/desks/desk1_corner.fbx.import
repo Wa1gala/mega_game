@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dv4bv2a7kkmcd"
-path="res://.godot/imported/desk1_corner.fbx-edbcac94f4f29baba9159648bc30bbdb.scn"
+uid="uid://ogjhg85e04wk"
+path="res://.godot/imported/desk1_corner.fbx-0607c30a2851d188fd72018a37035387.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/desk1_corner.fbx"
-dest_files=["res://.godot/imported/desk1_corner.fbx-edbcac94f4f29baba9159648bc30bbdb.scn"]
+source_file="res://art/levels/office/desks/desk1_corner.fbx"
+dest_files=["res://.godot/imported/desk1_corner.fbx-0607c30a2851d188fd72018a37035387.scn"]
 
 [params]
 

@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://c4tp16sdnhnwd"
-path="res://.godot/imported/conference_desk_squared_alt.fbx-fcfcc271dc67fdf860537c31e8847ebd.scn"
+uid="uid://dxahxjtdoi671"
+path="res://.godot/imported/conference_desk_squared_alt.fbx-5b11741966c76db15e85bfb8134408b0.scn"
 
 [deps]
 
-source_file="res://art/levels/OFFICE/desks/conference_desk_squared_alt.fbx"
-dest_files=["res://.godot/imported/conference_desk_squared_alt.fbx-fcfcc271dc67fdf860537c31e8847ebd.scn"]
+source_file="res://art/levels/office/desks/conference_desk_squared_alt.fbx"
+dest_files=["res://.godot/imported/conference_desk_squared_alt.fbx-5b11741966c76db15e85bfb8134408b0.scn"]
 
 [params]
 

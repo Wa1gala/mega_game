@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cx4soyrwr50kt"
-path="res://.godot/imported/file_cabinet_Small.jpg-7f74e7f10f28c9448d6fded6b3a20d18.ctex"
+uid="uid://cictp4tgghe38"
+path="res://.godot/imported/file_cabinet_Small.jpg-a0ce5aae67e21aa7738ca7ea66f3275d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/file_cabinet_Small.jpg"
-dest_files=["res://.godot/imported/file_cabinet_Small.jpg-7f74e7f10f28c9448d6fded6b3a20d18.ctex"]
+source_file="res://art/levels/office/textures/file_cabinet_Small.jpg"
+dest_files=["res://.godot/imported/file_cabinet_Small.jpg-a0ce5aae67e21aa7738ca7ea66f3275d.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b15gdlju564g8"
-path="res://.godot/imported/deskphone.jpg-8fef40283c4d00b2ce348d95a8742702.ctex"
+uid="uid://cgsm2n8g8wi7v"
+path="res://.godot/imported/deskphone.jpg-c22359acd4e83b4f24c3de5cf72fb0cc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/deskphone.jpg"
-dest_files=["res://.godot/imported/deskphone.jpg-8fef40283c4d00b2ce348d95a8742702.ctex"]
+source_file="res://art/levels/office/textures/deskphone.jpg"
+dest_files=["res://.godot/imported/deskphone.jpg-c22359acd4e83b4f24c3de5cf72fb0cc.ctex"]
 
 [params]
 

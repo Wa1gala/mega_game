@@ -2,20 +2,17 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bim2f13rqq0yf"
-path.s3tc="res://.godot/imported/beanbag_blue_couches.png-f23f5ab975477f27488acc22ebc5fc49.s3tc.ctex"
+uid="uid://dpx4hyov7gvx3"
+path.s3tc="res://.godot/imported/beanbag_blue_couches.png-e508a4e49ba6cc880d9ee0a1952590e2.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
-generator_parameters={
-"md5": "f65961cb8fec0a525be720fde8483a14"
-}
 
 [deps]
 
-source_file="res://art/levels/OFFICE/couches/beanbag_blue_couches.png"
-dest_files=["res://.godot/imported/beanbag_blue_couches.png-f23f5ab975477f27488acc22ebc5fc49.s3tc.ctex"]
+source_file="res://art/levels/office/couches/beanbag_blue_couches.png"
+dest_files=["res://.godot/imported/beanbag_blue_couches.png-e508a4e49ba6cc880d9ee0a1952590e2.s3tc.ctex"]
 
 [params]
 

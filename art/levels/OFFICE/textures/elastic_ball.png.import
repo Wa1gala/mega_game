@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdn0h1owt1o77"
-path="res://.godot/imported/elastic_ball.png-523128f469ae173efc5b6d74e8d65423.ctex"
+uid="uid://bw61e4r5v1nph"
+path="res://.godot/imported/elastic_ball.png-a64166692cbf920dbd61d558de9a5269.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/levels/OFFICE/textures/elastic_ball.png"
-dest_files=["res://.godot/imported/elastic_ball.png-523128f469ae173efc5b6d74e8d65423.ctex"]
+source_file="res://art/levels/office/textures/elastic_ball.png"
+dest_files=["res://.godot/imported/elastic_ball.png-a64166692cbf920dbd61d558de9a5269.ctex"]
 
 [params]
 
