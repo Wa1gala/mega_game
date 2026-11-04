@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://5sgy0k2htp7b"]
 
-[ext_resource type="Script" path="res://player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://diivr2f20kq8w" path="res://player.gd" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bmit01i30nuks" path="res://art/characters/player/male_casual.fbx" id="2_onrkg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
@@ -25,7 +25,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 spring_length = 3.5
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D" unique_id=1552112852]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2821241, 0.078834295, 0.6887504)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2821241, 0.078834295, 0.75193024)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1695078453]
 replication_config = SubResource("SceneReplicationConfig_sync")
