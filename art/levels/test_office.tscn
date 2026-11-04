@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dlr28i1jca1ww"]
+[gd_scene load_steps=19 format=3 uid="uid://dlr28i1jca1ww"]
+
+[ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="1_player"]
 
 [ext_resource type="PackedScene" uid="uid://cmgdof66o54u3" path="res://art/levels/OFFICE/couches/armchair_blue.glb" id="r_armchair"]
 [ext_resource type="PackedScene" uid="uid://4l6qgaxxo3vd" path="res://art/levels/OFFICE/book_things/book_case.glb" id="r_bookcase"]
@@ -403,3 +405,5 @@ mesh = SubResource("mesh_screen")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.2, -1.82)
 material_override = SubResource("mat_screen")
 mesh = SubResource("mesh_screen")
+[node name="Player" parent="." unique_id=1778528221 instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 3.5)
