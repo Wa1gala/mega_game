@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://5sgy0k2htp7b"]
+[gd_scene load_steps=5 format=3 uid="uid://5sgy0k2htp7b"]
 
 [ext_resource type="Script" uid="uid://diivr2f20kq8w" path="res://player.gd" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bmit01i30nuks" path="res://art/characters/player/male_casual.fbx" id="2_onrkg"]
@@ -30,5 +30,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2821241, 0.078834295, 0.751
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1695078453]
 replication_config = SubResource("SceneReplicationConfig_sync")
 
-[node name="male_casual" parent="." unique_id=1927968805 instance=ExtResource("2_onrkg")]
+[node name="male_casual" parent="." unique_id=1927968805 instance=ExtResource("2_model")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.044837564, 0)
