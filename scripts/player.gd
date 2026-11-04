@@ -5,12 +5,18 @@ const RUN_SPEED := 5.0
 const JUMP_VELOCITY := 4.5
 const WALK_ANIM_SPEED := 1.88
 const RUN_ANIM_SPEED := 4.7
+const LOOK_SENSITIVITY := 0.0025
+const PITCH_MIN := deg_to_rad(-55.0)
+const PITCH_MAX := deg_to_rad(25.0)
 
 @onready var camera: Camera3D = $SpringArm3D/Camera3D
+@onready var spring_arm: SpringArm3D = $SpringArm3D
 @onready var model: Node3D = $male_casual
 
 var _animation_player: AnimationPlayer
 var _previous_position := Vector3.ZERO
+var _yaw := 0.0
+var _pitch := deg_to_rad(-18.0)
 
 
 func _enter_tree() -> void:
@@ -24,8 +30,28 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	camera.current = is_multiplayer_authority()
+	if is_multiplayer_authority():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		_apply_camera_rotation()
 	_previous_position = global_position
 	_setup_animations()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_multiplayer_authority():
+		return
+	if event.is_action_pressed("ui_cancel"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		_yaw -= event.relative.x * LOOK_SENSITIVITY
+		_pitch = clampf(_pitch - event.relative.y * LOOK_SENSITIVITY, PITCH_MIN, PITCH_MAX)
+		_apply_camera_rotation()
+
+
+func _apply_camera_rotation() -> void:
+	spring_arm.rotation = Vector3(_pitch, _yaw, 0.0)
 
 
 func _physics_process(delta: float) -> void:
@@ -43,7 +69,7 @@ func _move(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction := (Basis(Vector3.UP, _yaw) * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	var speed := RUN_SPEED if Input.is_action_pressed("sprint") else WALK_SPEED
 	if direction:
 		velocity.x = direction.x * speed
