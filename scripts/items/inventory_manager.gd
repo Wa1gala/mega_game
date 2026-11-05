@@ -121,22 +121,29 @@ func _set_ui_visible(vis: bool) -> void:
 
 # ---------- Выброс в мир ----------
 
+func _local_player() -> Node3D:
+	for node in get_tree().get_nodes_in_group("player"):
+		var body := node as Node3D
+		if body != null and body.is_multiplayer_authority():
+			return body
+	return null
+
+
 func _spawn_pickup(item: ItemData) -> void:
 	var scene := get_tree().current_scene
 	if scene == null:
 		return
 	var pickup := PickupItem.new()
 	pickup.item_data = item
-	var player := get_tree().get_first_node_in_group("player") as Node3D
+	scene.add_child(pickup)
+	var player := _local_player()
 	if player != null:
 		var forward := -player.global_transform.basis.z
 		pickup.global_position = player.global_position + forward * 0.9 + Vector3.UP * 0.5
-		scene.add_child(pickup)
 		# Небольшой импульс вперёд и вверх — папка падает на пол.
 		pickup.apply_central_impulse(forward * 1.5 + Vector3.UP * 2.0)
 	else:
 		pickup.global_position = Vector3(0, 1, 0)
-		scene.add_child(pickup)
 
 
 # ---------- Построение UI ----------

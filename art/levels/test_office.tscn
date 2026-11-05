@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dlr28i1jca1ww"]
 
 [ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://qnt08qhoeq25" path="res://scripts/net_level.gd" id="net_level"]
 [ext_resource type="Texture2D" uid="uid://dytk5go0rpimi" path="res://art/levels/office/carpet_floor/floor_3x3_carpet.jpg" id="1_vukr3"]
 [ext_resource type="Script" uid="uid://dpwthayyuctmq" path="res://scripts/items/cabinet_large.gd" id="cabinet_script"]
 [ext_resource type="PackedScene" uid="uid://dgaitm8l3pp6" path="res://scenes/pause_menu.tscn" id="pause_menu"]
@@ -113,6 +114,7 @@ emission_energy_multiplier = 3.0
 size = Vector2(0.5, 0.38)
 
 [node name="test_office" type="Node3D" unique_id=548448747]
+script = ExtResource("net_level")
 
 [node name="SpotLightOffice" type="SpotLight3D" parent="." unique_id=1240377018]
 transform = Transform3D(1, 0, 0, 0, 0.25881898, 0.9659259, 0, -0.9659259, 0.25881898, 0, 5.020876, 5.8)

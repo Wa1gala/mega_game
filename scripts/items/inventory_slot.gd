@@ -123,8 +123,7 @@ func _make_drag_preview(scene: PackedScene) -> SubViewportContainer:
 	var cam := Camera3D.new()
 	cam.current = true
 	vp.add_child(cam)
-	cam.position = Vector3(0.3, 0.22, 0.45)
-	cam.look_at(Vector3(0, 0.15, 0))
+	cam.look_at_from_position(Vector3(0.3, 0.22, 0.45), Vector3(0, 0.15, 0))
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-45, -30, 0)
 	vp.add_child(light)
