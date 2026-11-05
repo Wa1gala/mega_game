@@ -12,6 +12,7 @@ const FIRE_RANGE := 60.0
 const FIRE_INTERVAL := 0.18
 const DAMAGE_MIN := 8
 const DAMAGE_MAX := 18
+const MAX_HEALTH := 100
 const AIM_FOV := 42.0
 const AIM_SPRING_SCALE := 0.6
 const AIM_LOOK_SCALE := 0.45
@@ -30,6 +31,8 @@ var _block_fire := false
 var _crosshair: CanvasLayer
 var _hip_spring := 2.0
 var _hip_fov := 75.0
+var health := MAX_HEALTH
+var _health_label: Label3D
 
 
 func _enter_tree() -> void:
@@ -52,6 +55,7 @@ func _ready() -> void:
 		_setup_crosshair()
 	_previous_position = global_position
 	_setup_animations()
+	_setup_health_label()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -224,10 +228,69 @@ func _shoot() -> void:
 		end = hit.position
 		var damageable := _damageable_from_hit(hit.collider)
 		if damageable:
-			var dealt := int(damageable.call("take_damage", randi_range(DAMAGE_MIN, DAMAGE_MAX)))
-			if dealt > 0:
-				_spawn_damage_number(end + (hit.normal as Vector3) * 0.08, dealt)
+			var amount := randi_range(DAMAGE_MIN, DAMAGE_MAX)
+			var at: Vector3 = end + (hit.normal as Vector3) * 0.08
+			var target := damageable as Node
+			if target != null and target.has_method("apply_hit"):
+				if _is_network_game():
+					target.rpc("apply_hit", amount, at)
+				else:
+					target.call("apply_hit", amount, at)
+			else:
+				var dealt := int(damageable.call("take_damage", amount))
+				if dealt > 0:
+					if _is_network_game():
+						_replicate_damage.rpc(at, dealt)
+					else:
+						_spawn_damage_number(at, dealt)
 	_spawn_tracer(_tracer_origin(), end)
+
+
+@rpc("authority", "call_local", "reliable")
+func _replicate_damage(at: Vector3, amount: int) -> void:
+	_spawn_damage_number(at, amount)
+
+
+func take_damage(amount: int) -> int:
+	if health <= 0 or amount <= 0:
+		return 0
+	var dealt := mini(amount, health)
+	health -= dealt
+	_update_health_label()
+	return dealt
+
+
+@rpc("any_peer", "call_local", "reliable")
+func apply_hit(amount: int, at: Vector3) -> void:
+	var dealt := take_damage(amount)
+	if dealt > 0:
+		_spawn_damage_number(at, dealt)
+
+
+func _setup_health_label() -> void:
+	_health_label = Label3D.new()
+	_health_label.name = "HealthLabel"
+	_health_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_health_label.fixed_size = true
+	_health_label.font_size = 28
+	_health_label.outline_size = 8
+	_health_label.outline_modulate = Color(0, 0, 0, 1)
+	_health_label.no_depth_test = true
+	_health_label.position = Vector3(0, 2.2, 0)
+	add_child(_health_label)
+	_update_health_label()
+
+
+func _update_health_label() -> void:
+	if _health_label == null:
+		return
+	_health_label.text = str(health)
+	var ratio := clampf(float(health) / float(MAX_HEALTH), 0.0, 1.0)
+	_health_label.modulate = Color(lerpf(1.0, 0.35, ratio), lerpf(0.25, 0.95, ratio), 0.2)
+
+
+func _is_network_game() -> bool:
+	return multiplayer.multiplayer_peer is ENetMultiplayerPeer
 
 
 func _damageable_from_hit(collider: Object) -> Object:

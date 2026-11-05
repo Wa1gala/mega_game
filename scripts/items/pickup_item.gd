@@ -10,6 +10,7 @@ const PICKUP_RADIUS := 1.5
 
 var _player_nearby := false
 var _hint: Label3D
+var _taken := false
 
 
 func _ready() -> void:
@@ -62,19 +63,48 @@ func _build_hint() -> void:
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and body.is_multiplayer_authority():
 		_player_nearby = true
 		_hint.visible = true
 
 
 func _on_body_exited(body: Node3D) -> void:
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and body.is_multiplayer_authority():
 		_player_nearby = false
 		_hint.visible = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if _player_nearby and event.is_action_pressed("interact"):
-		if InventoryManager.add_to_player(item_data):
-			queue_free()
-			get_viewport().set_input_as_handled()
+	if not _player_nearby or not event.is_action_pressed("interact"):
+		return
+	if not _has_free_player_slot():
+		return
+	if multiplayer.multiplayer_peer is ENetMultiplayerPeer:
+		request_pickup.rpc_id(1)
+	elif InventoryManager.add_to_player(item_data):
+		queue_free()
+	get_viewport().set_input_as_handled()
+
+
+func _has_free_player_slot() -> bool:
+	for item in InventoryManager.player_inventory:
+		if item == null:
+			return true
+	return false
+
+
+@rpc("any_peer", "call_local", "reliable")
+func request_pickup() -> void:
+	if not multiplayer.is_server() or _taken or item_data == null:
+		return
+	_taken = true
+	var sender := multiplayer.get_remote_sender_id()
+	if sender <= 0:
+		sender = multiplayer.get_unique_id()
+	if sender == multiplayer.get_unique_id():
+		InventoryManager.grant_item(item_data.resource_path)
+	else:
+		InventoryManager.grant_item.rpc_id(sender, item_data.resource_path)
+	var level := get_tree().current_scene
+	if level != null and level.has_method("remove_world_pickup"):
+		level.remove_world_pickup.rpc(name)

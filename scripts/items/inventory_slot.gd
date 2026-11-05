@@ -14,6 +14,8 @@ var inventory: Array[ItemData] = []
 var slot_index: int = 0
 ## Менеджер (автолоад InventoryManager) — обрабатывает перемещение.
 var manager: Node = null
+## Ссылка на шкаф, если слот принадлежит контейнеру, а не инвентарю игрока.
+var container: Node = null
 
 var _preview: SubViewportContainer
 var _viewport: SubViewport
@@ -107,7 +109,7 @@ func _get_drag_data(_at_position: Vector2):
 	var preview := _make_drag_preview(get_item().world_mesh_scene)
 	preview.custom_minimum_size = Vector2(64, 64)
 	set_drag_preview(preview)
-	return {"source_inventory": inventory, "source_index": slot_index}
+	return {"source_inventory": inventory, "source_index": slot_index, "source_container": container}
 
 
 ## Создаёт 3D-превью предмета для drag-and-drop (модель следует за мышкой).
@@ -138,4 +140,4 @@ func _can_drop_data(_at_position: Vector2, data) -> bool:
 
 func _drop_data(_at_position: Vector2, data) -> void:
 	if manager != null:
-		manager.move_item(data["source_inventory"], data["source_index"], inventory, slot_index)
+		manager.move_item(data["source_inventory"], data["source_index"], inventory, slot_index, data.get("source_container"), container)

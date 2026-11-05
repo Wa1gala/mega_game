@@ -54,7 +54,20 @@ func add_to_player(item: ItemData) -> bool:
 
 
 ## Переместить/поменять предмет между двумя слотами (drag-and-drop).
-func move_item(source: Array, source_index: int, target: Array, target_index: int) -> void:
+func move_item(source: Array, source_index: int, target: Array, target_index: int, source_container: Node = null, target_container: Node = null) -> void:
+	if _is_net() and (source_container != null or target_container != null):
+		var source_cabinet := source_container as CabinetLarge
+		var target_cabinet := target_container as CabinetLarge
+		if source_cabinet != null and target_cabinet != null and source_cabinet == target_cabinet:
+			source_cabinet.request_swap.rpc_id(1, source_index, target_index)
+			return
+		if source_cabinet != null:
+			var offered: ItemData = target[target_index]
+			source_cabinet.request_exchange.rpc_id(1, source_index, target_index, _path_of(offered))
+			return
+		var given: ItemData = source[source_index]
+		target_cabinet.request_exchange.rpc_id(1, target_index, source_index, _path_of(given))
+		return
 	var src_item: ItemData = source[source_index]
 	source[source_index] = target[target_index]
 	target[target_index] = src_item
@@ -68,9 +81,28 @@ func drop_slot(slot: InventorySlot) -> void:
 	var item := slot.inventory[slot.slot_index] as ItemData
 	if item == null:
 		return
+	var origin := Vector3(0, 1, 0)
+	var impulse := Vector3.UP * 2.0
+	var player := _local_player()
+	if player != null:
+		var forward := -player.global_transform.basis.z
+		origin = player.global_position + forward * 0.9 + Vector3.UP * 0.5
+		impulse = forward * 1.5 + Vector3.UP * 2.0
+	if _is_net():
+		var cabinet := slot.container as CabinetLarge
+		if cabinet != null:
+			cabinet.request_drop.rpc_id(1, slot.slot_index, origin, impulse)
+			return
+		slot.inventory[slot.slot_index] = null
+		_refresh_all()
+		player_inventory_changed.emit()
+		var level := get_tree().current_scene
+		if level != null and level.has_method("request_spawn_pickup"):
+			level.request_spawn_pickup.rpc_id(1, item.resource_path, origin, impulse)
+		return
 	slot.inventory[slot.slot_index] = null
 	_refresh_all()
-	_spawn_pickup(item)
+	_spawn_pickup(item, origin, impulse)
 	if slot.inventory == player_inventory:
 		player_inventory_changed.emit()
 
@@ -129,21 +161,53 @@ func _local_player() -> Node3D:
 	return null
 
 
-func _spawn_pickup(item: ItemData) -> void:
+func _spawn_pickup(item: ItemData, origin: Vector3, impulse: Vector3) -> void:
 	var scene := get_tree().current_scene
 	if scene == null:
 		return
 	var pickup := PickupItem.new()
 	pickup.item_data = item
 	scene.add_child(pickup)
-	var player := _local_player()
-	if player != null:
-		var forward := -player.global_transform.basis.z
-		pickup.global_position = player.global_position + forward * 0.9 + Vector3.UP * 0.5
-		# Небольшой импульс вперёд и вверх — папка падает на пол.
-		pickup.apply_central_impulse(forward * 1.5 + Vector3.UP * 2.0)
-	else:
-		pickup.global_position = Vector3(0, 1, 0)
+	pickup.global_position = origin
+	pickup.apply_central_impulse(impulse)
+
+
+func _is_net() -> bool:
+	return multiplayer.multiplayer_peer is ENetMultiplayerPeer
+
+
+func _path_of(item: ItemData) -> String:
+	if item == null:
+		return ""
+	return item.resource_path
+
+
+func _load_item(path: String) -> ItemData:
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+	return load(path) as ItemData
+
+
+@rpc("authority", "reliable")
+func apply_player_slot(index: int, item_path: String) -> void:
+	if index < 0 or index >= player_inventory.size():
+		return
+	player_inventory[index] = _load_item(item_path)
+	_refresh_player_slots()
+	player_inventory_changed.emit()
+
+
+@rpc("authority", "reliable")
+func grant_item(item_path: String) -> void:
+	var item := _load_item(item_path)
+	if item != null:
+		add_to_player(item)
+
+
+func refresh_open_container(container: Node) -> void:
+	if _open_container == container:
+		for slot in _container_slots:
+			slot.refresh()
 
 
 # ---------- Построение UI ----------
@@ -265,6 +329,7 @@ func _rebuild_container_slots() -> void:
 		slot.inventory = inv
 		slot.slot_index = i
 		slot.manager = self
+		slot.container = _open_container
 		slot.slot_right_clicked.connect(_on_slot_right_clicked)
 		_container_grid.add_child(slot)
 		_container_slots.append(slot)
