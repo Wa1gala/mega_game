@@ -1,22 +1,34 @@
 ## Выброшенный в мир предмет.
 ## RigidBody3D с простой коллизией-коробкой, чтобы папка падала на пол.
-## Подбирается на E при приближении (обратно в инвентарь игрока).
+## Подбирается на E (цель взаимодействия выбирает InventoryManager, группа "interactable").
 class_name PickupItem
 extends RigidBody3D
 
-const PICKUP_RADIUS := 1.5
+const FALL_LIMIT_Y := -20.0   # ниже этой высоты предмет считается провалившимся
+
+## Радиус взаимодействия (по горизонтали от игрока до предмета).
+var interact_radius := 1.8
 
 @export var item_data: ItemData
 
-var _player_nearby := false
 var _hint: Label3D
+var _picked := false
 
 
 func _ready() -> void:
+	continuous_cd = true
 	_setup_visual()
 	_setup_collision()
-	_setup_interaction_area()
 	_build_hint()
+	add_to_group("interactable")
+
+
+func _physics_process(_delta: float) -> void:
+	# Предмет мог провалиться сквозь пол — возвращаем к игроку, а не теряем.
+	if global_position.y < FALL_LIMIT_Y:
+		var player := get_tree().get_first_node_in_group("player") as Node3D
+		linear_velocity = Vector3.ZERO
+		global_position = (player.global_position if player != null else Vector3.ZERO) + Vector3.UP * 1.0
 
 
 func _setup_visual() -> void:
@@ -33,48 +45,39 @@ func _setup_collision() -> void:
 	add_child(shape)
 
 
-func _setup_interaction_area() -> void:
-	var area := Area3D.new()
-	area.name = "InteractionArea"
-	var shape := CollisionShape3D.new()
-	var sphere := SphereShape3D.new()
-	sphere.radius = PICKUP_RADIUS
-	shape.shape = sphere
-	area.add_child(shape)
-	add_child(area)
-	area.body_entered.connect(_on_body_entered)
-	area.body_exited.connect(_on_body_exited)
-
-
 func _build_hint() -> void:
 	_hint = Label3D.new()
 	_hint.name = "InteractHint"
 	_hint.text = "E"
 	_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_hint.top_level = true          # не вращается вместе с телом
 	_hint.font_size = 40
 	_hint.pixel_size = 0.006
 	_hint.modulate = Color(0.5, 1, 0.5)
 	_hint.outline_size = 6
 	_hint.outline_modulate = Color(0, 0, 0, 1)
-	_hint.position = Vector3(0, 0.6, 0)
+	_hint.no_depth_test = true
 	_hint.visible = false
 	add_child(_hint)
 
 
-func _on_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player"):
-		_player_nearby = true
-		_hint.visible = true
+func _process(_delta: float) -> void:
+	if _hint.visible:
+		_hint.global_position = global_position + Vector3(0, 0.6, 0)
 
 
-func _on_body_exited(body: Node3D) -> void:
-	if body.is_in_group("player"):
-		_player_nearby = false
-		_hint.visible = false
+func can_interact() -> bool:
+	return not _picked and item_data != null
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if _player_nearby and event.is_action_pressed("interact"):
-		if InventoryManager.add_to_player(item_data):
-			queue_free()
-			get_viewport().set_input_as_handled()
+func set_focused(focused: bool) -> void:
+	_hint.visible = focused
+
+
+func interact() -> void:
+	if _picked:
+		return
+	if InventoryManager.add_to_player(item_data):
+		_picked = true
+		remove_from_group("interactable")
+		queue_free()

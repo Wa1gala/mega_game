@@ -19,17 +19,25 @@ var _container_slots: Array[InventorySlot] = []
 var _context_menu: PanelContainer
 var _context_slot: InventorySlot = null
 
+## Меню паузы сообщает сюда о своём состоянии (время в игре при этом не останавливается).
+var pause_open := false
+## Текущая цель взаимодействия (E) — ближайший подходящий интерактивный объект.
+var _focus: Node = null
+
 
 func _ready() -> void:
-	# ALWAYS — чтобы Tab/E работали и при замороженном дереве (паузе).
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	player_inventory.resize(PLAYER_SLOT_COUNT)
 	_build_ui()
 	_build_context_menu()
 
 
+func _process(_delta: float) -> void:
+	_update_focus()
+
+
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("inventory"):
+	if event.is_action_pressed("inventory") and not pause_open:
 		_toggle_inventory()
 		get_viewport().set_input_as_handled()
 
@@ -38,12 +46,88 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Левый клик вне меню закрывает контекстное меню.
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_context_menu.visible = false
+	elif event.is_action_pressed("interact") and is_instance_valid(_focus) and not is_ui_open():
+		_focus.interact()
+		get_viewport().set_input_as_handled()
+
+
+## Открыто ли любое окно (инвентарь или пауза). Пока true — игрок не двигается и не стреляет.
+func is_ui_open() -> bool:
+	return pause_open or _ui.visible
+
+
+## Закрыть всё (при выходе в лобби).
+func close_all() -> void:
+	pause_open = false
+	if _ui.visible:
+		_ui.visible = false
+		close_container()
+	_context_menu.visible = false
+	refresh_mouse_mode()
+
+
+func refresh_mouse_mode() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if is_ui_open() else Input.MOUSE_MODE_CAPTURED
+
+
+# ---------- Выбор цели взаимодействия ----------
+
+## Из всех объектов группы "interactable" выбирается один: в радиусе, ближе к игроку
+## и ближе к направлению взгляда. Подсказка «E» показывается только у него.
+func _update_focus() -> void:
+	var best: Node = null
+	if not is_ui_open():
+		best = _find_best_interactable()
+	if best == _focus:
+		return
+	if is_instance_valid(_focus):
+		_focus.set_focused(false)
+	_focus = best
+	if is_instance_valid(_focus):
+		_focus.set_focused(true)
+
+
+func _find_best_interactable() -> Node:
+	var player := _local_player()
+	if player == null:
+		return null
+	var cam := get_viewport().get_camera_3d()
+	var look := -cam.global_transform.basis.z if cam != null else -player.global_transform.basis.z
+	var origin := player.global_position + Vector3.UP * 1.0
+	var best: Node = null
+	var best_score := INF
+	for node in get_tree().get_nodes_in_group("interactable"):
+		var target := node as Node3D
+		if target == null or not target.is_inside_tree() or not node.can_interact():
+			continue
+		var to_target := target.global_position - origin
+		var flat := Vector3(to_target.x, 0.0, to_target.z).length()
+		if flat > node.interact_radius or absf(to_target.y) > 2.5:
+			continue
+		var facing := look.dot(to_target.normalized()) if flat > 0.01 else 1.0
+		var score := flat + (1.0 - facing) * 0.5
+		if score < best_score:
+			best_score = score
+			best = node
+	return best
+
+
+func _local_player() -> Node3D:
+	var first: Node3D = null
+	for p in get_tree().get_nodes_in_group("player"):
+		if first == null:
+			first = p as Node3D
+		if p.is_multiplayer_authority():
+			return p as Node3D
+	return first
 
 
 # ---------- Публичные методы (CabinetLarge / PickupItem / слоты) ----------
 
 ## Положить предмет в первый свободный слот игрока.
 func add_to_player(item: ItemData) -> bool:
+	if item == null:
+		return false
 	for i in player_inventory.size():
 		if player_inventory[i] == null:
 			player_inventory[i] = item
@@ -55,6 +139,10 @@ func add_to_player(item: ItemData) -> bool:
 
 ## Переместить/поменять предмет между двумя слотами (drag-and-drop).
 func move_item(source: Array, source_index: int, target: Array, target_index: int) -> void:
+	if source == target and source_index == target_index:
+		return
+	if source_index < 0 or source_index >= source.size() or target_index < 0 or target_index >= target.size():
+		return
 	var src_item: ItemData = source[source_index]
 	source[source_index] = target[target_index]
 	target[target_index] = src_item
@@ -92,6 +180,8 @@ func _on_context_drop_pressed() -> void:
 
 ## Открыть контейнер (шкаф). Показывает UI с двумя панелями.
 func open_container(container: Node) -> void:
+	if pause_open:
+		return
 	_open_container = container
 	_rebuild_container_slots()
 	_set_ui_visible(true)
@@ -113,10 +203,13 @@ func _toggle_inventory() -> void:
 		close_container()
 
 
+## Время в игре не останавливается: окно лишь блокирует управление игроком.
 func _set_ui_visible(vis: bool) -> void:
 	_ui.visible = vis
-	get_tree().paused = vis
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if vis else Input.MOUSE_MODE_CAPTURED
+	if not vis:
+		_context_menu.visible = false
+		_context_slot = null
+	refresh_mouse_mode()
 
 
 # ---------- Выброс в мир ----------
@@ -130,13 +223,13 @@ func _spawn_pickup(item: ItemData) -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node3D
 	if player != null:
 		var forward := -player.global_transform.basis.z
-		pickup.global_position = player.global_position + forward * 0.9 + Vector3.UP * 0.5
 		scene.add_child(pickup)
+		pickup.global_position = player.global_position + forward * 0.9 + Vector3.UP * 0.5
 		# Небольшой импульс вперёд и вверх — папка падает на пол.
 		pickup.apply_central_impulse(forward * 1.5 + Vector3.UP * 2.0)
 	else:
-		pickup.global_position = Vector3(0, 1, 0)
 		scene.add_child(pickup)
+		pickup.global_position = Vector3(0, 1, 0)
 
 
 # ---------- Построение UI ----------

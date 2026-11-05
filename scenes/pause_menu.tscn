@@ -52,6 +52,7 @@ border_color = Color(0.45, 0.95, 0.55, 1)
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1517936614]
 process_mode = 3
+layer = 20
 script = ExtResource("1_pause")
 
 [node name="Overlay" type="Control" parent="." unique_id=848318759]

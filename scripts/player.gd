@@ -57,13 +57,9 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_multiplayer_authority():
 		return
-	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-			_block_fire = true
-	elif event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+	if InventoryManager.is_ui_open():
+		return
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		var look := LOOK_SENSITIVITY * (AIM_LOOK_SCALE if _is_aiming() else 1.0)
 		_yaw -= event.relative.x * look
 		_pitch = clampf(_pitch - event.relative.y * look, PITCH_MIN, PITCH_MAX)
@@ -87,12 +83,15 @@ func _move(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	var ui_open := InventoryManager.is_ui_open()
+	if not ui_open and Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	var input_dir := Vector2.ZERO
+	if not ui_open:
+		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (Basis(Vector3.UP, _yaw) * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var speed := RUN_SPEED if Input.is_action_pressed("sprint") else WALK_SPEED
+	var speed := RUN_SPEED if (not ui_open and Input.is_action_pressed("sprint")) else WALK_SPEED
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
@@ -190,7 +189,7 @@ func _is_aiming() -> bool:
 
 
 func _update_aim(delta: float) -> void:
-	var aiming := _is_aiming()
+	var aiming := _is_aiming() and not InventoryManager.is_ui_open()
 	var target_fov := AIM_FOV if aiming else _hip_fov
 	var target_spring := _hip_spring * AIM_SPRING_SCALE if aiming else _hip_spring
 	var blend := 1.0 - exp(-AIM_BLEND * delta)
@@ -200,9 +199,12 @@ func _update_aim(delta: float) -> void:
 
 func _update_fire(delta: float) -> void:
 	_fire_cooldown = maxf(_fire_cooldown - delta, 0.0)
+	var ui_open := InventoryManager.is_ui_open()
 	if _crosshair:
-		_crosshair.visible = Input.mouse_mode == Input.MOUSE_MODE_CAPTURED
-	if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+		_crosshair.visible = not ui_open
+	if ui_open:
+		# Клик, закрывающий окно, не должен сразу превращаться в выстрел.
+		_block_fire = true
 		return
 	if _block_fire:
 		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
