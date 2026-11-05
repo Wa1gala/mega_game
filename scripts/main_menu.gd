@@ -22,7 +22,7 @@ func _ready() -> void:
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.add_theme_font_size_override("font_size", 13)
 	_status.add_theme_color_override("font_color", Color(0.55, 0.85, 0.6))
-	_status.text = "Порт %s. В Hamachi бери IPv4 хоста." % PORT
+	_status.text = "Порт %s. В поле только IPv4 из Radmin или Hamachi." % PORT
 	$Center/Panel/VBox.add_child(_status)
 	$Center/Panel/VBox.move_child(_status, ip_address.get_index() + 1)
 
@@ -30,6 +30,8 @@ func _ready() -> void:
 func _on_host_pressed() -> void:
 	_close_peer()
 	var peer := ENetMultiplayerPeer.new()
+	# 0.0.0.0 — только IPv4. Иначе Windows через Radmin/Hamachi не отправляет пакеты.
+	peer.set_bind_ip("0.0.0.0")
 	var error := peer.create_server(PORT)
 	if error != OK:
 		_status.text = "Порт %s занят или закрыт файрволом (%s)." % [PORT, error]
@@ -39,14 +41,25 @@ func _on_host_pressed() -> void:
 
 
 func _on_join_pressed() -> void:
+	var ip := _host_address()
+	if ip.is_empty():
+		return
 	_close_peer()
 	var peer := ENetMultiplayerPeer.new()
-	var error := peer.create_client(_host_address(), PORT)
+	peer.set_bind_ip("0.0.0.0")
+	var error := ERR_CANT_CREATE
+	for local_port in range(7780, 7790):
+		error = peer.create_client(ip, PORT, 0, 0, 0, local_port)
+		if error == OK:
+			break
+		peer.close()
+		peer = ENetMultiplayerPeer.new()
+		peer.set_bind_ip("0.0.0.0")
 	if error != OK:
-		_status.text = "Не удалось начать подключение (%s)." % error
+		_status.text = "Не удалось начать подключение к %s (%s)." % [ip, error]
 		return
 	multiplayer.multiplayer_peer = peer
-	_status.text = "Подключение к %s:%s..." % [_host_address(), PORT]
+	_status.text = "Подключение к %s:%s..." % [ip, PORT]
 	if multiplayer.connected_to_server.is_connected(_on_connected):
 		multiplayer.connected_to_server.disconnect(_on_connected)
 	if multiplayer.connection_failed.is_connected(_on_connection_failed):
@@ -60,8 +73,9 @@ func _on_connected() -> void:
 
 
 func _on_connection_failed() -> void:
+	var ip := ip_address.text.strip_edges()
 	_close_peer()
-	_status.text = "Нет ответа от %s:%s. Проверь Hamachi и файрвол." % [_host_address(), PORT]
+	_status.text = "Нет ответа от %s:%s. Оба должны быть в одной сети, в поле только IPv4." % [ip, PORT]
 
 
 func _on_singleplayer_pressed() -> void:
@@ -77,8 +91,13 @@ func _host_address() -> String:
 	var ip := ip_address.text.strip_edges()
 	if ip.is_empty():
 		return "127.0.0.1"
-	if ":" in ip:
-		ip = ip.split(":")[0]
+	if "/" in ip:
+		ip = ip.split("/")[0].strip_edges()
+	if ip.count(":") == 1 and ip.split(":")[0].contains("."):
+		ip = ip.split(":")[0].strip_edges()
+	if not ip.is_valid_ip_address():
+		_status.text = "Нужен IPv4 из Radmin или Hamachi, без текста вокруг. Сейчас это не адрес: %s" % ip
+		return ""
 	return ip
 
 
