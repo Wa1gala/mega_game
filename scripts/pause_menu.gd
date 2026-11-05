@@ -24,4 +24,8 @@ func _toggle_pause() -> void:
 func _on_exit_to_lobby_pressed() -> void:
 	get_tree().paused = false
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	var peer := multiplayer.multiplayer_peer
+	if peer is ENetMultiplayerPeer:
+		peer.close()
+		multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
