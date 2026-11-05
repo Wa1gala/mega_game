@@ -1,7 +1,13 @@
-[gd_scene format=3 uid="uid://bwfdhx0ilqbm7"]
+[gd_scene format=3 uid="uid://7i7qhc4sqdc"]
 
 [ext_resource type="Texture2D" uid="uid://dytk5go0rpimi" path="res://art/levels/office/carpet_floor/floor_3x3_carpet.jpg" id="1_8q3cn"]
 [ext_resource type="Texture2D" uid="uid://byed7sgf3vsvj" path="res://art/levels/textures/128/wall_beige_chair_rail/wall_beige_chair_rail_albedo.png" id="2_rve8p"]
+[ext_resource type="Texture2D" uid="uid://b8xhnfk842ghj" path="res://art/levels/textures/128/ceiling_grid_tiles_fissured/ceiling_grid_tiles_fissured_albedo.png" id="3_ceil_albedo"]
+[ext_resource type="Texture2D" uid="uid://ccj8e5x8h80ab" path="res://art/levels/textures/128/ceiling_grid_tiles_fissured/ceiling_grid_tiles_fissured_normal_dx.png" id="4_ceil_normal"]
+[ext_resource type="Texture2D" uid="uid://bh32fn2fa41y" path="res://art/levels/textures/128/ceiling_grid_tiles_fissured/ceiling_grid_tiles_fissured_roughness.png" id="5_ceil_roughness"]
+[ext_resource type="Texture2D" uid="uid://cf7y1jbc5kmq1" path="res://art/levels/textures/128/ceiling_grid_tiles_fissured/ceiling_grid_tiles_fissured_metallic.png" id="6_ceil_metallic"]
+[ext_resource type="PackedScene" uid="uid://c2g4n05y1bn2u" path="res://art/levels/desks/desk_1.tscn" id="7_ei0ku"]
+[ext_resource type="PackedScene" uid="uid://lnaq5ornyqlv" path="res://art/levels/office/dividers/divider_black_blue.glb" id="8_oexip"]
 
 [sub_resource type="Environment" id="Environment_rve8p"]
 background_mode = 1
@@ -24,17 +30,36 @@ uv1_scale = Vector3(40, 40, 1)
 texture_filter = 2
 metadata/_gltf_primary_texture_coord = 0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d6qxj"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_g0d0i"]
+material = SubResource("StandardMaterial3D_d6qxj")
 size = Vector3(12, 0.2, 12)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jege6"]
 size = Vector3(12, 0.2, 12)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jcp11"]
-albedo_color = Color(0.3, 0.32, 0.38, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ceiling"]
+resource_name = "ceiling_grid_tiles_fissured"
+cull_mode = 2
+albedo_texture = ExtResource("3_ceil_albedo")
+metallic = 1.0
+metallic_texture = ExtResource("6_ceil_metallic")
+roughness_texture = ExtResource("5_ceil_roughness")
+normal_enabled = true
+normal_texture = ExtResource("4_ceil_normal")
+uv1_scale = Vector3(21, 21, 1)
+texture_filter = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_ceiling"]
+material = SubResource("StandardMaterial3D_ceiling")
+size = Vector3(12, 0.2, 12)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4v7s"]
+transparency = 1
+albedo_color = Color(1.942335, 1.942335, 1.942335, 1)
 albedo_texture = ExtResource("2_rve8p")
+uv1_scale = Vector3(10.775, 1.7, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_3npg8"]
 material = SubResource("StandardMaterial3D_g4v7s")
@@ -44,12 +69,14 @@ size = Vector3(12, 3, 0.3)
 size = Vector3(12, 3, 0.3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_oexip"]
+material = SubResource("StandardMaterial3D_g4v7s")
 size = Vector3(5, 3, 0.3)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yn82s"]
 size = Vector3(5, 3, 0.3)
 
 [sub_resource type="BoxMesh" id="BoxMesh_038o6"]
+material = SubResource("StandardMaterial3D_g4v7s")
 size = Vector3(0.3, 3, 12)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_74j03"]
@@ -75,9 +102,8 @@ shape = SubResource("BoxShape3D_jege6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="roof" unique_id=1928335334]
-material_override = SubResource("StandardMaterial3D_ju4yy")
 lod_bias = 0.001
-mesh = SubResource("BoxMesh_g0d0i")
+mesh = SubResource("BoxMesh_ceiling")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="roof" unique_id=2075109478]
 shape = SubResource("BoxShape3D_jege6")
@@ -87,7 +113,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -6)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallNorth" unique_id=1905257670]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0052711368, 0, -0.0025873184)
-material_override = SubResource("StandardMaterial3D_jcp11")
 mesh = SubResource("BoxMesh_3npg8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallNorth" unique_id=357145616]
@@ -98,7 +123,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 1.5, 6)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallSouthLeft" unique_id=509274358]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-material_override = SubResource("StandardMaterial3D_jcp11")
 mesh = SubResource("BoxMesh_oexip")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallSouthLeft" unique_id=527533644]
@@ -109,7 +133,6 @@ shape = SubResource("BoxShape3D_yn82s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.5, 6)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallSouthRight" unique_id=2024089004]
-material_override = SubResource("StandardMaterial3D_jcp11")
 mesh = SubResource("BoxMesh_oexip")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallSouthRight" unique_id=155301588]
@@ -119,7 +142,7 @@ shape = SubResource("BoxShape3D_yn82s")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.136101, 1.5, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallEast" unique_id=558058014]
-material_override = SubResource("StandardMaterial3D_jcp11")
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 mesh = SubResource("BoxMesh_038o6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallEast" unique_id=488918291]
@@ -129,15 +152,58 @@ shape = SubResource("BoxShape3D_74j03")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.5, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallWest" unique_id=1444393023]
-material_override = SubResource("StandardMaterial3D_jcp11")
 mesh = SubResource("BoxMesh_038o6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallWest" unique_id=844464449]
 shape = SubResource("BoxShape3D_74j03")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1123626666]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 2.5764902, 0)
-light_color = Color(0.57508415, 0.57508415, 0.57508415, 1)
-light_energy = 40.0
-spot_range = 12.387777
-spot_angle = 85.953606
+[node name="OmniLight3D2" type="OmniLight3D" parent="." unique_id=208495201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4151523, -3)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="." unique_id=1589383258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4151523, 1)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="." unique_id=1412139444]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.4151523, -3)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="." unique_id=1095215740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.4151523, 0)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="." unique_id=1834211894]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.4151523, -3)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="." unique_id=701256625]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.4151523, 0)
+light_color = Color(0.26737827, 0.26737827, 0.26737827, 1)
+light_energy = 16.0
+omni_range = 11.8909645
+
+[node name="Desk1" parent="." unique_id=716065569 instance=ExtResource("7_ei0ku")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+
+[node name="Desk2" parent="." unique_id=1607820327 instance=ExtResource("7_ei0ku")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -5)
+
+[node name="Desk3" parent="." unique_id=220625452 instance=ExtResource("7_ei0ku")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -5)
+
+[node name="divider_black_blue2" parent="." unique_id=973761643 instance=ExtResource("8_oexip")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2, 0, -4)
+
+[node name="divider_black_blue3" parent="." unique_id=842901174 instance=ExtResource("8_oexip")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2, 0, -4)
