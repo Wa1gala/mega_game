@@ -26,7 +26,7 @@ func _on_join_pressed() -> void:
 
 func _on_singleplayer_pressed() -> void:
 	# Одиночная игра: просто грузим уровень без сети/сервера.
-	get_tree().change_scene_to_file("res://art/levels/test_office.tscn")
+	get_tree().change_scene_to_file("res://art/levels/office_middle.tscn")
 
 
 func _on_exit_pressed() -> void:

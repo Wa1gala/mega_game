@@ -5,7 +5,7 @@
 class_name CabinetLarge
 extends StaticBody3D
 
-const SLOT_COUNT := 6          # слотов в шкафу
+const SLOT_COUNT := 12         # слотов в шкафу (6x2, чтобы влезал автомат 3x2)
 
 ## Радиус взаимодействия (по горизонтали от игрока до шкафа).
 var interact_radius := 2.2

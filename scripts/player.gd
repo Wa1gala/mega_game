@@ -52,6 +52,16 @@ func _ready() -> void:
 		_setup_crosshair()
 	_previous_position = global_position
 	_setup_animations()
+	if is_multiplayer_authority():
+		# Автомат в руках виден, только пока лежит в слоте оружия.
+		InventoryManager.player_inventory_changed.connect(_update_weapon_visibility)
+		_update_weapon_visibility()
+
+
+func _update_weapon_visibility() -> void:
+	var rifle := get_node_or_null("male_casual/rig/Skeleton3D/WeaponAttachment/Rifle") as Node3D
+	if rifle:
+		rifle.visible = InventoryManager.has_weapon()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -185,7 +195,8 @@ func _is_airborne() -> bool:
 
 
 func _is_aiming() -> bool:
-	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	return Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) \
+			and InventoryManager.has_weapon()
 
 
 func _update_aim(delta: float) -> void:
@@ -210,7 +221,8 @@ func _update_fire(delta: float) -> void:
 		if not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			_block_fire = false
 		return
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and _fire_cooldown <= 0.0:
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) and _fire_cooldown <= 0.0 \
+			and InventoryManager.has_weapon():
 		_shoot()
 		_fire_cooldown = FIRE_INTERVAL
 

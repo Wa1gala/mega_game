@@ -11,8 +11,11 @@ var interact_radius := 1.8
 
 @export var item_data: ItemData
 
+const SPRITE_WIDTH := 0.9   # ширина спрайта предмета без модели, метры
+
 var _hint: Label3D
 var _picked := false
+var _is_sprite := false
 
 
 func _ready() -> void:
@@ -32,15 +35,57 @@ func _physics_process(_delta: float) -> void:
 
 
 func _setup_visual() -> void:
-	if item_data != null and item_data.world_mesh_scene != null:
-		var mesh := item_data.world_mesh_scene.instantiate()
+	if item_data == null:
+		return
+	if item_data.world_mesh_scene != null:
+		var mesh := item_data.world_mesh_scene.instantiate() as Node3D
 		add_child(mesh)
+		if item_data.world_scale != 1.0 and mesh != null:
+			# Модель из рук игрока бывает в другом масштабе: уменьшаем и центрируем по габаритам.
+			mesh.scale = Vector3.ONE * item_data.world_scale
+			var box := _mesh_bounds(mesh, mesh)
+			if box.size != Vector3.ZERO:
+				mesh.position = -(box.get_center() * item_data.world_scale)
+	elif item_data.icon != null:
+		# Нет 3D-модели — показываем PNG спрайтом, повёрнутым к камере. Тело не крутится.
+		_is_sprite = true
+		axis_lock_angular_x = true
+		axis_lock_angular_y = true
+		axis_lock_angular_z = true
+		var sprite := Sprite3D.new()
+		sprite.texture = item_data.icon
+		sprite.pixel_size = SPRITE_WIDTH / float(item_data.icon.get_width())
+		sprite.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
+		sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_OPAQUE_PREPASS
+		sprite.shaded = false
+		add_child(sprite)
+
+
+## Габариты всех мешей внутри node в системе координат root.
+func _mesh_bounds(node: Node, root: Node3D) -> AABB:
+	var result := AABB()
+	var first := true
+	if node is MeshInstance3D:
+		var mi := node as MeshInstance3D
+		var to_root := root.global_transform.affine_inverse() * mi.global_transform \
+				if root.is_inside_tree() else mi.transform
+		result = to_root * mi.get_aabb()
+		first = false
+	for child in node.get_children():
+		var sub := _mesh_bounds(child, root)
+		if sub.size == Vector3.ZERO:
+			continue
+		result = sub if first else result.merge(sub)
+		first = false
+	return result
 
 
 func _setup_collision() -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
-	box.size = Vector3(0.45, 0.08, 0.3)
+	box.size = Vector3(SPRITE_WIDTH, 0.15, 0.2) if _is_sprite else Vector3(0.45, 0.08, 0.3)
+	if item_data != null and item_data.pickup_size != Vector3.ZERO:
+		box.size = item_data.pickup_size
 	shape.shape = box
 	add_child(shape)
 
