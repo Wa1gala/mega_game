@@ -68,7 +68,9 @@ size = Vector3(26.152588, 0.2, 18)
 cull_mode = 2
 albedo_texture = ExtResource("19_wall")
 roughness = 0.9
-uv1_scale = Vector3(23.4, 1.7, 1)
+uv1_scale = Vector3(0.56, -0.185, 1)
+uv1_offset = Vector3(0, -0.205, 0)
+uv1_triplanar = true
 texture_filter = 2
 
 [sub_resource type="BoxMesh" id="mesh_wall_ns"]
