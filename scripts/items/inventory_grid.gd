@@ -109,6 +109,7 @@ func _item_rect_px(anchor: int) -> Rect2:
 	var cp := cell_px()
 	var item: ItemData = inventory[anchor]
 	var cells: Vector2i = manager.item_size(inventory, item)
+	@warning_ignore("integer_division")
 	return Rect2(Vector2(anchor % columns, anchor / columns) * cp, Vector2(cells) * cp)
 
 
@@ -386,6 +387,7 @@ func _get_drag_data(at_position: Vector2):
 		var cp := cell_px()
 		grab = Vector2(at_position.x / cp.x, at_position.y / cp.y) * gs
 	else:
+		@warning_ignore("integer_division")
 		grab = at_position / cell_px() - Vector2(a % columns, a / columns)
 	grab = grab.clamp(Vector2.ZERO, gs - Vector2(0.01, 0.01))
 
