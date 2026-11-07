@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckg5gfdbfyfij"
-path="res://.godot/imported/bolt.png-f20431445ff1dc92d026e9163da33141.ctex"
+uid="uid://b1h4gbfagoydl"
+path="res://.godot/imported/ammo.png-31f6f0614dcc95e8ded511ef3439adf9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/items/png/bolt.png"
-dest_files=["res://.godot/imported/bolt.png-f20431445ff1dc92d026e9163da33141.ctex"]
+source_file="res://resources/items/items_png/ammo.png"
+dest_files=["res://.godot/imported/ammo.png-31f6f0614dcc95e8ded511ef3439adf9.ctex"]
 
 [params]
 

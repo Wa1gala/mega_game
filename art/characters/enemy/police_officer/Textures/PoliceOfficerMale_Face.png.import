@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1rusotnef0uq"
-path="res://.godot/imported/tape.png-26bd0ba212641e337a906d2e7e8a0c54.ctex"
+uid="uid://c3fnv4suwljaf"
+path="res://.godot/imported/PoliceOfficerMale_Face.png-f65eb5fedf373c799077d0199e20cecb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/items/png/tape.png"
-dest_files=["res://.godot/imported/tape.png-26bd0ba212641e337a906d2e7e8a0c54.ctex"]
+source_file="res://art/characters/enemy/police_officer/Textures/PoliceOfficerMale_Face.png"
+dest_files=["res://.godot/imported/PoliceOfficerMale_Face.png-f65eb5fedf373c799077d0199e20cecb.ctex"]
 
 [params]
 

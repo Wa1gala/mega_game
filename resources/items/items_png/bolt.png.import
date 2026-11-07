@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dglnunkhc33kj"
-path="res://.godot/imported/lamp.png-5e710f5fef7286443a55d53addb09000.ctex"
+uid="uid://ckg5gfdbfyfij"
+path="res://.godot/imported/bolt.png-6d9b242c71dec4031004c9f27e17056d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/items/png/lamp.png"
-dest_files=["res://.godot/imported/lamp.png-5e710f5fef7286443a55d53addb09000.ctex"]
+source_file="res://resources/items/items_png/bolt.png"
+dest_files=["res://.godot/imported/bolt.png-6d9b242c71dec4031004c9f27e17056d.ctex"]
 
 [params]
 

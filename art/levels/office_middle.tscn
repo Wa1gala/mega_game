@@ -16,8 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://rf7f8d81yme2" path="res://art/levels/office/extras/wall_clock.glb" id="14_5ug2f"]
 [ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="15_km6hr"]
 [ext_resource type="PackedScene" uid="uid://dgaitm8l3pp6" path="res://scenes/pause_menu.tscn" id="16_l0u83"]
-[ext_resource type="Script" uid="uid://dpwthayyuctmq" path="res://scripts/items/cabinet_large.gd" id="17_py1f6"]
+[ext_resource type="Script" uid="uid://4yo8iaskq3o2" path="res://scripts/items/container.gd" id="17_py1f6"]
 [ext_resource type="PackedScene" uid="uid://ubwulshv5sk8" path="res://art/levels/office/file_cabinets/file_cabinet_large.glb" id="18_sfwq2"]
+[ext_resource type="Resource" uid="uid://b6mvnbt88wxu0" path="res://resources/loot/office_cabinet.tres" id="loot_office_cabinet"]
+[ext_resource type="Resource" uid="uid://coedpaavjixgd" path="res://resources/loot/office_cabinet_locked.tres" id="loot_office_cabinet_locked"]
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -535,6 +537,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -8.8)
 [node name="CabinetLarge" type="StaticBody3D" parent="." unique_id=2093282231]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
+container_name = "Шкаф"
+loot_table = ExtResource("loot_office_cabinet")
+search_on_open = null
 
 [node name="Model" parent="CabinetLarge" unique_id=1042310760 instance=ExtResource("18_sfwq2")]
 
@@ -545,6 +550,13 @@ shape = SubResource("BoxShape3D_mrgcr")
 [node name="CabinetLarge2" type="StaticBody3D" parent="." unique_id=106542391]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
+container_name = "Шкаф"
+capacity = 8
+locked = true
+key_id = "office_key"
+consume_key = true
+loot_table = ExtResource("loot_office_cabinet_locked")
+search_on_open = null
 
 [node name="Model" parent="CabinetLarge2" unique_id=1623401501 instance=ExtResource("18_sfwq2")]
 
@@ -555,6 +567,9 @@ shape = SubResource("BoxShape3D_mrgcr")
 [node name="CabinetLarge5" type="StaticBody3D" parent="." unique_id=1765263019]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4.0623264, 0, 8.486761)
 script = ExtResource("17_py1f6")
+container_name = "Шкаф"
+loot_table = ExtResource("loot_office_cabinet")
+search_on_open = null
 
 [node name="Model" parent="CabinetLarge5" unique_id=1270057268 instance=ExtResource("18_sfwq2")]
 
@@ -565,6 +580,9 @@ shape = SubResource("BoxShape3D_mrgcr")
 [node name="CabinetLarge3" type="StaticBody3D" parent="." unique_id=1413951627]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
+container_name = "Шкаф"
+loot_table = ExtResource("loot_office_cabinet")
+search_on_open = null
 
 [node name="Model" parent="CabinetLarge3" unique_id=616173586 instance=ExtResource("18_sfwq2")]
 
@@ -575,6 +593,9 @@ shape = SubResource("BoxShape3D_mrgcr")
 [node name="CabinetLarge4" type="StaticBody3D" parent="." unique_id=1407744138]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 9.5, 0, 8.581634)
 script = ExtResource("17_py1f6")
+container_name = "Шкаф"
+loot_table = ExtResource("loot_office_cabinet")
+search_on_open = null
 
 [node name="Model" parent="CabinetLarge4" unique_id=786670404 instance=ExtResource("18_sfwq2")]
 

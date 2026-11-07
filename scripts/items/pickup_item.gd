@@ -11,11 +11,13 @@ var interact_radius := 1.8
 
 @export var item_data: ItemData
 
-const SPRITE_WIDTH := 0.9   # ширина спрайта предмета без модели, метры
+const CELL_METERS := 0.3     # сколько метров в мире занимает одна ячейка инвентаря
+const SPRITE_BOX_HEIGHT := 0.1
 
 var _hint: Label3D
 var _picked := false
 var _is_sprite := false
+var _sprite_size := Vector2(0.3, 0.3)   # метры (ширина, высота)
 
 
 func _ready() -> void:
@@ -54,11 +56,26 @@ func _setup_visual() -> void:
 		axis_lock_angular_z = true
 		var sprite := Sprite3D.new()
 		sprite.texture = item_data.icon
-		sprite.pixel_size = SPRITE_WIDTH / float(item_data.icon.get_width())
+		# Размер в мире — по размеру предмета в сетке (ячейка = 0.3 м), пропорции как у PNG.
+		var width := float(maxi(item_data.grid_size.x, 1)) * CELL_METERS
+		sprite.pixel_size = width / float(item_data.icon.get_width())
+		_sprite_size = Vector2(width, float(item_data.icon.get_height()) * sprite.pixel_size)
+		# Спрайт стоит на коробке-коллизии, а не утопает в полу.
+		sprite.position.y = _sprite_size.y * 0.5 - SPRITE_BOX_HEIGHT * 0.5
 		sprite.billboard = BaseMaterial3D.BILLBOARD_FIXED_Y
 		sprite.alpha_cut = SpriteBase3D.ALPHA_CUT_OPAQUE_PREPASS
 		sprite.shaded = false
 		add_child(sprite)
+	else:
+		# Ни модели, ни иконки (например, рюкзак): простая коробка-заглушка.
+		var box_mesh := BoxMesh.new()
+		box_mesh.size = item_data.pickup_size if item_data.pickup_size != Vector3.ZERO else Vector3(0.3, 0.3, 0.3)
+		var mat := StandardMaterial3D.new()
+		mat.albedo_color = Color(0.22, 0.3, 0.22)
+		box_mesh.material = mat
+		var mi := MeshInstance3D.new()
+		mi.mesh = box_mesh
+		add_child(mi)
 
 
 ## Габариты всех мешей внутри node в системе координат root.
@@ -83,7 +100,7 @@ func _mesh_bounds(node: Node, root: Node3D) -> AABB:
 func _setup_collision() -> void:
 	var shape := CollisionShape3D.new()
 	var box := BoxShape3D.new()
-	box.size = Vector3(SPRITE_WIDTH, 0.15, 0.2) if _is_sprite else Vector3(0.45, 0.08, 0.3)
+	box.size = Vector3(_sprite_size.x, SPRITE_BOX_HEIGHT, minf(_sprite_size.x, 0.2)) if _is_sprite else Vector3(0.45, 0.08, 0.3)
 	if item_data != null and item_data.pickup_size != Vector3.ZERO:
 		box.size = item_data.pickup_size
 	shape.shape = box
@@ -93,7 +110,7 @@ func _setup_collision() -> void:
 func _build_hint() -> void:
 	_hint = Label3D.new()
 	_hint.name = "InteractHint"
-	_hint.text = "E"
+	_hint.text = "%s\nE" % item_data.name if item_data != null else "E"
 	_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_hint.top_level = true          # не вращается вместе с телом
 	_hint.font_size = 40
@@ -108,7 +125,11 @@ func _build_hint() -> void:
 
 func _process(_delta: float) -> void:
 	if _hint.visible:
-		_hint.global_position = global_position + Vector3(0, 0.6, 0)
+		_hint.global_position = global_position + Vector3(0, _sprite_size.y + 0.25 if _is_sprite else 0.6, 0)
+
+
+func focus_point() -> Vector3:
+	return global_position + Vector3(0, _sprite_size.y * 0.5 if _is_sprite else 0.1, 0)
 
 
 func can_interact() -> bool:

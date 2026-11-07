@@ -101,7 +101,8 @@ func _move(delta: float) -> void:
 	if not ui_open:
 		input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (Basis(Vector3.UP, _yaw) * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	var speed := RUN_SPEED if (not ui_open and Input.is_action_pressed("sprint")) else WALK_SPEED
+	var sprinting := not ui_open and Input.is_action_pressed("sprint") and InventoryManager.can_sprint()
+	var speed := (RUN_SPEED if sprinting else WALK_SPEED) * InventoryManager.speed_multiplier()
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed

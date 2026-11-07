@@ -1,7 +1,8 @@
 ## Автолоад InventoryManager (Project Settings -> Autoload, имя "InventoryManager").
-## Хранит инвентарь игрока (рюкзак + карманы), открытый контейнер, строит UI:
-## слева статичная 3D-модель персонажа и слоты экипировки, по центру рюкзак
-## и карманы. Обрабатывает drag-and-drop, выброс предмета в мир и подбор.
+## Хранит инвентарь игрока (экипировка, рюкзак, карманы), открытый контейнер и строит UI
+## в духе Escape from Tarkov: слева заглушка персонажа и слоты экипировки, по центру
+## рюкзак и карманы, справа (при открытии шкафа) его содержимое. Правила размещения
+## предметов (в том числе больше одной ячейки), выброс в мир и подбор — здесь же.
 extends Node
 
 signal player_inventory_changed
@@ -11,45 +12,67 @@ const BACKPACK_ROWS := 4
 const BACKPACK_SLOT_COUNT := BACKPACK_COLUMNS * BACKPACK_ROWS   # 28
 
 const POCKET_COUNT := 5
-
 const POCKET_COLUMNS := 5
+
+## Слоты экипировки (значение ItemData.equip_slot).
 const WEAPON_SLOT := &"weapon"
+const BACKPACK_SLOT := &"backpack"
+const ARMOR_SLOT := &"armor"
+const KNIFE_SLOT := &"knife"
 
 const SLOT_SIZE := 64          # базовая ячейка (дальше подбирается под экран)
 const MIN_SLOT_SIZE := 36
 const MAX_SLOT_SIZE := 72
 const ROOT_MARGIN := 16
 const COLUMN_GAP := 14
+const GAP := 6                 # промежутки между блоками внутри колонки
 const CHARACTER_COLUMN_CELLS := 6   # ширина колонки персонажа в ячейках
 const CONTAINER_MAX_COLUMNS := 6
 
-const CHARACTER_SCENE := preload("res://art/characters/player/male_casual.fbx")
-const IDLE_SCENE := preload("res://art/characters/player/Idle.fbx")
-const IDLE_POSE_TIME := 0.6      # кадр, на котором фиксируем позу
+# Вес: базовая грузоподъёмность + бонус надетого рюкзака (ItemData.carry_bonus).
+const BASE_CARRY_WEIGHT := 25.0         # кг
+const OVERWEIGHT_SLOW_MIN := 0.35       # множитель скорости на пределе перегруза
+const HARD_LIMIT_RATIO := 1.5           # больше этой доли от нормы подобрать уже нельзя
+const TIP_DELAY := 0.1                  # задержка показа подсказки, сек
+const TIP_MAX_WIDTH := 220.0
+const SEARCH_STEP := 0.55                # секунд на обыск одного предмета
+const AIM_MIN_DOT := 0.97               # ~14 градусов от центра экрана
+
+const PANEL_BG := Color(0.05, 0.06, 0.065, 0.62)
+const PANEL_BORDER := Color(0.62, 0.68, 0.68, 0.20)
 
 var player_inventory: Array[ItemData] = []   # рюкзак, пустые слоты = null
 var player_pockets: Array[ItemData] = []     # карманы
 var player_weapon: Array[ItemData] = []      # слот оружия (1 элемент)
-var _weapon_slot: InventorySlot
-var _open_container: Node = null              # CabinetLarge или null
+var player_backpack: Array[ItemData] = []    # слот рюкзака (1 элемент)
+var player_armor: Array[ItemData] = []       # слот брони (1 элемент)
+var player_knife: Array[ItemData] = []       # слот ножа (1 элемент)
+var _equip := {}                              # имя слота -> массив слота экипировки
+var _open_container: Node = null              # LootContainer или null
 
 var _ui: CanvasLayer
-var _backpack_grid: GridContainer
-var _pocket_grid: GridContainer
-var _container_grid: GridContainer
+var _root: Control
+var _backpack_grid: InventoryGrid
+var _pocket_grid: InventoryGrid
+var _container_grid: InventoryGrid
+var _equip_grids: Array[InventoryGrid] = []
 var _container_panel: Control
 var _container_header: Control
 var _container_columns := CONTAINER_MAX_COLUMNS
-var _mid_spring: Control
-var _root: Control
-var _cell := SLOT_SIZE
-var _equip_controls: Array[Dictionary] = []
 var _character_frame: PanelContainer
-var _backpack_slots: Array[InventorySlot] = []
-var _pocket_slots: Array[InventorySlot] = []
-var _container_slots: Array[InventorySlot] = []
+var _weight_label: Label
+var _message_label: Label
+var _message_tween: Tween
+var _search_time := 0.0
+var _silhouette: Control
+var _tip: PanelContainer
+var _tip_box: VBoxContainer
+var _tip_delay := 0.0
+var _tip_pending := false
+var _cell := SLOT_SIZE
 var _context_menu: PanelContainer
-var _context_slot: InventorySlot = null
+var _context_grid: InventoryGrid = null
+var _context_anchor := -1
 
 ## Меню паузы сообщает сюда о своём состоянии (время в игре при этом не останавливается).
 var pause_open := false
@@ -61,14 +84,102 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	player_inventory.resize(BACKPACK_SLOT_COUNT)
 	player_pockets.resize(POCKET_COUNT)
-	player_weapon.resize(1)
-	player_weapon[0] = load("res://resources/items/rifle.tres") as ItemData   # стартовое оружие
+	for arr in [player_weapon, player_backpack, player_armor, player_knife]:
+		arr.resize(1)
+	_equip = {
+		WEAPON_SLOT: player_weapon,
+		BACKPACK_SLOT: player_backpack,
+		ARMOR_SLOT: player_armor,
+		KNIFE_SLOT: player_knife,
+	}
+	player_weapon[0] = load("res://resources/items/rifle.tres") as ItemData      # стартовое оружие
+	player_backpack[0] = load("res://resources/items/backpack.tres") as ItemData  # надетый рюкзак
 	_build_ui()
 	_build_context_menu()
+	_refresh_all()
+	_apply_layout()   # размеры колонок сразу, а не после первого открытия шкафа
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	_update_focus()
+	_tick_search(delta)
+	_tick_tooltip(delta)
+
+
+# ---------- Подсказка о предмете ----------
+# Своя, а не встроенная: следует за курсором, один полупрозрачный фон, длинный текст обрезается «…».
+
+func show_item_tooltip(item: ItemData) -> void:
+	if _tip == null or item == null:
+		return
+	for c in _tip_box.get_children():
+		_tip_box.remove_child(c)   # сразу, иначе старые строки ещё считаются в размере
+		c.queue_free()
+	var lines: Array[Array] = [[item.name, 12, Color(0.88, 0.9, 0.9)]]
+	if item.description != "":
+		lines.append([item.description, 10, Color(0.6, 0.64, 0.64)])
+	lines.append(["Вес: %.2f кг" % item.weight, 10, Color(0.6, 0.64, 0.64)])
+	var font := ThemeDB.fallback_font
+	var width := 90.0
+	for l in lines:
+		width = maxf(width, font.get_string_size(l[0], HORIZONTAL_ALIGNMENT_LEFT, -1, l[1]).x)
+	width = minf(width, TIP_MAX_WIDTH)
+	for l in lines:
+		var lab := Label.new()
+		lab.text = l[0]
+		lab.clip_text = true
+		lab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		lab.custom_minimum_size.x = width
+		lab.add_theme_font_size_override("font_size", l[1])
+		lab.add_theme_color_override("font_color", l[2])
+		_tip_box.add_child(lab)
+	_tip.reset_size()
+	_tip.visible = false
+	_tip_pending = true
+	_tip_delay = TIP_DELAY
+
+
+func hide_item_tooltip() -> void:
+	_tip_pending = false
+	if _tip != null:
+		_tip.visible = false
+
+
+func _tick_tooltip(delta: float) -> void:
+	if _tip == null or not _ui.visible:
+		return
+	if _tip_pending:
+		_tip_delay -= delta
+		if _tip_delay <= 0.0:
+			_tip_pending = false
+			_tip.visible = true
+	if _tip.visible:
+		var m := _root.get_local_mouse_position() + Vector2(16, 20)
+		var sz := _tip.get_combined_minimum_size()
+		if m.x + sz.x > _root.size.x:
+			m.x = _root.get_local_mouse_position().x - sz.x - 10.0
+		m.y = minf(m.y, _root.size.y - sz.y)
+		_tip.size = sz   # размер строго по содержимому (панель сама не сжимается)
+		_tip.position = m
+
+
+## Обыск контейнера: предметы открываются по одному, слева направо и сверху вниз.
+func _tick_search(delta: float) -> void:
+	if _open_container == null or not _ui.visible:
+		return
+	var hidden: Dictionary = _open_container.unrevealed
+	if hidden.is_empty():
+		return
+	_search_time += delta
+	if _search_time < SEARCH_STEP:
+		return
+	_search_time = 0.0
+	var first := -1
+	for k in hidden:
+		if first < 0 or int(k) < first:
+			first = int(k)
+	hidden.erase(first)
+	_container_grid.refresh()
 
 
 func _input(event: InputEvent) -> void:
@@ -80,7 +191,7 @@ func _input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	# Левый клик вне меню закрывает контекстное меню.
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_context_menu.visible = false
+		close_context_menu()
 	elif event.is_action_pressed("interact") and is_instance_valid(_focus) and not is_ui_open():
 		_focus.interact()
 		get_viewport().set_input_as_handled()
@@ -97,7 +208,7 @@ func close_all() -> void:
 	if _ui.visible:
 		_ui.visible = false
 		close_container()
-	_context_menu.visible = false
+	close_context_menu()
 	refresh_mouse_mode()
 
 
@@ -128,6 +239,7 @@ func _find_best_interactable() -> Node:
 		return null
 	var cam := get_viewport().get_camera_3d()
 	var look := -cam.global_transform.basis.z if cam != null else -player.global_transform.basis.z
+	var eye := cam.global_position if cam != null else player.global_position + Vector3.UP * 1.6
 	var origin := player.global_position + Vector3.UP * 1.0
 	var best: Node = null
 	var best_score := INF
@@ -139,8 +251,12 @@ func _find_best_interactable() -> Node:
 		var flat := Vector3(to_target.x, 0.0, to_target.z).length()
 		if flat > node.interact_radius or absf(to_target.y) > 2.5:
 			continue
-		var facing := look.dot(to_target.normalized()) if flat > 0.01 else 1.0
-		var score := flat + (1.0 - facing) * 0.5
+		# Подсказка только у предмета, на который наведён взгляд (прицел по центру экрана).
+		var point: Vector3 = node.focus_point() if node.has_method("focus_point") else target.global_position
+		var facing := look.dot((point - eye).normalized())
+		if facing < AIM_MIN_DOT:
+			continue
+		var score := flat + (1.0 - facing) * 8.0
 		if score < best_score:
 			best_score = score
 			best = node
@@ -157,32 +273,161 @@ func _local_player() -> Node3D:
 	return first
 
 
-# ---------- Публичные методы (CabinetLarge / PickupItem / слоты) ----------
+# ---------- Публичные методы (LootContainer / PickupItem / сетки) ----------
 
-## Положить предмет: оружие — в пустой слот оружия, иначе первое подходящее место
-## в рюкзаке, затем в карманах (крупные предметы ищут свободный прямоугольник).
+func has_weapon() -> bool:
+	return player_weapon.size() > 0 and player_weapon[0] != null
+
+
+func has_backpack() -> bool:
+	return player_backpack.size() > 0 and player_backpack[0] != null
+
+
+# ---------- Вес ----------
+
+func _player_arrays() -> Array:
+	return [player_inventory, player_pockets, player_weapon, player_backpack, player_armor, player_knife]
+
+
+func get_total_weight() -> float:
+	var total := 0.0
+	for arr in _player_arrays():
+		for it in arr:
+			if it != null:
+				total += (it as ItemData).weight
+	return total
+
+
+func get_max_weight() -> float:
+	var m := BASE_CARRY_WEIGHT
+	for arr in _equip.values():
+		if (arr as Array)[0] != null:
+			m += ((arr as Array)[0] as ItemData).carry_bonus
+	return m
+
+
+func _weight_ratio() -> float:
+	return get_total_weight() / maxf(get_max_weight(), 0.1)
+
+
+func is_overweight() -> bool:
+	return _weight_ratio() > 1.0
+
+
+## Перегруз: бегать нельзя.
+func can_sprint() -> bool:
+	return not is_overweight()
+
+
+## Множитель скорости ходьбы: 1 в норме, плавно падает до минимума к 150% веса.
+func speed_multiplier() -> float:
+	var r := _weight_ratio()
+	if r <= 1.0:
+		return 1.0
+	return lerpf(1.0, OVERWEIGHT_SLOW_MIN, clampf((r - 1.0) / (HARD_LIMIT_RATIO - 1.0), 0.0, 1.0))
+
+
+## Влезет ли ещё delta кг (жёсткий предел).
+func _weight_allows(delta: float) -> bool:
+	return delta <= 0.0 or get_total_weight() + delta <= get_max_weight() * HARD_LIMIT_RATIO + 0.0001
+
+
+func _update_weight_label() -> void:
+	if _weight_label == null:
+		return
+	var total := get_total_weight()
+	var r := _weight_ratio()
+	_weight_label.text = "ВЕС  %.1f / %.1f кг" % [total, get_max_weight()]
+	if r > 1.0:
+		_weight_label.text += "\nПЕРЕГРУЗ"
+	var col := Color(0.75, 0.8, 0.8)
+	if r > 1.25:
+		col = Color(1, 0.35, 0.3)
+	elif r > 1.0:
+		col = Color(1, 0.6, 0.25)
+	elif r > 0.8:
+		col = Color(0.95, 0.85, 0.4)
+	_weight_label.add_theme_color_override("font_color", col)
+
+
+# ---------- Ключи и сообщения ----------
+
+func has_key(key_id: String) -> bool:
+	return not _find_key(key_id).is_empty()
+
+
+func _find_key(key_id: String) -> Array:
+	if key_id == "":
+		return []
+	for arr in _player_arrays():
+		for i in (arr as Array).size():
+			var it = arr[i]
+			if it != null and (it as ItemData).key_id == key_id:
+				return [arr, i]
+	return []
+
+
+func consume_key(key_id: String) -> void:
+	var f := _find_key(key_id)
+	if f.is_empty():
+		return
+	(f[0] as Array)[f[1]] = null
+	_refresh_all()
+	player_inventory_changed.emit()
+
+
+## Короткое сообщение внизу экрана.
+func show_message(text: String) -> void:
+	if _message_label == null:
+		return
+	_message_label.text = text
+	_message_label.modulate.a = 1.0
+	if _message_tween != null:
+		_message_tween.kill()
+	_message_tween = create_tween()
+	_message_tween.tween_interval(1.4)
+	_message_tween.tween_property(_message_label, "modulate:a", 0.0, 0.5)
+
+
+## Положить предмет: в свой слот экипировки (если свободен), иначе в рюкзак (если надет),
+## затем в карманы. Крупные предметы ищут свободный прямоугольник.
 func add_to_player(item: ItemData) -> bool:
 	if item == null:
 		return false
-	if item.equip_slot == WEAPON_SLOT and player_weapon[0] == null:
-		player_weapon[0] = item
-	elif not _place_first_free(player_inventory, item) and not _place_first_free(player_pockets, item):
+	if not _weight_allows(item.weight):
+		show_message("Слишком тяжело")
+		return false
+	var key := item.equip_slot
+	if key != &"" and _equip.has(key) and (_equip[key] as Array)[0] == null:
+		(_equip[key] as Array)[0] = item
+	elif item.equip_slot == BACKPACK_SLOT:
+		return false   # рюкзак нельзя убрать в рюкзак или карманы
+	elif not (has_backpack() and _place_first_free(player_inventory, item)) \
+			and not _place_first_free(player_pockets, item):
 		return false
 	_refresh_all()
 	player_inventory_changed.emit()
 	return true
 
 
-func has_weapon() -> bool:
-	return player_weapon.size() > 0 and player_weapon[0] != null
-
-
-# ---------- Сетка: предметы больше одной ячейки ----------
+# ---------- Сетка: правила размещения ----------
 # В массиве предмет лежит только в «якорной» ячейке (левый верхний угол),
 # остальные ячейки его прямоугольника в массиве пустые, но заняты.
 
+func _equip_key(arr: Array) -> StringName:
+	for key in _equip:
+		if is_same(_equip[key], arr):
+			return key
+	return &""
+
+
+## Слот экипировки: один слот, предмет занимает его целиком.
+func is_single(arr: Array) -> bool:
+	return _equip_key(arr) != &""
+
+
 func _cols(arr: Array) -> int:
-	if is_same(arr, player_weapon):
+	if is_single(arr):
 		return 1
 	if is_same(arr, player_inventory):
 		return BACKPACK_COLUMNS
@@ -191,15 +436,28 @@ func _cols(arr: Array) -> int:
 	return maxi(_container_columns, 1)
 
 
-func _item_size(arr: Array, item: ItemData) -> Vector2i:
-	if is_same(arr, player_weapon):
-		return Vector2i(1, 1)   # слот оружия один, предмет занимает его целиком
+func item_size(arr: Array, item: ItemData) -> Vector2i:
+	if is_single(arr):
+		return Vector2i(1, 1)
 	return Vector2i(maxi(item.grid_size.x, 1), maxi(item.grid_size.y, 1))
 
 
 func _item_rect(arr: Array, index: int, item: ItemData) -> Rect2i:
 	var cols := _cols(arr)
-	return Rect2i(Vector2i(index % cols, index / cols), _item_size(arr, item))
+	return Rect2i(Vector2i(index % cols, index / cols), item_size(arr, item))
+
+
+## Можно ли вообще класть предмет в этот массив (без учёта места).
+func _accepts(arr: Array, item: ItemData) -> bool:
+	var key := _equip_key(arr)
+	if key != &"":
+		return item.equip_slot == key
+	if is_same(arr, player_inventory) or is_same(arr, player_pockets):
+		if item.equip_slot == BACKPACK_SLOT:
+			return false
+		if is_same(arr, player_inventory) and not has_backpack():
+			return false
+	return true
 
 
 ## Якорь предмета, которому принадлежит ячейка index (или сама ячейка, если там якорь). -1 — пусто.
@@ -216,18 +474,12 @@ func anchor_index(arr: Array, index: int) -> int:
 	return -1
 
 
-## На сколько клеток от якоря находится ячейка, за которую взяли предмет.
-func grab_offset(arr: Array, index: int, anchor: int) -> Vector2i:
-	var cols := _cols(arr)
-	return Vector2i(index % cols - anchor % cols, index / cols - anchor / cols)
-
-
 ## Якоря предметов, пересекающихся с прямоугольником item в клетке cell.
 ## null — прямоугольник выходит за границы сетки. ignore_* — якоря, которые не считаются.
 func _overlaps(arr: Array, item: ItemData, cell: Vector2i, ignore_a := -1, ignore_b := -1) -> Variant:
 	var cols := _cols(arr)
 	var rows := ceili(float(arr.size()) / float(cols))
-	var size := _item_size(arr, item)
+	var size := item_size(arr, item)
 	if cell.x < 0 or cell.y < 0 or cell.x + size.x > cols or cell.y + size.y > rows:
 		return null
 	var rect := Rect2i(cell, size)
@@ -250,27 +502,30 @@ func _place_first_free(arr: Array, item: ItemData) -> bool:
 	return false
 
 
-## План перемещения: {"dest": индекс якоря в целевом массиве, "swap": якорь вытесняемого
-## предмета или -1}. Пустой словарь — перемещение невозможно.
-func _plan_move(source: Array, si: int, target: Array, ti: int, grab := Vector2i.ZERO) -> Dictionary:
-	if si < 0 or si >= source.size() or ti < 0 or ti >= target.size():
+## План перемещения предмета source[si] так, чтобы его левый верхний угол оказался в клетке cell
+## массива target: {"dest": индекс якоря, "swap": якорь вытесняемого предмета или -1}.
+## Пустой словарь — перемещение невозможно.
+func _plan_move(source: Array, si: int, target: Array, cell: Vector2i) -> Dictionary:
+	if si < 0 or si >= source.size():
 		return {}
 	var item: ItemData = source[si]
-	if item == null:
+	if item == null or not _accepts(target, item):
 		return {}
-	if is_same(target, player_weapon):
-		grab = Vector2i.ZERO
-		if item.equip_slot != WEAPON_SLOT:
-			return {}
-	var tcols := _cols(target)
-	var cell := Vector2i(ti % tcols, ti / tcols) - grab
 	var same := is_same(source, target)
+	if _is_player_array(target) and not _is_player_array(source) and not _weight_allows(item.weight):
+		return {}
 	var overlap: Variant = _overlaps(target, item, cell, si if same else -1)
 	if overlap == null:
 		return {}
 	var hit := overlap as Array
-	var dest := cell.y * tcols + cell.x
+	if _open_container != null and is_same(target, _open_container.inventory):
+		for h in hit:
+			if (_open_container.unrevealed as Dictionary).has(h):
+				return {}
+	var dest := cell.y * _cols(target) + cell.x
 	if hit.is_empty():
+		if same and dest == si:
+			return {}
 		return {"dest": dest, "swap": -1}
 	if hit.size() > 1:
 		return {}
@@ -278,28 +533,26 @@ func _plan_move(source: Array, si: int, target: Array, ti: int, grab := Vector2i
 	# Ровно один предмет мешает — меняем местами, если он встанет на место исходного.
 	var other_index: int = hit[0]
 	var other: ItemData = target[other_index]
-	if is_same(source, player_weapon) and other.equip_slot != WEAPON_SLOT:
+	if not _accepts(source, other):
 		return {}
 	var scols := _cols(source)
 	var back_cell := Vector2i(si % scols, si / scols)
 	var blocked: Variant = _overlaps(source, other, back_cell, si, other_index if same else -1)
 	if blocked == null or not (blocked as Array).is_empty():
 		return {}
-	if same and Rect2i(back_cell, _item_size(source, other)).intersects(Rect2i(cell, _item_size(target, item))):
+	if same and Rect2i(back_cell, item_size(source, other)).intersects(Rect2i(cell, item_size(target, item))):
 		return {}
 	return {"dest": dest, "swap": other_index}
 
 
-## Можно ли положить предмет в слот (drag-and-drop подсвечивает допустимость).
-func can_move(source: Array, source_index: int, target: Array, target_index: int,
-		grab := Vector2i.ZERO) -> bool:
-	return not _plan_move(source, source_index, target, target_index, grab).is_empty()
+## Можно ли положить предмет в эту клетку (сетка подсвечивает допустимость).
+func can_move(source: Array, source_index: int, target: Array, cell: Vector2i) -> bool:
+	return not _plan_move(source, source_index, target, cell).is_empty()
 
 
-## Переместить/поменять предмет между слотами (drag-and-drop).
-func move_item(source: Array, source_index: int, target: Array, target_index: int,
-		grab := Vector2i.ZERO) -> void:
-	var plan := _plan_move(source, source_index, target, target_index, grab)
+## Переместить/поменять предмет (drag-and-drop).
+func move_item(source: Array, source_index: int, target: Array, cell: Vector2i) -> void:
+	var plan := _plan_move(source, source_index, target, cell)
 	if plan.is_empty():
 		return
 	var moving: ItemData = source[source_index]
@@ -316,51 +569,60 @@ func move_item(source: Array, source_index: int, target: Array, target_index: in
 		player_inventory_changed.emit()
 
 
-## Выбросить предмет из слота в 3D-мир (по кнопке контекстного меню).
-func drop_slot(slot: InventorySlot) -> void:
-	var anchor := anchor_index(slot.inventory, slot.slot_index)
-	if anchor < 0:
+## Выбросить предмет из якорной ячейки в 3D-мир.
+func drop_item(arr: Array, anchor: int) -> void:
+	if anchor < 0 or anchor >= arr.size() or arr[anchor] == null:
 		return
-	var item := slot.inventory[anchor] as ItemData
-	slot.inventory[anchor] = null
+	var item := arr[anchor] as ItemData
+	arr[anchor] = null
 	_refresh_all()
 	_spawn_pickup(item)
-	if _is_player_array(slot.inventory):
+	if _is_player_array(arr):
 		player_inventory_changed.emit()
 
 
-func _on_slot_right_clicked(slot: InventorySlot) -> void:
-	if anchor_index(slot.inventory, slot.slot_index) < 0:
-		return
-	_context_slot = slot
+func _is_player_array(arr: Array) -> bool:
+	return is_same(arr, player_inventory) or is_same(arr, player_pockets) or is_single(arr)
+
+
+# ---------- Контекстное меню ----------
+
+func _on_item_right_clicked(grid: InventoryGrid, anchor: int) -> void:
+	hide_item_tooltip()
+	_context_grid = grid
+	_context_anchor = anchor
 	_context_menu.visible = true
 	_context_menu.reset_size()
 	# Меню открывается над курсором (не перекрывается предметами) и не выходит за экран.
-	var mouse := slot.get_global_mouse_position()
-	var screen := _root.size
+	var mouse := _root.get_local_mouse_position()
 	var pos := mouse - Vector2(0, _context_menu.size.y + 2.0)
-	pos.x = clampf(pos.x, 0.0, maxf(screen.x - _context_menu.size.x, 0.0))
-	pos.y = clampf(pos.y, 0.0, maxf(screen.y - _context_menu.size.y, 0.0))
+	pos.x = clampf(pos.x, 0.0, maxf(_root.size.x - _context_menu.size.x, 0.0))
+	pos.y = clampf(pos.y, 0.0, maxf(_root.size.y - _context_menu.size.y, 0.0))
 	_context_menu.position = pos
 
 
+func close_context_menu() -> void:
+	if _context_menu != null:
+		_context_menu.visible = false
+	_context_grid = null
+	_context_anchor = -1
+
+
 func _on_context_drop_pressed() -> void:
-	if _context_slot != null:
-		drop_slot(_context_slot)
-	_context_slot = null
-	_context_menu.visible = false
+	if _context_grid != null:
+		drop_item(_context_grid.inventory, _context_anchor)
+	close_context_menu()
 
 
-func _is_player_array(arr: Array) -> bool:
-	return is_same(arr, player_inventory) or is_same(arr, player_pockets) or is_same(arr, player_weapon)
-
+# ---------- Контейнер / пауза / показ UI ----------
 
 ## Открыть контейнер (шкаф). Показывает панель контейнера справа.
 func open_container(container: Node) -> void:
 	if pause_open:
 		return
 	_open_container = container
-	_rebuild_container_slots()
+	_search_time = -0.25   # небольшая пауза перед первым предметом
+	_rebuild_container()
 	_set_container_shown(true)
 	_set_ui_visible(true)
 	_apply_layout()
@@ -368,15 +630,10 @@ func open_container(container: Node) -> void:
 
 func close_container() -> void:
 	_open_container = null
-	for s in _container_slots:
-		_container_grid.remove_child(s)
-		s.queue_free()
-	_container_slots.clear()
+	_rebuild_container()
 	_set_container_shown(false)
 	_apply_layout()
 
-
-# ---------- Пауза / показ UI ----------
 
 func _toggle_inventory() -> void:
 	_set_ui_visible(not _ui.visible)
@@ -388,8 +645,14 @@ func _toggle_inventory() -> void:
 func _set_ui_visible(vis: bool) -> void:
 	_ui.visible = vis
 	if not vis:
-		_context_menu.visible = false
-		_context_slot = null
+		close_context_menu()
+		hide_item_tooltip()
+	else:
+		_apply_layout()
+		call_deferred("_apply_layout")
+	if vis and _silhouette != null:
+		_silhouette.queue_redraw()
+		_silhouette.call_deferred("queue_redraw")
 	refresh_mouse_mode()
 
 
@@ -421,8 +684,24 @@ func _build_ui() -> void:
 	_ui.visible = false
 	add_child(_ui)
 
+	_message_label = Label.new()
+	_message_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_message_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_message_label.add_theme_font_size_override("font_size", 18)
+	_message_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	_message_label.add_theme_constant_override("outline_size", 6)
+	_message_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_message_label.offset_top = -120
+	_message_label.offset_bottom = -80
+	_message_label.modulate.a = 0.0
+	# Сообщения видны и при закрытом инвентаре — отдельный слой.
+	var msg_layer := CanvasLayer.new()
+	msg_layer.layer = 20
+	add_child(msg_layer)
+	msg_layer.add_child(_message_label)
+
 	var dim := ColorRect.new()
-	dim.color = Color(0, 0, 0, 0.72)
+	dim.color = Color(0, 0, 0, 0.62)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(dim)
@@ -436,13 +715,11 @@ func _build_ui() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	margin.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	margin.add_theme_constant_override("margin_left", ROOT_MARGIN)
-	margin.add_theme_constant_override("margin_right", ROOT_MARGIN)
-	margin.add_theme_constant_override("margin_top", ROOT_MARGIN)
-	margin.add_theme_constant_override("margin_bottom", ROOT_MARGIN)
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, ROOT_MARGIN)
 	_root.add_child(margin)
 
-	# [пружина] [персонаж + рюкзак] [пружина] [контейнер] [пружина]
+	# [пружина] [персонаж + рюкзак] [зазор] [контейнер] [пружина]
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_theme_constant_override("separation", 0)
@@ -458,10 +735,10 @@ func _build_ui() -> void:
 	main.add_child(_build_character_column())
 	main.add_child(_build_center_column())
 
-	_mid_spring = Control.new()   # фиксированный зазор между инвентарём и шкафом
-	_mid_spring.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_mid_spring.custom_minimum_size.x = COLUMN_GAP * 2
-	row.add_child(_mid_spring)
+	var gap := Control.new()   # фиксированный зазор между инвентарём и шкафом
+	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	gap.custom_minimum_size.x = COLUMN_GAP * 2
+	row.add_child(gap)
 
 	_container_panel = _build_container_column()
 	_set_container_shown(false)
@@ -481,6 +758,7 @@ func _make_spring() -> Control:
 func _set_container_shown(shown: bool) -> void:
 	_container_panel.modulate.a = 1.0 if shown else 0.0
 	_container_header.mouse_filter = Control.MOUSE_FILTER_STOP if shown else Control.MOUSE_FILTER_IGNORE
+	_container_grid.mouse_filter = Control.MOUSE_FILTER_STOP if shown else Control.MOUSE_FILTER_IGNORE
 
 
 ## Размер ячейки подбирается под текущий размер окна, чтобы всё помещалось.
@@ -490,184 +768,116 @@ func _apply_layout() -> void:
 	# Место под панель контейнера резервируется всегда, чтобы масштаб и положение
 	# инвентаря не прыгали, когда шкаф открывается или закрывается.
 	var cols := CHARACTER_COLUMN_CELLS + BACKPACK_COLUMNS + CONTAINER_MAX_COLUMNS
-	var fixed := float(ROOT_MARGIN * 2 + COLUMN_GAP * 3 + 6 + 8 + 4)
+	var fixed := float(ROOT_MARGIN * 2 + COLUMN_GAP * 3 + GAP + 8 + 4)
 	var by_width := (_root.size.x - fixed) / float(cols)
 	# По высоте: колонка персонажа = 5 ячеек + оружие 2 ячейки + отступы.
 	var by_height := (_root.size.y - ROOT_MARGIN * 2 - 24.0) / 7.6
 	var s := clampi(int(floorf(minf(by_width, by_height))), MIN_SLOT_SIZE, MAX_SLOT_SIZE)
 	_cell = s
 	_container_panel.custom_minimum_size.x = float(CONTAINER_MAX_COLUMNS * s + 1)
-
-	for slot in _all_slots():
-		slot.set_slot_size(s)
-	for e in _equip_controls:
-		var ctrl := e["control"] as Control
-		var cells: Vector2 = e["cells"]
-		ctrl.custom_minimum_size = Vector2(cells.x * s, cells.y * s)
-		var icon := e["icon"] as Label
-		icon.add_theme_font_size_override("font_size", maxi(14, int(s * 0.5)))
-		var title := e["title"] as Label
-		title.add_theme_font_size_override("font_size", maxi(8, int(s * 0.17)))
-	_character_frame.custom_minimum_size = Vector2(4 * s, 5 * s)
+	_character_frame.custom_minimum_size.x = float(4 * s)
+	for g in _all_grids():
+		g.set_cell(s)
 
 
-func _all_slots() -> Array[InventorySlot]:
-	var all: Array[InventorySlot] = []
-	all.append_array(_backpack_slots)
-	all.append_array(_pocket_slots)
-	all.append_array(_container_slots)
-	if _weapon_slot != null:
-		all.append(_weapon_slot)
+func _all_grids() -> Array[InventoryGrid]:
+	var all: Array[InventoryGrid] = [_backpack_grid, _pocket_grid, _container_grid]
+	all.append_array(_equip_grids)
 	return all
 
 
-## Левая колонка: персонаж в центре, броня и нож сбоку, оружие снизу
-## (пропорции как в Tarkov: размеры слотов кратны ячейке).
+func _refresh_all() -> void:
+	if _backpack_grid == null:
+		return
+	hide_item_tooltip()
+	_backpack_grid.enabled = has_backpack()
+	for g in _all_grids():
+		g.refresh()
+	_update_weight_label()
+
+
+## Левая колонка: заглушка персонажа, рядом броня/рюкзак/нож, снизу оружие.
 func _build_character_column() -> Control:
 	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 6)
+	vbox.add_theme_constant_override("separation", GAP)
 
 	var top := HBoxContainer.new()
-	top.add_theme_constant_override("separation", 6)
+	top.add_theme_constant_override("separation", GAP)
 	vbox.add_child(top)
 
+	# Серая заглушка вместо 3D-модели персонажа.
 	_character_frame = PanelContainer.new()
 	_character_frame.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_character_frame.add_theme_stylebox_override("panel", _make_panel_style(
-		Color(0.03, 0.04, 0.045), Color(0.22, 0.24, 0.26), 0))
+		Color(0.32, 0.34, 0.35, 0.22), PANEL_BORDER, 0))
 	top.add_child(_character_frame)
-	_character_frame.add_child(_build_character_viewport())
+	var art := Control.new()
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	art.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	art.draw.connect(_draw_silhouette.bind(art))
+	art.resized.connect(art.queue_redraw)
+	_silhouette = art
+	_character_frame.add_child(art)
+	_weight_label = Label.new()
+	_weight_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_weight_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_weight_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	_weight_label.add_theme_font_size_override("font_size", 13)
+	_weight_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_weight_label.offset_top = -44
+	_weight_label.offset_bottom = -4
+	art.add_child(_weight_label)
 
 	var side := VBoxContainer.new()
-	side.add_theme_constant_override("separation", 6)
+	side.add_theme_constant_override("separation", GAP)
 	top.add_child(side)
-	var armor := _make_equip_slot("БРОНЯ", Vector2(2, 3))
-	armor.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	armor.size_flags_stretch_ratio = 3.0
-	side.add_child(armor)
-	var knife := _make_equip_slot("НОЖ", Vector2(2, 2))
-	knife.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	knife.size_flags_stretch_ratio = 2.0
-	side.add_child(knife)
+	side.add_child(_make_equip_grid(player_armor, Vector2(2, 2), "БРОНЯ"))
+	side.add_child(_make_equip_grid(player_backpack, Vector2(2, 2), "РЮКЗАК"))
+	side.add_child(_make_equip_grid(player_knife, Vector2(2, 1), "НОЖ"))
 
 	# Оружие — широкий слот на всю ширину колонки.
-	_weapon_slot = _make_slot(player_weapon, 0, SLOT_SIZE, vbox)
-	_weapon_slot.slot_cells = Vector2(CHARACTER_COLUMN_CELLS, 2)
-	_weapon_slot.accepts = WEAPON_SLOT
-	_weapon_slot.placeholder = "ОРУЖИЕ"
-	_weapon_slot.set_slot_size(SLOT_SIZE)
-	_weapon_slot.refresh()
-
+	vbox.add_child(_make_equip_grid(player_weapon, Vector2(CHARACTER_COLUMN_CELLS, 2), "ОРУЖИЕ",
+			Vector2(GAP, 0)))
 	return vbox
 
 
-func _build_character_viewport() -> SubViewportContainer:
-	var container := SubViewportContainer.new()
-	container.stretch = true
-	container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	container.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	container.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	var vp := SubViewport.new()
-	vp.size = Vector2i(300, 380)
-	vp.transparent_bg = true
-	vp.own_world_3d = true
-	vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	vp.msaa_3d = Viewport.MSAA_4X
-	vp.screen_space_aa = Viewport.SCREEN_SPACE_AA_FXAA
-	container.add_child(vp)
-
-	var env := Environment.new()
-	env.background_mode = Environment.BG_CANVAS
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.55, 0.6, 0.68)
-	env.ambient_light_energy = 1.0
-	var world_env := WorldEnvironment.new()
-	world_env.environment = env
-	vp.add_child(world_env)
-
-	var cam := Camera3D.new()
-	cam.current = true
-	cam.fov = 40.0
-	cam.position = Vector3(0.0, 0.95, 2.7)
-	vp.add_child(cam)
-	cam.look_at(Vector3(0.0, 0.9, 0.0))
-
-	# Модель смотрит в +Z (на камеру), поэтому ключевой свет — спереди, контровой — сзади.
-	var key := DirectionalLight3D.new()
-	key.rotation_degrees = Vector3(-28, 35, 0)
-	key.light_energy = 1.5
-	key.shadow_enabled = true
-	vp.add_child(key)
-
-	var rim := DirectionalLight3D.new()
-	rim.rotation_degrees = Vector3(-15, 140, 0)
-	rim.light_color = Color(0.6, 0.75, 1.0)
-	rim.light_energy = 0.8
-	vp.add_child(rim)
-
-	# Статичная модель персонажа в позе ожидания, лицом к камере.
-	var model := CHARACTER_SCENE.instantiate() as Node3D
-	if model != null:
-		vp.add_child(model)
-		_apply_static_idle_pose(model)
-
-	return container
-
-
-## Базовый FBX без анимаций даёт T-позу. Подмешиваем позу из Idle.fbx
-## и замираем на одном кадре — модель должна выглядеть статично.
-func _apply_static_idle_pose(model: Node3D) -> void:
-	var root := IDLE_SCENE.instantiate()
-	var source := root.get_node_or_null("AnimationPlayer") as AnimationPlayer
-	if source == null or not source.has_animation("mixamo_com"):
-		root.free()
+func _draw_silhouette(c: Control) -> void:
+	var w := c.size.x
+	var h := c.size.y
+	if w < 4.0 or h < 4.0:
 		return
-	var idle := source.get_animation("mixamo_com").duplicate() as Animation
-	root.free()
-	if idle == null:
-		return
-
-	var player := AnimationPlayer.new()
-	player.name = "IdlePose"
-	player.root_node = NodePath("..")
-	model.add_child(player)
-
-	var library := AnimationLibrary.new()
-	library.add_animation(&"idle", idle)
-	player.add_animation_library(&"", library)
-
-	player.play(&"idle")
-	player.seek(IDLE_POSE_TIME, true)
-	player.pause()
+	var col := Color(0.6, 0.63, 0.64, 0.2)
+	var cx := w * 0.5
+	var u := minf(w, h * 0.62)
+	c.draw_circle(Vector2(cx, h * 0.2), u * 0.11, col)
+	c.draw_colored_polygon(PackedVector2Array([
+		Vector2(cx - u * 0.30, h * 0.31), Vector2(cx + u * 0.30, h * 0.31),
+		Vector2(cx + u * 0.36, h * 0.58), Vector2(cx + u * 0.20, h * 0.60),
+		Vector2(cx + u * 0.20, h * 0.95), Vector2(cx + u * 0.03, h * 0.95),
+		Vector2(cx, h * 0.66), Vector2(cx - u * 0.03, h * 0.95),
+		Vector2(cx - u * 0.20, h * 0.95), Vector2(cx - u * 0.20, h * 0.60),
+		Vector2(cx - u * 0.36, h * 0.58)]), col)
 
 
-## Слот экипировки. Пока предметов не надеваем — заглушка. cells — размер в ячейках.
-func _make_equip_slot(title: String, cells: Vector2) -> Control:
-	var slot := PanelContainer.new()
-	slot.mouse_filter = Control.MOUSE_FILTER_STOP
-	slot.add_theme_stylebox_override("panel", _make_panel_style(
-		Color(0.07, 0.078, 0.086, 0.92), Color(0.24, 0.27, 0.29), 0))
+## Слот экипировки: сетка из одной растянутой ячейки. cells — размер слота в базовых ячейках.
+func _make_equip_grid(arr: Array, cells: Vector2, title: String, extra := Vector2.ZERO) -> InventoryGrid:
+	var grid := _make_grid(arr, 1)
+	grid.slot_cells = cells
+	grid.slot_extra = extra
+	grid.placeholder = title
+	_equip_grids.append(grid)
+	return grid
 
-	var vbox := VBoxContainer.new()
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 0)
-	slot.add_child(vbox)
 
-	var icon := Label.new()
-	icon.text = "—"
-	icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	icon.add_theme_color_override("font_color", Color(0.30, 0.33, 0.35))
-	vbox.add_child(icon)
-
-	var label := Label.new()
-	label.text = title
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_color_override("font_color", Color(0.42, 0.44, 0.46))
-	vbox.add_child(label)
-
-	_equip_controls.append({"control": slot, "cells": cells, "icon": icon, "title": label})
-	return slot
+func _make_grid(arr: Array, columns: int) -> InventoryGrid:
+	var grid := InventoryGrid.new()
+	grid.manager = self
+	grid.inventory = arr
+	grid.columns = columns
+	grid.cell = SLOT_SIZE
+	grid.item_right_clicked.connect(_on_item_right_clicked)
+	return grid
 
 
 ## Центральная колонка: рюкзак и карманы.
@@ -677,149 +887,142 @@ func _build_center_column() -> Control:
 	vbox.add_theme_constant_override("separation", 14)
 
 	var backpack := VBoxContainer.new()
-	backpack.add_theme_constant_override("separation", 6)
+	backpack.add_theme_constant_override("separation", GAP)
 	vbox.add_child(backpack)
 	backpack.add_child(_make_section_header("РЮКЗАК", "%d слотов" % BACKPACK_SLOT_COUNT))
-	_backpack_grid = _make_grid(BACKPACK_COLUMNS, backpack)
-	for i in BACKPACK_SLOT_COUNT:
-		_backpack_slots.append(_make_slot(player_inventory, i, SLOT_SIZE, _backpack_grid))
+	_backpack_grid = _make_grid(player_inventory, BACKPACK_COLUMNS)
+	_backpack_grid.disabled_text = "РЮКЗАК НЕ НАДЕТ"
+	backpack.add_child(_backpack_grid)
 
 	var pockets := VBoxContainer.new()
-	pockets.add_theme_constant_override("separation", 6)
+	pockets.add_theme_constant_override("separation", GAP)
 	vbox.add_child(pockets)
 	pockets.add_child(_make_section_header("КАРМАНЫ", "%d" % POCKET_COUNT))
-	_pocket_grid = _make_grid(POCKET_COLUMNS, pockets)
-	for i in POCKET_COUNT:
-		_pocket_slots.append(_make_slot(player_pockets, i, SLOT_SIZE, _pocket_grid))
-
+	_pocket_grid = _make_grid(player_pockets, POCKET_COLUMNS)
+	pockets.add_child(_pocket_grid)
 	return vbox
-
-
-## Сетка ячеек без промежутков внутри рамки: линии между ячейками общие.
-## Рамка рисует левую и верхнюю границу, ячейки — правую и нижнюю.
-func _make_grid(columns: int, parent: Node) -> GridContainer:
-	var frame := PanelContainer.new()
-	frame.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0, 0, 0, 0)
-	sb.border_color = Color(0.24, 0.27, 0.29)
-	sb.border_width_left = 1
-	sb.border_width_top = 1
-	frame.add_theme_stylebox_override("panel", sb)
-	parent.add_child(frame)
-
-	var grid := GridContainer.new()
-	grid.columns = columns
-	grid.add_theme_constant_override("h_separation", 0)
-	grid.add_theme_constant_override("v_separation", 0)
-	frame.add_child(grid)
-	return grid
 
 
 func _make_section_header(title: String, hint: String) -> Control:
 	var panel := PanelContainer.new()
 	panel.add_theme_stylebox_override("panel", _make_panel_style(
-		Color(0.06, 0.07, 0.08), Color(0.20, 0.22, 0.24)))
+		Color(0.04, 0.05, 0.055, 0.7), PANEL_BORDER))
 
 	var hbox := HBoxContainer.new()
 	panel.add_child(hbox)
 
 	var label := Label.new()
 	label.text = title
-	label.add_theme_font_size_override("font_size", 13)
-	label.add_theme_color_override("font_color", Color(0.55, 0.58, 0.61))
+	label.add_theme_font_size_override("font_size", 12)
+	label.add_theme_color_override("font_color", Color(0.72, 0.76, 0.76, 0.9))
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hbox.add_child(label)
 
 	var hint_label := Label.new()
 	hint_label.text = hint
-	hint_label.add_theme_font_size_override("font_size", 12)
-	hint_label.add_theme_color_override("font_color", Color(0.38, 0.40, 0.43))
+	hint_label.add_theme_font_size_override("font_size", 11)
+	hint_label.add_theme_color_override("font_color", Color(0.5, 0.54, 0.54, 0.85))
 	hbox.add_child(hint_label)
-
 	return panel
-
-
-func _make_slot(inv: Array, index: int, size: int, parent: Node) -> InventorySlot:
-	var slot := InventorySlot.new()
-	slot.inventory = inv
-	slot.slot_index = index
-	slot.manager = self
-	slot.set_slot_size(size)
-	slot.slot_right_clicked.connect(_on_slot_right_clicked)
-	parent.add_child(slot)
-	return slot
 
 
 ## Панель открытого контейнера (шкаф) — справа, как в Tarkov.
 func _build_container_column() -> Control:
 	var vbox := VBoxContainer.new()
 	vbox.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-	vbox.add_theme_constant_override("separation", 6)
+	vbox.add_theme_constant_override("separation", GAP)
 
 	_container_header = _make_section_header("ШКАФ", "")
 	vbox.add_child(_container_header)
-	_container_grid = _make_grid(_container_columns, vbox)
+	_container_grid = _make_grid([], _container_columns)
+	vbox.add_child(_container_grid)
 	return vbox
+
+
+func _rebuild_container() -> void:
+	if _open_container == null:
+		_container_grid.unsearched = {}
+		_container_grid.inventory = []
+		_container_grid.refresh()
+		return
+	var inv: Array = _open_container.inventory
+	_container_grid.inventory = inv
+	_container_grid.unsearched = (_open_container as LootContainer).unrevealed
+	_set_container_header(inv.size())
+	_container_columns = (_open_container as LootContainer).columns()
+	_container_grid.columns = _container_columns
+	_container_grid.cell = _cell
+	_container_grid.refresh()
+
+
+func _set_container_header(count: int) -> void:
+	var hbox := _container_header.get_child(0) as HBoxContainer
+	(hbox.get_child(0) as Label).text = (_open_container.container_name as String).to_upper() if _open_container != null else "ШКАФ"
+	(hbox.get_child(1) as Label).text = "%d слотов" % count
 
 
 func _build_context_menu() -> void:
 	_context_menu = PanelContainer.new()
 	_context_menu.name = "ContextMenu"
 	_context_menu.visible = false
-	_context_menu.z_index = 100   # выше подсвеченных предметов (у них z_index = 1)
+	_context_menu.z_index = 100
 	_context_menu.z_as_relative = false
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.06, 0.07, 0.08, 0.96)
-	style.border_color = Color(0.3, 0.33, 0.36)
+	style.bg_color = Color(0.07, 0.08, 0.09, 0.97)
+	style.border_color = Color(0.5, 0.55, 0.55, 0.45)
 	style.set_border_width_all(1)
+	style.set_content_margin_all(2)
 	_context_menu.add_theme_stylebox_override("panel", style)
 	_ui.add_child(_context_menu)
+	_build_tooltip()
 
 	var drop_btn := Button.new()
-	drop_btn.text = "ВЫБРОСИТЬ"
-	drop_btn.custom_minimum_size = Vector2(0, 22)
-	drop_btn.add_theme_stylebox_override("normal", _make_button_style())
-	drop_btn.add_theme_stylebox_override("hover", _make_button_style(Color(0.14, 0.15, 0.17)))
-	drop_btn.add_theme_stylebox_override("pressed", _make_button_style(Color(0.2, 0.22, 0.24)))
-	drop_btn.add_theme_color_override("font_color", Color(0.78, 0.8, 0.82))
-	drop_btn.add_theme_font_size_override("font_size", 11)
+	drop_btn.text = "Выбросить"
+	drop_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	drop_btn.custom_minimum_size = Vector2(120, 24)
+	for st in ["normal", "focus"]:
+		drop_btn.add_theme_stylebox_override(st, _flat_button(Color(0, 0, 0, 0)))
+	drop_btn.add_theme_stylebox_override("hover", _flat_button(Color(0.22, 0.24, 0.25, 0.95)))
+	drop_btn.add_theme_stylebox_override("pressed", _flat_button(Color(0.3, 0.32, 0.33, 0.98)))
+	drop_btn.add_theme_color_override("font_color", Color(0.78, 0.82, 0.82))
+	drop_btn.add_theme_color_override("font_hover_color", Color(0.95, 0.97, 0.97))
+	drop_btn.add_theme_font_size_override("font_size", 12)
 	drop_btn.pressed.connect(_on_context_drop_pressed)
 	_context_menu.add_child(drop_btn)
 
 
-func _rebuild_container_slots() -> void:
-	for s in _container_slots:
-		_container_grid.remove_child(s)
-		s.queue_free()
-	_container_slots.clear()
-
-	if _open_container == null:
-		return
-
-	var inv: Array = _open_container.inventory
-	_container_columns = mini(CONTAINER_MAX_COLUMNS, maxi(inv.size(), 1))
-	_container_grid.columns = _container_columns
-	_set_container_header(inv.size())
-	for i in inv.size():
-		var slot := _make_slot(inv, i, _cell, _container_grid)
-		_container_slots.append(slot)
-		slot.refresh()
-
-
-func _set_container_header(count: int) -> void:
-	var hbox := _container_header.get_child(0) as HBoxContainer
-	(hbox.get_child(0) as Label).text = "ШКАФ"
-	(hbox.get_child(1) as Label).text = "%d слотов" % count
+func _build_tooltip() -> void:
+	_tip = PanelContainer.new()
+	_tip.name = "ItemTooltip"
+	_tip.visible = false
+	_tip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tip.z_index = 200
+	_tip.z_as_relative = false
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.07, 0.08, 0.09, 0.82)
+	sb.border_color = Color(0.5, 0.55, 0.55, 0.4)
+	sb.set_border_width_all(1)
+	sb.content_margin_left = 9
+	sb.content_margin_right = 9
+	sb.content_margin_top = 4
+	sb.content_margin_bottom = 4
+	_tip.add_theme_stylebox_override("panel", sb)
+	_tip_box = VBoxContainer.new()
+	_tip_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_tip_box.add_theme_constant_override("separation", 0)
+	_tip.add_child(_tip_box)
+	_ui.add_child(_tip)
 
 
-func _refresh_all() -> void:
-	for s in _all_slots():
-		s.refresh()
+func _flat_button(bg: Color) -> StyleBoxFlat:
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = bg
+	sb.content_margin_left = 10
+	sb.content_margin_right = 10
+	return sb
 
 
-func _make_panel_style(bg := Color(0.05, 0.055, 0.06),
-		brd := Color(0.22, 0.24, 0.26), margin := 6) -> StyleBoxFlat:
+func _make_panel_style(bg := PANEL_BG, brd := PANEL_BORDER, margin := 6) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = bg
 	sb.border_color = brd
@@ -831,9 +1034,9 @@ func _make_panel_style(bg := Color(0.05, 0.055, 0.06),
 	return sb
 
 
-func _make_button_style(bg := Color(0.10, 0.11, 0.12)) -> StyleBoxFlat:
+func _make_button_style(bg := Color(0.08, 0.09, 0.1, 0.9)) -> StyleBoxFlat:
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = bg
-	sb.border_color = Color(0.3, 0.33, 0.36)
+	sb.border_color = Color(0.5, 0.55, 0.55, 0.4)
 	sb.set_border_width_all(1)
 	return sb

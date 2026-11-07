@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mkbffxc056da"
-path="res://.godot/imported/medkit_small.png-73e2913509a5c84d4873f479160c7c8f.ctex"
+uid="uid://dglnunkhc33kj"
+path="res://.godot/imported/lamp.png-f30d4534084d31b0abbeab2f4788dcb4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/items/png/medkit_small.png"
-dest_files=["res://.godot/imported/medkit_small.png-73e2913509a5c84d4873f479160c7c8f.ctex"]
+source_file="res://resources/items/items_png/lamp.png"
+dest_files=["res://.godot/imported/lamp.png-f30d4534084d31b0abbeab2f4788dcb4.ctex"]
 
 [params]
 

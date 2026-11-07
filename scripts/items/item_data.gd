@@ -4,7 +4,7 @@
 class_name ItemData
 extends Resource
 
-@export var id: String                       # уникальный id (например "file_binder_alt4")
+@export var id: String                       # уникальный id (например "key")
 @export var name: String                     # отображаемое имя ("Папка с документами")
 @export var icon: Texture2D                  # иконка в UI-слоте
 @export var world_mesh_scene: PackedScene    # 3D-сцена для выброса в мир (необязательно)
@@ -19,3 +19,9 @@ extends Resource
 @export var world_scale := 1.0
 ## Размер коллизии выброшенного предмета (0 — значение по умолчанию).
 @export var pickup_size := Vector3.ZERO
+## Вес предмета, кг. Складывается в общий вес на персонаже (см. InventoryManager).
+@export_range(0.0, 100.0, 0.05, "suffix:кг") var weight := 0.5
+## Для ключей: id замка, который открывает этот ключ (LootContainer.key_id). Пусто — не ключ.
+@export var key_id := ""
+## Для рюкзаков/разгрузки: на сколько кг увеличивает переносимый вес, пока надет.
+@export_range(0.0, 100.0, 0.5, "suffix:кг") var carry_bonus := 0.0
