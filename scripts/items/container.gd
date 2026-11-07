@@ -105,6 +105,7 @@ func _place(item: ItemData) -> bool:
 	var cols := columns()
 	var size := item.cell_size()
 	for i in inventory.size():
+		@warning_ignore("integer_division")
 		var rect := Rect2i(Vector2i(i % cols, i / cols), size)
 		if rect.end.x > cols or (rect.end.y - 1) * cols + rect.end.x - 1 >= inventory.size():
 			continue
@@ -112,6 +113,7 @@ func _place(item: ItemData) -> bool:
 		for j in inventory.size():
 			if inventory[j] == null:
 				continue
+			@warning_ignore("integer_division")
 			var other := Rect2i(Vector2i(j % cols, j / cols), inventory[j].cell_size())
 			if rect.intersects(other):
 				free = false

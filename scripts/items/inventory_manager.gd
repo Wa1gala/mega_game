@@ -622,6 +622,7 @@ func rotate_item(arr: Array, anchor: int) -> bool:
 	var turned := item.duplicate() as ItemData
 	turned.rotated = not item.rotated
 	var cols := _cols(arr)
+	@warning_ignore("integer_division")
 	var found: Variant = _overlaps(arr, turned, Vector2i(anchor % cols, anchor / cols), anchor)
 	if found == null or not (found as Array).is_empty():
 		show_message("Не помещается")
@@ -667,6 +668,7 @@ func _rotate_hovered() -> void:
 
 func _item_rect(arr: Array, index: int, item: ItemData) -> Rect2i:
 	var cols := _cols(arr)
+	@warning_ignore("integer_division")
 	return Rect2i(Vector2i(index % cols, index / cols), item_size(arr, item))
 
 
@@ -690,6 +692,7 @@ func anchor_index(arr: Array, index: int) -> int:
 	if arr[index] != null:
 		return index
 	var cols := _cols(arr)
+	@warning_ignore("integer_division")
 	var cell := Vector2i(index % cols, index / cols)
 	for i in arr.size():
 		if arr[i] != null and _item_rect(arr, i, arr[i]).has_point(cell):
@@ -718,6 +721,7 @@ func _overlaps(arr: Array, item: ItemData, cell: Vector2i, ignore_a := -1, ignor
 func _place_first_free(arr: Array, item: ItemData) -> bool:
 	var cols := _cols(arr)
 	for i in arr.size():
+		@warning_ignore("integer_division")
 		var found: Variant = _overlaps(arr, item, Vector2i(i % cols, i / cols))
 		if found != null and (found as Array).is_empty():
 			arr[i] = item
@@ -763,6 +767,7 @@ func _plan_move(source: Array, si: int, target: Array, cell: Vector2i, held: Ite
 	if not _accepts(source, other):
 		return {}
 	var scols := _cols(source)
+	@warning_ignore("integer_division")
 	var back_cell := Vector2i(si % scols, si / scols)
 	var blocked: Variant = _overlaps(source, other, back_cell, si, other_index if same else -1)
 	if blocked == null or not (blocked as Array).is_empty():
