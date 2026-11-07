@@ -1,7 +1,7 @@
 extends Control
 
 const PORT := 7777
-const LEVEL := "res://art/levels/base.tscn"
+const LEVEL := "res://art/levels/office_middle.tscn"
 
 @onready var ip_address: LineEdit = %IPAddress
 @onready var host_button: Button = %HostButton
@@ -30,9 +30,9 @@ func _ready() -> void:
 func _on_host_pressed() -> void:
 	_close_peer()
 	var peer := ENetMultiplayerPeer.new()
-	# "*" — все адаптеры. "0.0.0.0" Godot связывает как ::ffff:0.0.0.0,
-	# и Windows не принимает с него пакеты виртуального адаптера Hamachi/Radmin.
-	peer.set_bind_ip("*")
+	# IPv4 на всех адаптерах. Если Godot в исключениях раздельного туннеля AmneziaVPN,
+	# её драйвер переписывает этот адрес на один LAN-адрес, и Radmin до сервера не доходит.
+	peer.set_bind_ip("0.0.0.0")
 	var error := peer.create_server(PORT)
 	if error != OK:
 		_status.text = "Порт %s занят или закрыт файрволом (%s)." % [PORT, error]
@@ -89,7 +89,7 @@ func _on_connection_failed() -> void:
 func _on_singleplayer_pressed() -> void:
 	_close_peer()
 	# Одиночная игра: просто грузим уровень без сети/сервера.
-	get_tree().change_scene_to_file("res://art/levels/office_middle.tscn")
+	get_tree().change_scene_to_file(LEVEL)
 
 
 func _on_exit_pressed() -> void:

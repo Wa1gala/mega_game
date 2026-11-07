@@ -1,20 +1,25 @@
 extends Node3D
 
 const PLAYER_SCENE := preload("res://player.tscn")
-const SPAWNS: Array[Vector3] = [
-	Vector3(0, 0.2, 3.5),
-	Vector3(1.4, 0.2, 3.5),
-	Vector3(-1.4, 0.2, 3.5),
-	Vector3(0, 0.2, 2.0),
+# Смещения от игрока-заглушки уровня, чтобы игроки не появлялись друг в друге.
+const SPAWN_OFFSETS: Array[Vector3] = [
+	Vector3(0, 0.2, 0),
+	Vector3(1.4, 0.2, 0),
+	Vector3(-1.4, 0.2, 0),
+	Vector3(0, 0.2, -1.5),
 ]
 
 var _spawner: MultiplayerSpawner
 var _pickup_id := 0
+var _spawn_origin := Vector3(0, 0, 3.5)
 
 
 func _enter_tree() -> void:
 	if not _is_online():
 		return
+	var placeholder := get_node_or_null("Player") as Node3D
+	if placeholder:
+		_spawn_origin = placeholder.position
 	_spawner = MultiplayerSpawner.new()
 	_spawner.name = "PlayerSpawner"
 	# Относительно спавнера ".." — это корень уровня.
@@ -89,7 +94,7 @@ func _spawn_player(id: Variant) -> Node:
 	var peer_id := int(id)
 	var player := PLAYER_SCENE.instantiate()
 	player.name = str(peer_id)
-	player.position = SPAWNS[(peer_id - 1) % SPAWNS.size()]
+	player.position = _spawn_origin + SPAWN_OFFSETS[(peer_id - 1) % SPAWN_OFFSETS.size()]
 	return player
 
 

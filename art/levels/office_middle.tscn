@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" path="res://art/characters/enemy/police_enemy.tscn" id="23_enemy"]
 [ext_resource type="Resource" uid="uid://b6mvnbt88wxu0" path="res://resources/loot/office_cabinet.tres" id="loot_office_cabinet"]
 [ext_resource type="Resource" uid="uid://coedpaavjixgd" path="res://resources/loot/office_cabinet_locked.tres" id="loot_office_cabinet_locked"]
+[ext_resource type="Script" uid="uid://qnt08qhoeq25" path="res://scripts/net_level.gd" id="net_level"]
 
 [sub_resource type="Environment" id="env"]
 background_mode = 1
@@ -124,6 +125,7 @@ size = Vector3(0.38, 1.4, 0.45)
 size = Vector3(1.44, 0.71, 0.7)
 
 [node name="Office" type="Node3D" unique_id=1279399828]
+script = ExtResource("net_level")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=419971639]
 environment = SubResource("env")
