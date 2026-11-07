@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="1_itemdata"]
+[ext_resource type="Texture2D" path="res://resources/items/items_png/riffle.png" id="2_icon"]
+[ext_resource type="PackedScene" path="res://art/weapons/rifle/MachineGunPSX/GLB/MachineGunPSX.glb" id="3_mesh"]
+
+[resource]
+script = ExtResource("1_itemdata")
+id = "rifle"
+name = "Автомат"
+icon = ExtResource("2_icon")
+world_mesh_scene = ExtResource("3_mesh")
+description = "Штурмовая винтовка."
+equip_slot = &"weapon"
+grid_size = Vector2i(3, 2)
+use_icon_in_ui = true
+world_scale = 0.22
+pickup_size = Vector3(0.9, 0.3, 0.16)
+weight = 3.5

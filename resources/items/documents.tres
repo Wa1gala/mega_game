@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="1_itemdata"]
+[ext_resource type="Texture2D" path="res://resources/items/items_png/documents.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_itemdata")
+id = "documents"
+name = "Документы"
+icon = ExtResource("2_icon")
+description = "Стопка рабочих бумаг."
+grid_size = Vector2i(2, 1)
+weight = 0.3

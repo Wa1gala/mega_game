@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://grhmcpblgmkm"]
+
+[ext_resource type="Script" uid="uid://dl7b65sgdadcs" path="res://scripts/items/item_data.gd" id="1_itemdata"]
+[ext_resource type="Texture2D" uid="uid://mkbffxc056da" path="res://resources/items/items_png/medkit_small.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_itemdata")
+id = "medkit_small"
+name = "Малая аптечка"
+icon = ExtResource("2_icon")
+description = "Бинты и антисептик."
+weight = 0.4
+heal_amount = 25

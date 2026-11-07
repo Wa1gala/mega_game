@@ -52,6 +52,7 @@ border_color = Color(0.45, 0.95, 0.55, 1)
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=1517936614]
 process_mode = 3
+layer = 20
 script = ExtResource("1_pause")
 
 [node name="Overlay" type="Control" parent="." unique_id=848318759]
@@ -94,6 +95,21 @@ theme_override_colors/font_color = Color(0.45, 1, 0.5, 1)
 theme_override_font_sizes/font_size = 32
 text = "ПАУЗА"
 horizontal_alignment = 1
+
+[node name="VolumeLabel" type="Label" parent="Overlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.55, 1)
+theme_override_font_sizes/font_size = 18
+text = "ГРОМКОСТЬ: 100%"
+
+[node name="VolumeSlider" type="HSlider" parent="Overlay/Center/Panel/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 1.0
 
 [node name="ExitToLobbyButton" type="Button" parent="Overlay/Center/Panel/VBox" unique_id=735537486]
 unique_name_in_owner = true

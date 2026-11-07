@@ -1,0 +1,601 @@
+[gd_scene load_steps=38 format=3]
+
+[ext_resource type="Texture2D" uid="uid://dj3jdv1nwt0f6" path="res://art/levels/office/textures/walls/cubicle_fabric_grey_trim/cubicle_fabric_grey_trim_albedo.png" id="r1"]
+[ext_resource type="Texture2D" uid="uid://b8orc4bpj20uh" path="res://art/levels/office/textures/floors/carpet_corridor/carpet_pattern_burgundy_albedo.png" id="r2"]
+[ext_resource type="Texture2D" uid="uid://3av4u04ik1gc" path="res://art/levels/office/textures/ceilings/light_panel_prismatic/light_panel_prismatic_albedo.png" id="r3"]
+[ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="r4"]
+[ext_resource type="PackedScene" uid="uid://dgaitm8l3pp6" path="res://scenes/pause_menu.tscn" id="r5"]
+
+[sub_resource type="Environment" id="env"]
+background_mode = 1
+background_color = Color(0.012, 0.014, 0.016, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.05, 0.06, 0.07, 1)
+ambient_light_energy = 0.18
+tonemap_mode = 3
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 1.4
+ssao_intensity = 1.8
+ssao_power = 2.0
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.2
+glow_hdr_threshold = 0.7
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.09
+volumetric_fog_albedo = Color(0.62, 0.66, 0.6, 1)
+volumetric_fog_emission = Color(0.04, 0.05, 0.04, 1)
+volumetric_fog_emission_energy = 0.15
+volumetric_fog_gi_inject = 0.0
+volumetric_fog_anisotropy = 0.45
+volumetric_fog_length = 24.0
+
+[sub_resource type="StandardMaterial3D" id="mat_corridor_floor"]
+cull_mode = 2
+albedo_texture = ExtResource("r2")
+roughness = 0.95
+uv1_scale = Vector3(52, 40, 1)
+texture_filter = 2
+
+[sub_resource type="StandardMaterial3D" id="mat_corridor_wall"]
+cull_mode = 2
+albedo_texture = ExtResource("r1")
+roughness = 0.9
+uv1_scale = Vector3(22, 1.7, 1)
+texture_filter = 2
+
+[sub_resource type="StandardMaterial3D" id="mat_corridor_ceil"]
+cull_mode = 2
+albedo_texture = ExtResource("r3")
+roughness = 0.85
+uv1_scale = Vector3(70, 55, 1)
+texture_filter = 2
+
+[sub_resource type="BoxMesh" id="mesh_floor"]
+size = Vector3(44, 0.2, 36)
+
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(44, 0.2, 36)
+
+[sub_resource type="BoxMesh" id="mesh_island"]
+size = Vector3(28, 5, 20)
+
+[sub_resource type="BoxShape3D" id="shape_island"]
+size = Vector3(28, 5, 20)
+
+[sub_resource type="BoxMesh" id="wm1"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws1"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm2"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws2"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm3"]
+size = Vector3(5.6, 0.8, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws3"]
+size = Vector3(5.6, 0.8, 0.3)
+
+[sub_resource type="BoxMesh" id="wm4"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws4"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm5"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws5"]
+size = Vector3(15.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm6"]
+size = Vector3(5.6, 0.8, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws6"]
+size = Vector3(5.6, 0.8, 0.3)
+
+[sub_resource type="BoxMesh" id="wm7"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxShape3D" id="ws7"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxMesh" id="wm8"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxShape3D" id="ws8"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxMesh" id="wm9"]
+size = Vector3(0.3, 0.8, 5.6)
+
+[sub_resource type="BoxShape3D" id="ws9"]
+size = Vector3(0.3, 0.8, 5.6)
+
+[sub_resource type="BoxMesh" id="wm10"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxShape3D" id="ws10"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxMesh" id="wm11"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxShape3D" id="ws11"]
+size = Vector3(0.3, 5, 11.5)
+
+[sub_resource type="BoxMesh" id="wm12"]
+size = Vector3(0.3, 0.8, 5.6)
+
+[sub_resource type="BoxShape3D" id="ws12"]
+size = Vector3(0.3, 0.8, 5.6)
+
+[node name="Corridor" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+material_override = SubResource("mat_corridor_floor")
+mesh = SubResource("mesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling"]
+material_override = SubResource("mat_corridor_ceil")
+mesh = SubResource("mesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling"]
+shape = SubResource("shape_floor")
+
+[node name="Island" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Island"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("mesh_island")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Island"]
+shape = SubResource("shape_island")
+
+[node name="WallNorthL" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.25, 1.5, -14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallNorthL"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallNorthL"]
+shape = SubResource("ws1")
+
+[node name="WallNorthR" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.25, 1.5, -14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallNorthR"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallNorthR"]
+shape = SubResource("ws2")
+
+[node name="WallNorthLintel" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallNorthLintel"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallNorthLintel"]
+shape = SubResource("ws3")
+
+[node name="WallSouthL" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.25, 1.5, 14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallSouthL"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallSouthL"]
+shape = SubResource("ws4")
+
+[node name="WallSouthR" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.25, 1.5, 14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallSouthR"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallSouthR"]
+shape = SubResource("ws5")
+
+[node name="WallSouthLintel" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, 14)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallSouthLintel"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallSouthLintel"]
+shape = SubResource("ws6")
+
+[node name="WallWestN" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.5, -8.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallWestN"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallWestN"]
+shape = SubResource("ws7")
+
+[node name="WallWestS" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.5, 8.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallWestS"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallWestS"]
+shape = SubResource("ws8")
+
+[node name="WallWestLintel" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 3.6, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallWestLintel"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm9")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallWestLintel"]
+shape = SubResource("ws9")
+
+[node name="WallEastN" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.5, -8.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallEastN"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm10")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallEastN"]
+shape = SubResource("ws10")
+
+[node name="WallEastS" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.5, 8.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallEastS"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm11")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallEastS"]
+shape = SubResource("ws11")
+
+[node name="WallEastLintel" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3.6, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="./WallEastLintel"]
+material_override = SubResource("mat_corridor_wall")
+mesh = SubResource("wm12")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="./WallEastLintel"]
+shape = SubResource("ws12")
+
+[node name="Landings" type="Node3D" parent="."]
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="CeilNorth1" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 4.8
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth2" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -10.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth3" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -5.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.4
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth4" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 1.2
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth5" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 5.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth6" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 10.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 4.2
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilNorth7" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 2.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth8" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth9" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -10.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth10" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -5.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 1.4
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth11" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 4.8
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth12" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 5.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth13" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 10.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.4
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilSouth14" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 1.2
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilWest15" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, -6.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilWest16" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, 0.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 4.2
+light_volumetric_fog_energy = 1.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilWest17" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, 6.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 2.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilEast18" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, -6.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilEast19" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, 0.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilEast20" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, 6.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 1.4
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilOpeningN" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.0, 3.75, -12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.6
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 10.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpeningS" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.0, 3.75, 12.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.6
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 10.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpeningW" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -16.0, 3.75, 0.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.6
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 10.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpeningE" type="SpotLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.0, 3.75, 0.0)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 3.6
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 10.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="FillNW" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 3.0999999999999996, -11.0)
+light_color = Color(0.80, 0.84, 0.90, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 10.0
+omni_attenuation = 1.6
+
+[node name="FillNE" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 3.0999999999999996, -11.0)
+light_color = Color(0.80, 0.84, 0.90, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 10.0
+omni_attenuation = 1.6
+
+[node name="FillSW" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0, 3.0999999999999996, 11.0)
+light_color = Color(0.80, 0.84, 0.90, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 10.0
+omni_attenuation = 1.6
+
+[node name="FillSE" type="OmniLight3D" parent="Lighting"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.0, 3.0999999999999996, 11.0)
+light_color = Color(0.80, 0.84, 0.90, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 10.0
+omni_attenuation = 1.6
+
+[node name="Player" parent="." instance=ExtResource("r4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 0.006, -12.0)
+
+[node name="PauseMenu" parent="." instance=ExtResource("r5")]

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://c2g4n05y1bn2u"]
+
+[ext_resource type="PackedScene" uid="uid://bdoxva85rv1c1" path="res://art/levels/office/desks/desk1.glb" id="1_yyicw"]
+[ext_resource type="PackedScene" uid="uid://nl5lha3q28sa" path="res://art/levels/office/chairs/office_chair_blue.glb" id="2_63008"]
+[ext_resource type="PackedScene" uid="uid://dly8th71j4wnf" path="res://art/levels/office/computers/computer_monitor.glb" id="3_13y01"]
+[ext_resource type="PackedScene" uid="uid://caiqb7801dupv" path="res://art/levels/office/computers/computer_keyboard.glb" id="4_oliky"]
+[ext_resource type="PackedScene" uid="uid://c7rgxgsnii4nk" path="res://art/levels/office/computers/computer_mouse.glb" id="5_tqkp5"]
+[ext_resource type="PackedScene" uid="uid://dfg2be8ofcali" path="res://art/levels/office/extras/mug.glb" id="6_oc42s"]
+[ext_resource type="PackedScene" uid="uid://c2i260p2tfrjw" path="res://art/levels/office/extras/desk_phone.glb" id="7_m3qw3"]
+[ext_resource type="PackedScene" uid="uid://cddhy1wuevdrk" path="res://art/levels/office/extras/square_desklamp.glb" id="8_hfje8"]
+
+[sub_resource type="BoxShape3D" id="bs_desk"]
+size = Vector3(2.2, 0.89, 1.09)
+
+[node name="Desk1" type="StaticBody3D" unique_id=716065569]
+
+[node name="Model" parent="." unique_id=312462060 instance=ExtResource("1_yyicw")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1577122520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.446, 0)
+shape = SubResource("bs_desk")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2056005149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0.70000005)
+
+[node name="Chair1" parent="StaticBody3D" unique_id=619152461 instance=ExtResource("2_63008")]
+
+[node name="Monitor1" parent="." unique_id=1782840485 instance=ExtResource("3_13y01")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.89, -0.100000024)
+
+[node name="Keyboard1" parent="." unique_id=122427786 instance=ExtResource("4_oliky")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.3499999)
+
+[node name="Mouse1" parent="." unique_id=2042482526 instance=ExtResource("5_tqkp5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4000001, 0.9, 0.3499999)
+
+[node name="Mug1" parent="." unique_id=1000879001 instance=ExtResource("6_oc42s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5999999, 0.89, 0.4000001)
+
+[node name="Phone1" parent="." unique_id=1891719073 instance=ExtResource("7_m3qw3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5999999, 0.89, 0.20000005)
+
+[node name="Lamp1" parent="." unique_id=1529866898 instance=ExtResource("8_hfje8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5999999, 0.89, -0.39999998)
+
+[node name="LampLight" type="OmniLight3D" parent="." unique_id=288820829]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5999999, 1.1794912, -0.23418319)
+light_color = Color(1, 0.75, 0.4, 1)
+light_energy = 0.759
+light_volumetric_fog_energy = 2.09
+shadow_enabled = true
+omni_range = 0.8708344
+omni_attenuation = 1.337
+
+[node name="MonitorLight1" type="OmniLight3D" parent="." unique_id=126182385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0.29999995)
+light_color = Color(0.45, 0.7, 1, 1)
+light_energy = 1.8
+light_volumetric_fog_energy = 1.5
+omni_range = 0.8620082

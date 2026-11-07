@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://bmit01i30nuks" path="res://art/characters/player/male_casual.fbx" id="2_model"]
+[ext_resource type="PackedScene" uid="uid://du20jjlyes1vf" path="res://art/weapons/rifle/MachineGunPSX/GLB/MachineGunPSX.glb" id="3_weapon"]
+[ext_resource type="Texture2D" path="res://art/characters/enemy/man_police_tex.png" id="4_skin"]
+
+[sub_resource type="StandardMaterial3D" id="mat_police"]
+albedo_texture = ExtResource("4_skin")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.43798828
+height = 1.7285156
+
+[node name="PoliceEnemy" type="CharacterBody3D"]
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86816406, 0)
+shape = SubResource("CapsuleShape3D_body")
+
+[node name="male_casual" parent="." instance=ExtResource("2_model")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.001034379, 0)
+
+[node name="male_player" parent="male_casual/rig/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("mat_police")
+
+[node name="WeaponAttachment" type="BoneAttachment3D" parent="male_casual/rig/Skeleton3D" index="1"]
+transform = Transform3D(-0.9765064, -0.1869654, -0.10714042, 0.12881216, -0.10787326, -0.98578423, 0.17275006, -0.97642595, 0.12942241, -0.3053566, 0.023826946, 0.8953216)
+bone_name = "hand_right"
+bone_idx = 15
+
+[node name="Rifle" parent="male_casual/rig/Skeleton3D/WeaponAttachment" instance=ExtResource("3_weapon")]
+transform = Transform3D(0.03573664, -0.061400425, 0.20821424, 0.20258306, 0.085248426, -0.009631084, -0.07799354, 0.19329458, 0.07038709, -0.0048627555, 0.13356692, -0.117396444)
+
+[editable path="male_casual"]
