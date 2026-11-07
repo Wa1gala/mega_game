@@ -102,8 +102,115 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_update_focus()
+	_update_prompt()
 	_tick_search(delta)
 	_tick_tooltip(delta)
+
+
+# ---------- Подсказка взаимодействия над объектом ----------
+# Полупрозрачная плашка на экране: [иконка клавиши] Действие  Название.
+# Объект сообщает текст через prompt_info(), точку — через focus_point().
+
+var _prompt: PanelContainer
+var _prompt_key: Label
+var _prompt_verb: Label
+var _prompt_name: Label
+
+
+func _build_prompt() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 5   # ниже инвентаря (10), выше игрового HUD
+	add_child(layer)
+
+	_prompt = PanelContainer.new()
+	_prompt.visible = false
+	_prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.04, 0.045, 0.05, 0.62)
+	bg.border_color = Color(1, 1, 1, 0.12)
+	bg.set_border_width_all(1)
+	bg.set_corner_radius_all(2)
+	bg.content_margin_left = 3
+	bg.content_margin_right = 6
+	bg.content_margin_top = 3
+	bg.content_margin_bottom = 3
+	_prompt.add_theme_stylebox_override("panel", bg)
+	layer.add_child(_prompt)
+
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_theme_constant_override("separation", 4)
+	_prompt.add_child(row)
+
+	# Иконка клавиши: светлый скруглённый квадрат с буквой.
+	var key_box := PanelContainer.new()
+	key_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	key_box.custom_minimum_size = Vector2(12, 12)
+	var key_bg := StyleBoxFlat.new()
+	key_bg.bg_color = Color(0.82, 0.84, 0.85, 0.92)
+	key_bg.set_corner_radius_all(2)
+	key_box.add_theme_stylebox_override("panel", key_bg)
+	row.add_child(key_box)
+	_prompt_key = Label.new()
+	_prompt_key.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_prompt_key.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_prompt_key.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_prompt_key.add_theme_font_size_override("font_size", 9)
+	_prompt_key.add_theme_color_override("font_color", Color(0.1, 0.11, 0.12))
+	key_box.add_child(_prompt_key)
+
+	_prompt_verb = Label.new()
+	_prompt_verb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_prompt_verb.add_theme_font_size_override("font_size", 9)
+	_prompt_verb.add_theme_color_override("font_color", Color(0.8, 0.82, 0.83))
+	row.add_child(_prompt_verb)
+
+	_prompt_name = Label.new()
+	_prompt_name.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_prompt_name.add_theme_font_size_override("font_size", 9)
+	row.add_child(_prompt_name)
+
+
+## Название клавиши действия "interact" (по умолчанию E).
+func _interact_key_text() -> String:
+	for ev in InputMap.action_get_events("interact"):
+		if ev is InputEventKey:
+			var key := ev as InputEventKey
+			var code := key.physical_keycode if key.physical_keycode != KEY_NONE else key.keycode
+			return OS.get_keycode_string(code)
+	return "E"
+
+
+func _update_prompt() -> void:
+	var cam := get_viewport().get_camera_3d()
+	if not is_instance_valid(_focus) or is_ui_open() or cam == null or not _focus.has_method("prompt_info"):
+		_prompt.visible = false
+		return
+	var point: Vector3 = _focus.focus_point() if _focus.has_method("focus_point") \
+			else (_focus as Node3D).global_position
+	point += Vector3.UP * 0.3
+	if cam.is_position_behind(point):
+		_prompt.visible = false
+		return
+
+	var info: Dictionary = _focus.prompt_info()
+	var key_text := _interact_key_text()
+	if _prompt_key.text != key_text:
+		_prompt_key.text = key_text
+	if _prompt_verb.text != str(info.get("verb", "")):
+		_prompt_verb.text = str(info.get("verb", ""))
+	if _prompt_name.text != str(info.get("name", "")):
+		_prompt_name.text = str(info.get("name", ""))
+	_prompt_name.add_theme_color_override("font_color",
+			Color(1.0, 0.62, 0.35) if info.get("warn", false) else Color(0.96, 0.97, 0.98))
+
+	_prompt.visible = true
+	_prompt.reset_size()
+	var screen := cam.unproject_position(point)
+	var vp := get_viewport().get_visible_rect().size
+	screen.x = clampf(screen.x - _prompt.size.x * 0.5, 8.0, maxf(vp.x - _prompt.size.x - 8.0, 8.0))
+	screen.y = clampf(screen.y - _prompt.size.y, 8.0, maxf(vp.y - _prompt.size.y - 8.0, 8.0))
+	_prompt.position = screen
 
 
 # ---------- Подсказка о предмете ----------
@@ -699,6 +806,7 @@ func _build_ui() -> void:
 	msg_layer.layer = 20
 	add_child(msg_layer)
 	msg_layer.add_child(_message_label)
+	_build_prompt()
 
 	var dim := ColorRect.new()
 	dim.color = Color(0, 0, 0, 0.62)

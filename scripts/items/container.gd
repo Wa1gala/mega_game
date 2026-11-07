@@ -23,7 +23,6 @@ signal unlocked
 	set(v):
 		locked = v
 		notify_property_list_changed()
-		_update_hint_text()
 ## id ключа (ItemData.key_id), который отпирает контейнер.
 @export var key_id := ""
 ## Ключ пропадает после открытия.
@@ -41,7 +40,6 @@ var inventory: Array[ItemData] = []
 ## Якоря ещё не обысканных предметов (ключи словаря). Пустой — всё открыто.
 var unrevealed := {}
 
-var _hint: Label3D
 var _manager: Node
 
 
@@ -70,7 +68,6 @@ func _ready() -> void:
 		for i in inventory.size():
 			if inventory[i] != null:
 				unrevealed[i] = true
-	_build_hint()
 	add_to_group("interactable")
 
 
@@ -116,28 +113,6 @@ func _place(item: ItemData) -> bool:
 	return false
 
 
-func _build_hint() -> void:
-	_hint = Label3D.new()
-	_hint.name = "InteractHint"
-	_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_hint.font_size = 40
-	_hint.pixel_size = 0.006
-	_hint.outline_size = 6
-	_hint.outline_modulate = Color(0, 0, 0, 1)
-	_hint.no_depth_test = true
-	_hint.position = Vector3(0, focus_height + 0.5, 0)
-	_hint.visible = false
-	add_child(_hint)
-	_update_hint_text()
-
-
-func _update_hint_text() -> void:
-	if _hint == null:
-		return
-	_hint.text = "%s%s\nE" % [container_name, " (заперто)" if locked else ""]
-	_hint.modulate = Color(1, 0.6, 0.4) if locked else Color(0.5, 1, 0.5)
-
-
 func focus_point() -> Vector3:
 	return global_position + Vector3.UP * focus_height
 
@@ -146,9 +121,17 @@ func can_interact() -> bool:
 	return true
 
 
-func set_focused(focused: bool) -> void:
-	if _hint != null:
-		_hint.visible = focused
+## Подсказка взаимодействия рисуется InventoryManager на экране (иконка клавиши + действие + название).
+func prompt_info() -> Dictionary:
+	return {
+		"verb": "Поиск" if search_on_open else "Открыть",
+		"name": container_name + (" (заперто)" if locked else ""),
+		"warn": locked,
+	}
+
+
+func set_focused(_focused: bool) -> void:
+	pass
 
 
 func interact() -> void:

@@ -138,7 +138,11 @@ func _take_animation(path: String, seamless_loop := false) -> Animation:
 	for track in range(animation.get_track_count() - 1, -1, -1):
 		var track_path := String(animation.track_get_path(track))
 		if track_path == "rig" and animation.track_get_type(track) == Animation.TYPE_POSITION_3D:
-			animation.remove_track(track)
+			# Горизонтальное смещение убираем (двигает CharacterBody3D), а высоту корня
+			# оставляем: иначе при ходьбе/беге ноги зависают над полом.
+			for key in animation.track_get_key_count(track):
+				var offset: Vector3 = animation.track_get_key_value(track, key)
+				animation.track_set_key_value(track, key, Vector3(0.0, offset.y, 0.0))
 	if seamless_loop:
 		_make_loop_seamless(animation, 0.7)
 	root.free()

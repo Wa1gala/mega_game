@@ -14,7 +14,6 @@ var interact_radius := 1.8
 const CELL_METERS := 0.3     # сколько метров в мире занимает одна ячейка инвентаря
 const SPRITE_BOX_HEIGHT := 0.1
 
-var _hint: Label3D
 var _picked := false
 var _is_sprite := false
 var _sprite_size := Vector2(0.3, 0.3)   # метры (ширина, высота)
@@ -24,7 +23,6 @@ func _ready() -> void:
 	continuous_cd = true
 	_setup_visual()
 	_setup_collision()
-	_build_hint()
 	add_to_group("interactable")
 
 
@@ -107,27 +105,6 @@ func _setup_collision() -> void:
 	add_child(shape)
 
 
-func _build_hint() -> void:
-	_hint = Label3D.new()
-	_hint.name = "InteractHint"
-	_hint.text = "%s\nE" % item_data.name if item_data != null else "E"
-	_hint.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_hint.top_level = true          # не вращается вместе с телом
-	_hint.font_size = 40
-	_hint.pixel_size = 0.006
-	_hint.modulate = Color(0.5, 1, 0.5)
-	_hint.outline_size = 6
-	_hint.outline_modulate = Color(0, 0, 0, 1)
-	_hint.no_depth_test = true
-	_hint.visible = false
-	add_child(_hint)
-
-
-func _process(_delta: float) -> void:
-	if _hint.visible:
-		_hint.global_position = global_position + Vector3(0, _sprite_size.y + 0.25 if _is_sprite else 0.6, 0)
-
-
 func focus_point() -> Vector3:
 	return global_position + Vector3(0, _sprite_size.y * 0.5 if _is_sprite else 0.1, 0)
 
@@ -136,8 +113,13 @@ func can_interact() -> bool:
 	return not _picked and item_data != null
 
 
-func set_focused(focused: bool) -> void:
-	_hint.visible = focused
+## Подсказка взаимодействия рисуется InventoryManager на экране (иконка клавиши + действие + название).
+func prompt_info() -> Dictionary:
+	return {"verb": "Подобрать", "name": item_data.name if item_data != null else "", "warn": false}
+
+
+func set_focused(_focused: bool) -> void:
+	pass
 
 
 func interact() -> void:
