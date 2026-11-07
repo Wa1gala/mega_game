@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://c16npjjmc0xid" path="res://scripts/items/loot_entry.gd" id="e"]
 [ext_resource type="Resource" path="res://resources/items/ammo.tres" id="i0"]
-[ext_resource type="Resource" path="res://resources/items/medkit_big.tres" id="i1"]
-[ext_resource type="Resource" path="res://resources/items/medkit_small.tres" id="i2"]
-[ext_resource type="Resource" path="res://resources/items/radio.tres" id="i3"]
+[ext_resource type="Resource" uid="uid://b27kw33c2xiv4" path="res://resources/items/medkit_big.tres" id="i1"]
+[ext_resource type="Resource" uid="uid://grhmcpblgmkm" path="res://resources/items/medkit_small.tres" id="i2"]
+[ext_resource type="Resource" uid="uid://b31rdqfdbpvso" path="res://resources/items/radio.tres" id="i3"]
 [ext_resource type="Resource" path="res://resources/items/lamp.tres" id="i4"]
 [ext_resource type="Resource" path="res://resources/items/knife.tres" id="i5"]
 [ext_resource type="Script" uid="uid://givpvi18qisj" path="res://scripts/items/loot_table.gd" id="t"]

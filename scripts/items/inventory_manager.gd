@@ -48,6 +48,8 @@ var player_backpack: Array[ItemData] = []    # слот рюкзака (1 эле
 var player_armor: Array[ItemData] = []       # слот брони (1 элемент)
 var player_knife: Array[ItemData] = []       # слот ножа (1 элемент)
 var _equip := {}                              # имя слота -> массив слота экипировки
+const CONTAINER_SOUND := preload("res://audio/items/containers/open_close.wav")
+var _container_sfx: AudioStreamPlayer
 var _open_container: Node = null              # LootContainer или null
 
 var _ui: CanvasLayer
@@ -73,6 +75,7 @@ var _cell := SLOT_SIZE
 var _context_menu: PanelContainer
 var _context_grid: InventoryGrid = null
 var _context_anchor := -1
+var _use_btn: Button
 
 ## Меню паузы сообщает сюда о своём состоянии (время в игре при этом не останавливается).
 var pause_open := false
@@ -82,6 +85,10 @@ var _focus: Node = null
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	_container_sfx = AudioStreamPlayer.new()
+	_container_sfx.stream = CONTAINER_SOUND
+	_container_sfx.volume_db = -4.0
+	add_child(_container_sfx)
 	player_inventory.resize(BACKPACK_SLOT_COUNT)
 	player_pockets.resize(POCKET_COUNT)
 	for arr in [player_weapon, player_backpack, player_armor, player_knife]:
@@ -225,6 +232,8 @@ func show_item_tooltip(item: ItemData) -> void:
 	var lines: Array[Array] = [[item.name, 12, Color(0.88, 0.9, 0.9)]]
 	if item.description != "":
 		lines.append([item.description, 10, Color(0.6, 0.64, 0.64)])
+	if item.heal_amount > 0:
+		lines.append(["Лечит: +%d здоровья (постепенно)" % item.heal_amount, 10, Color(0.45, 0.8, 0.4)])
 	lines.append(["Вес: %.2f кг" % item.weight, 10, Color(0.6, 0.64, 0.64)])
 	var font := ThemeDB.fallback_font
 	var width := 90.0
@@ -292,6 +301,13 @@ func _tick_search(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory") and not pause_open:
 		_toggle_inventory()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_R \
+			and _ui.visible and not pause_open:
+		if not drag_data.is_empty() and get_viewport().gui_is_dragging():
+			_rotate_dragged()
+		else:
+			_rotate_hovered()
 		get_viewport().set_input_as_handled()
 
 
@@ -496,6 +512,52 @@ func show_message(text: String) -> void:
 	_message_tween.tween_property(_message_label, "modulate:a", 0.0, 0.5)
 
 
+## Положить в первое свободное место массива; если не влезает — пробуем повернув на 90°.
+func _place_any(arr: Array, item: ItemData) -> bool:
+	if _place_first_free(arr, item):
+		return true
+	if item.can_rotate():
+		var turned := item.duplicate() as ItemData
+		turned.rotated = not item.rotated
+		if _place_first_free(arr, turned):
+			return true
+	return false
+
+
+## Ctrl + клик: переложить предмет в свободное место.
+## Из контейнера — к игроку; от игрока — в открытый контейнер, иначе между рюкзаком и карманами.
+func quick_move(arr: Array, anchor: int) -> void:
+	if anchor < 0 or anchor >= arr.size() or arr[anchor] == null:
+		return
+	var item := arr[anchor] as ItemData
+	if item.equip_slot == BACKPACK_SLOT and is_single(arr):
+		return   # снятый рюкзак быстро не перекладываем — в нём могут лежать вещи
+	arr[anchor] = null
+	var done := false
+	if _open_container != null and is_same(arr, _open_container.inventory):
+		done = add_to_player(item)   # сам обновит UI и покажет сообщение о весе
+		if not done:
+			arr[anchor] = item
+		return
+	var targets: Array = []
+	if _open_container != null:
+		targets.append(_open_container.inventory)
+	if not is_same(arr, player_inventory) and has_backpack():
+		targets.append(player_inventory)
+	if not is_same(arr, player_pockets):
+		targets.append(player_pockets)
+	for t in targets:
+		if _accepts(t, item) and _place_any(t, item):
+			done = true
+			break
+	if not done:
+		arr[anchor] = item
+		show_message("Нет места")
+		return
+	_refresh_all()
+	player_inventory_changed.emit()
+
+
 ## Положить предмет: в свой слот экипировки (если свободен), иначе в рюкзак (если надет),
 ## затем в карманы. Крупные предметы ищут свободный прямоугольник.
 func add_to_player(item: ItemData) -> bool:
@@ -509,8 +571,8 @@ func add_to_player(item: ItemData) -> bool:
 		(_equip[key] as Array)[0] = item
 	elif item.equip_slot == BACKPACK_SLOT:
 		return false   # рюкзак нельзя убрать в рюкзак или карманы
-	elif not (has_backpack() and _place_first_free(player_inventory, item)) \
-			and not _place_first_free(player_pockets, item):
+	elif not (has_backpack() and _place_any(player_inventory, item)) \
+			and not _place_any(player_pockets, item):
 		return false
 	_refresh_all()
 	player_inventory_changed.emit()
@@ -546,7 +608,61 @@ func _cols(arr: Array) -> int:
 func item_size(arr: Array, item: ItemData) -> Vector2i:
 	if is_single(arr):
 		return Vector2i(1, 1)
-	return Vector2i(maxi(item.grid_size.x, 1), maxi(item.grid_size.y, 1))
+	return item.cell_size()
+
+
+## Повернуть предмет на 90° (R), если в новом положении он помещается на том же месте.
+## Предмет подменяется копией — ресурс .tres общий для всех экземпляров.
+func rotate_item(arr: Array, anchor: int) -> bool:
+	if anchor < 0 or anchor >= arr.size() or arr[anchor] == null or is_single(arr):
+		return false
+	var item := arr[anchor] as ItemData
+	if not item.can_rotate():
+		return false
+	var turned := item.duplicate() as ItemData
+	turned.rotated = not item.rotated
+	var cols := _cols(arr)
+	var found: Variant = _overlaps(arr, turned, Vector2i(anchor % cols, anchor / cols), anchor)
+	if found == null or not (found as Array).is_empty():
+		show_message("Не помещается")
+		return false
+	if _open_container != null and is_same(arr, _open_container.inventory):
+		(_open_container.unrevealed as Dictionary).erase(anchor)
+	arr[anchor] = turned
+	_refresh_all()
+	return true
+
+
+## Данные текущего перетаскивания (ставит InventoryGrid).
+var drag_data := {}
+
+
+## R во время перетаскивания: поворачиваем предмет «в руке» (в массиве он меняется только при броске).
+func _rotate_dragged() -> void:
+	var src: Array = drag_data["source"]
+	var item: ItemData = drag_data["item"] if drag_data.has("item") else src[drag_data["index"]]
+	if item == null or not item.can_rotate():
+		return
+	var turned := item.duplicate() as ItemData
+	turned.rotated = not item.rotated
+	var gs := item.cell_size()
+	var g: Vector2 = drag_data["grab"]
+	# Поворот на 90° по часовой: точка (x, y) в рамке w×h переходит в (h − y, x).
+	var ng := Vector2(float(gs.y) - g.y, g.x)
+	var ns := Vector2(turned.cell_size())
+	drag_data["grab"] = ng.clamp(Vector2.ZERO, ns - Vector2(0.01, 0.01))
+	drag_data["item"] = turned
+	(drag_data["grid"] as InventoryGrid).update_drag_preview(drag_data)
+
+
+## R: повернуть предмет под курсором.
+func _rotate_hovered() -> void:
+	for g in _all_grids():
+		if g.enabled and g.is_visible_in_tree() and g.get_global_rect().has_point(g.get_global_mouse_position()):
+			var a := g.hovered_anchor()
+			if a >= 0:
+				rotate_item(g.inventory, a)
+			return
 
 
 func _item_rect(arr: Array, index: int, item: ItemData) -> Rect2i:
@@ -612,11 +728,15 @@ func _place_first_free(arr: Array, item: ItemData) -> bool:
 ## План перемещения предмета source[si] так, чтобы его левый верхний угол оказался в клетке cell
 ## массива target: {"dest": индекс якоря, "swap": якорь вытесняемого предмета или -1}.
 ## Пустой словарь — перемещение невозможно.
-func _plan_move(source: Array, si: int, target: Array, cell: Vector2i) -> Dictionary:
+func _plan_move(source: Array, si: int, target: Array, cell: Vector2i, held: ItemData = null) -> Dictionary:
 	if si < 0 or si >= source.size():
 		return {}
 	var item: ItemData = source[si]
-	if item == null or not _accepts(target, item):
+	if item == null:
+		return {}
+	if held != null:
+		item = held   # предмет в руке, возможно повёрнутый
+	if not _accepts(target, item):
 		return {}
 	var same := is_same(source, target)
 	if _is_player_array(target) and not _is_player_array(source) and not _weight_allows(item.weight):
@@ -653,16 +773,16 @@ func _plan_move(source: Array, si: int, target: Array, cell: Vector2i) -> Dictio
 
 
 ## Можно ли положить предмет в эту клетку (сетка подсвечивает допустимость).
-func can_move(source: Array, source_index: int, target: Array, cell: Vector2i) -> bool:
-	return not _plan_move(source, source_index, target, cell).is_empty()
+func can_move(source: Array, source_index: int, target: Array, cell: Vector2i, held: ItemData = null) -> bool:
+	return not _plan_move(source, source_index, target, cell, held).is_empty()
 
 
 ## Переместить/поменять предмет (drag-and-drop).
-func move_item(source: Array, source_index: int, target: Array, cell: Vector2i) -> void:
-	var plan := _plan_move(source, source_index, target, cell)
+func move_item(source: Array, source_index: int, target: Array, cell: Vector2i, held: ItemData = null) -> void:
+	var plan := _plan_move(source, source_index, target, cell, held)
 	if plan.is_empty():
 		return
-	var moving: ItemData = source[source_index]
+	var moving: ItemData = held if held != null else source[source_index]
 	source[source_index] = null
 	var other: ItemData = null
 	if plan["swap"] >= 0:
@@ -698,6 +818,8 @@ func _on_item_right_clicked(grid: InventoryGrid, anchor: int) -> void:
 	hide_item_tooltip()
 	_context_grid = grid
 	_context_anchor = anchor
+	var clicked := grid.inventory[anchor] as ItemData if anchor >= 0 and anchor < grid.inventory.size() else null
+	_use_btn.visible = clicked != null and clicked.heal_amount > 0
 	_context_menu.visible = true
 	_context_menu.reset_size()
 	# Меню открывается над курсором (не перекрывается предметами) и не выходит за экран.
@@ -715,6 +837,32 @@ func close_context_menu() -> void:
 	_context_anchor = -1
 
 
+func _on_context_use_pressed() -> void:
+	if _context_grid != null:
+		use_item(_context_grid.inventory, _context_anchor)
+	close_context_menu()
+
+
+## Использовать предмет (аптечка лечит и расходуется).
+func use_item(arr: Array, anchor: int) -> void:
+	if anchor < 0 or anchor >= arr.size() or arr[anchor] == null:
+		return
+	var item := arr[anchor] as ItemData
+	if item.heal_amount <= 0:
+		return
+	var player := _local_player()
+	if player == null or not player.has_method("heal_over_time"):
+		return
+	var restored := int(player.call("heal_over_time", item.heal_amount))
+	if restored <= 0:
+		show_message("Здоровье полное")
+		return
+	arr[anchor] = null
+	_refresh_all()
+	if _is_player_array(arr):
+		player_inventory_changed.emit()
+
+
 func _on_context_drop_pressed() -> void:
 	if _context_grid != null:
 		drop_item(_context_grid.inventory, _context_anchor)
@@ -728,6 +876,7 @@ func open_container(container: Node) -> void:
 	if pause_open:
 		return
 	_open_container = container
+	_play_container_sound(1.0)
 	_search_time = -0.25   # небольшая пауза перед первым предметом
 	_rebuild_container()
 	_set_container_shown(true)
@@ -735,7 +884,14 @@ func open_container(container: Node) -> void:
 	_apply_layout()
 
 
+func _play_container_sound(pitch: float) -> void:
+	_container_sfx.pitch_scale = pitch
+	_container_sfx.play()
+
+
 func close_container() -> void:
+	if _open_container != null:
+		_play_container_sound(0.8)   # закрытие — тот же звук, ниже тоном
 	_open_container = null
 	_rebuild_container()
 	_set_container_shown(false)
@@ -1084,19 +1240,28 @@ func _build_context_menu() -> void:
 	_ui.add_child(_context_menu)
 	_build_tooltip()
 
-	var drop_btn := Button.new()
-	drop_btn.text = "Выбросить"
-	drop_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	drop_btn.custom_minimum_size = Vector2(120, 24)
+	var menu_box := VBoxContainer.new()
+	menu_box.add_theme_constant_override("separation", 0)
+	_context_menu.add_child(menu_box)
+	_use_btn = _make_menu_button("Использовать", _on_context_use_pressed)
+	menu_box.add_child(_use_btn)
+	menu_box.add_child(_make_menu_button("Выбросить", _on_context_drop_pressed))
+
+
+func _make_menu_button(text: String, callback: Callable) -> Button:
+	var btn := Button.new()
+	btn.text = text
+	btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	btn.custom_minimum_size = Vector2(120, 24)
 	for st in ["normal", "focus"]:
-		drop_btn.add_theme_stylebox_override(st, _flat_button(Color(0, 0, 0, 0)))
-	drop_btn.add_theme_stylebox_override("hover", _flat_button(Color(0.22, 0.24, 0.25, 0.95)))
-	drop_btn.add_theme_stylebox_override("pressed", _flat_button(Color(0.3, 0.32, 0.33, 0.98)))
-	drop_btn.add_theme_color_override("font_color", Color(0.78, 0.82, 0.82))
-	drop_btn.add_theme_color_override("font_hover_color", Color(0.95, 0.97, 0.97))
-	drop_btn.add_theme_font_size_override("font_size", 12)
-	drop_btn.pressed.connect(_on_context_drop_pressed)
-	_context_menu.add_child(drop_btn)
+		btn.add_theme_stylebox_override(st, _flat_button(Color(0, 0, 0, 0)))
+	btn.add_theme_stylebox_override("hover", _flat_button(Color(0.22, 0.24, 0.25, 0.95)))
+	btn.add_theme_stylebox_override("pressed", _flat_button(Color(0.3, 0.32, 0.33, 0.98)))
+	btn.add_theme_color_override("font_color", Color(0.78, 0.82, 0.82))
+	btn.add_theme_color_override("font_hover_color", Color(0.95, 0.97, 0.97))
+	btn.add_theme_font_size_override("font_size", 12)
+	btn.pressed.connect(callback)
+	return btn
 
 
 func _build_tooltip() -> void:

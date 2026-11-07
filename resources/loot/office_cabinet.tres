@@ -1,31 +1,12 @@
 [gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://b6mvnbt88wxu0"]
 
 [ext_resource type="Resource" uid="uid://b31rdqfdbpvso" path="res://resources/items/radio.tres" id="8_omrog"]
-[ext_resource type="Resource" path="res://resources/items/lamp.tres" id="9_uttha"]
+[ext_resource type="Resource" uid="uid://b27kw33c2xiv4" path="res://resources/items/medkit_big.tres" id="10_yssdb"]
 [ext_resource type="Script" uid="uid://c16npjjmc0xid" path="res://scripts/items/loot_entry.gd" id="e"]
-[ext_resource type="Resource" path="res://resources/items/documents.tres" id="i0"]
-[ext_resource type="Resource" path="res://resources/items/tape.tres" id="i2"]
-[ext_resource type="Resource" path="res://resources/items/bolt.tres" id="i3"]
 [ext_resource type="Resource" path="res://resources/items/key.tres" id="i4"]
 [ext_resource type="Resource" path="res://resources/items/ammo.tres" id="i5"]
-[ext_resource type="Resource" path="res://resources/items/medkit_small.tres" id="i6"]
+[ext_resource type="Resource" uid="uid://grhmcpblgmkm" path="res://resources/items/medkit_small.tres" id="i6"]
 [ext_resource type="Script" uid="uid://givpvi18qisj" path="res://scripts/items/loot_table.gd" id="t"]
-
-[sub_resource type="Resource" id="Resource_0"]
-script = ExtResource("e")
-item = ExtResource("i0")
-chance = 70
-
-[sub_resource type="Resource" id="Resource_2"]
-script = ExtResource("e")
-item = ExtResource("i2")
-chance = 40
-
-[sub_resource type="Resource" id="Resource_3"]
-script = ExtResource("e")
-item = ExtResource("i3")
-chance = 35
-max_count = 2
 
 [sub_resource type="Resource" id="Resource_4"]
 script = ExtResource("e")
@@ -41,20 +22,21 @@ max_count = 2
 [sub_resource type="Resource" id="Resource_6"]
 script = ExtResource("e")
 item = ExtResource("i6")
-chance = 20
+chance = 100.0
 
 [sub_resource type="Resource" id="Resource_mrgcr"]
 script = ExtResource("e")
 item = ExtResource("8_omrog")
+chance = 100.0
 metadata/_custom_type_script = "uid://c16npjjmc0xid"
 
-[sub_resource type="Resource" id="Resource_yssdb"]
+[sub_resource type="Resource" id="Resource_g4v7s"]
 script = ExtResource("e")
-item = ExtResource("9_uttha")
-chance = 70.0
+item = ExtResource("10_yssdb")
+chance = 100.0
 metadata/_custom_type_script = "uid://c16npjjmc0xid"
 
 [resource]
 script = ExtResource("t")
-entries = Array[ExtResource("e")]([SubResource("Resource_0"), SubResource("Resource_2"), SubResource("Resource_3"), SubResource("Resource_4"), SubResource("Resource_5"), SubResource("Resource_6"), SubResource("Resource_mrgcr"), SubResource("Resource_yssdb")])
+entries = Array[ExtResource("e")]([SubResource("Resource_4"), SubResource("Resource_5"), SubResource("Resource_6"), SubResource("Resource_mrgcr"), SubResource("Resource_g4v7s")])
 max_entries = 5

@@ -11,8 +11,13 @@ const MAX_COLUMNS := 6
 signal unlocked
 
 @export var container_name := "Ящик"
-## Число слотов (ячеек сетки).
-@export_range(1, 60) var capacity := 12
+## Число колонок сетки.
+@export_range(1, 6) var grid_columns := 6:
+	set(v):
+		grid_columns = v
+		update_configuration_warnings()
+## Число рядов сетки. Всего ячеек = колонки × ряды.
+@export_range(1, 10) var grid_rows := 2
 ## Радиус взаимодействия (по горизонтали от игрока).
 @export var interact_radius := 2.2
 ## Высота точки, на которую нужно навести взгляд, чтобы появилась подсказка.
@@ -61,7 +66,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	_manager = get_node("/root/InventoryManager")
-	inventory.resize(capacity)
+	inventory.resize(capacity())
 	if fill_on_ready:
 		roll_loot()
 	if search_on_open:
@@ -73,7 +78,12 @@ func _ready() -> void:
 
 ## Число колонок сетки (и в UI, и при раскладке лута).
 func columns() -> int:
-	return clampi(capacity, 1, MAX_COLUMNS)
+	return clampi(grid_columns, 1, MAX_COLUMNS)
+
+
+## Общее число ячеек.
+func capacity() -> int:
+	return columns() * maxi(grid_rows, 1)
 
 
 ## Заполнить контейнер по таблице (старое содержимое остаётся). Не влезшее пропадает.
@@ -93,7 +103,7 @@ func roll_loot(rng: RandomNumberGenerator = null) -> void:
 
 func _place(item: ItemData) -> bool:
 	var cols := columns()
-	var size := Vector2i(maxi(item.grid_size.x, 1), maxi(item.grid_size.y, 1))
+	var size := item.cell_size()
 	for i in inventory.size():
 		var rect := Rect2i(Vector2i(i % cols, i / cols), size)
 		if rect.end.x > cols or (rect.end.y - 1) * cols + rect.end.x - 1 >= inventory.size():
@@ -102,8 +112,7 @@ func _place(item: ItemData) -> bool:
 		for j in inventory.size():
 			if inventory[j] == null:
 				continue
-			var other := Rect2i(Vector2i(j % cols, j / cols), 
-					Vector2i(maxi(inventory[j].grid_size.x, 1), maxi(inventory[j].grid_size.y, 1)))
+			var other := Rect2i(Vector2i(j % cols, j / cols), inventory[j].cell_size())
 			if rect.intersects(other):
 				free = false
 				break

@@ -100,6 +100,11 @@ func _anchor_at(c: Vector2i) -> int:
 	return -1 if unsearched.has(a) else a   # необысканный предмет нельзя ни взять, ни навести
 
 
+## Якорь предмета под курсором (или -1).
+func hovered_anchor() -> int:
+	return _anchor_at(_cell_at(get_local_mouse_position()))
+
+
 func _item_rect_px(anchor: int) -> Rect2:
 	var cp := cell_px()
 	var item: ItemData = inventory[anchor]
@@ -244,8 +249,16 @@ static func make_item_visual(item: ItemData, px: Vector2, base: int, framed := f
 			tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			art = tex
 		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		art.position = Vector2(pad, pad)
-		art.size = Vector2(maxf(px.x - pad * 2.0, 1.0), maxf(px.y - pad * 2.0 - label_h, 1.0))
+		if item.rotated:
+			# Повёрнутый предмет: рисуем в исходной ориентации и крутим на 90° вокруг центра.
+			var asz := Vector2(maxf(px.y - pad * 2.0, 1.0), maxf(px.x - pad * 2.0, 1.0))
+			art.size = asz
+			art.pivot_offset = asz * 0.5
+			art.rotation = PI * 0.5
+			art.position = px * 0.5 - asz * 0.5
+		else:
+			art.position = Vector2(pad, pad)
+			art.size = Vector2(maxf(px.x - pad * 2.0, 1.0), maxf(px.y - pad * 2.0 - label_h, 1.0))
 		root.add_child(art)
 
 	if has_art:
@@ -312,6 +325,14 @@ func _gui_input(event: InputEvent) -> void:
 		if manager != null:
 			manager.close_context_menu()
 		_update_tooltip(-1)
+		# Ctrl + левый клик: быстро переложить предмет в свободное место.
+		if (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT and (event as InputEventMouseButton).ctrl_pressed \
+				and enabled and manager != null:
+			var qa := _anchor_at(_cell_at((event as InputEventMouseButton).position))
+			if qa >= 0:
+				manager.quick_move(inventory, qa)
+				accept_event()
+			return
 		if (event as InputEventMouseButton).button_index == MOUSE_BUTTON_RIGHT and enabled:
 			var a := _anchor_at(_cell_at((event as InputEventMouseButton).position))
 			if a >= 0:
@@ -338,6 +359,8 @@ func _notification(what: int) -> void:
 		_hint_state = 0
 		queue_redraw()
 	elif what == NOTIFICATION_DRAG_END:
+		if manager != null:
+			manager.drag_data = {}
 		_drag_anchor = -1
 		_hint_state = 0
 		for v in _view_of.values():
@@ -355,7 +378,7 @@ func _get_drag_data(at_position: Vector2):
 	if a < 0:
 		return null
 	var item: ItemData = inventory[a]
-	var gs := Vector2(maxi(item.grid_size.x, 1), maxi(item.grid_size.y, 1))
+	var gs := Vector2(item.cell_size())
 
 	# За какую точку рамки предмета его взяли (в долях ячейки).
 	var grab: Vector2
@@ -366,23 +389,31 @@ func _get_drag_data(at_position: Vector2):
 		grab = at_position / cell_px() - Vector2(a % columns, a / columns)
 	grab = grab.clamp(Vector2.ZERO, gs - Vector2(0.01, 0.01))
 
-	# Предмет в руке выглядит как в слоте и висит под курсором той же точкой рамки.
-	var holder := Control.new()
-	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var visual := make_item_visual(item, gs * float(cell), cell, true)
-	visual.position = -grab * float(cell)
-	holder.add_child(visual)
-	set_drag_preview(holder)
+	# "item" — предмет «в руке» (при вращении на R подменяется повёрнутой копией).
+	var data := {"source": inventory, "index": a, "grab": grab, "item": item, "grid": self}
+	update_drag_preview(data)
+	manager.drag_data = data
 
 	_drag_anchor = a
 	if _view_of.has(a):
 		(_view_of[a] as Control).modulate.a = 0.3
-	return {"source": inventory, "index": a, "grab": grab}
+	return data
+
+
+## Предмет в руке выглядит как в слоте и висит под курсором той же точкой рамки.
+func update_drag_preview(data: Dictionary) -> void:
+	var item: ItemData = data["item"]
+	var holder := Control.new()
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var visual := make_item_visual(item, Vector2(item.cell_size()) * float(cell), cell, true)
+	visual.position = -(data["grab"] as Vector2) * float(cell)
+	holder.add_child(visual)
+	set_drag_preview(holder)
 
 
 func _drag_target(at_position: Vector2, data: Dictionary) -> Dictionary:
 	var source: Array = data["source"]
-	var item := source[data["index"]] as ItemData
+	var item := (data["item"] if data.has("item") else source[data["index"]]) as ItemData
 	if item == null:
 		return {}
 	var gs: Vector2i = manager.item_size(inventory, item)
@@ -402,7 +433,7 @@ func _can_drop_data(at_position: Vector2, data) -> bool:
 	if target.is_empty():
 		return false
 	var c: Vector2i = target["cell"]
-	var ok: bool = manager.can_move(data["source"], data["index"], inventory, c)
+	var ok: bool = manager.can_move(data["source"], data["index"], inventory, c, data.get("item"))
 	_hint = Rect2(Vector2(c) * cell_px(), Vector2(target["size"]) * cell_px())
 	_hint_state = 1 if ok else 2
 	queue_redraw()
@@ -417,4 +448,4 @@ func _drop_data(at_position: Vector2, data) -> void:
 	var target := _drag_target(at_position, data)
 	if target.is_empty():
 		return
-	manager.move_item(data["source"], data["index"], inventory, target["cell"])
+	manager.move_item(data["source"], data["index"], inventory, target["cell"], data.get("item"))

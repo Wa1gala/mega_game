@@ -100,7 +100,7 @@ size = Vector3(0.3, 5, 18.353516)
 size = Vector3(0.3, 4.3269043, 6)
 
 [sub_resource type="BoxShape3D" id="shape_wall_inner"]
-size = Vector3(0.3, 4, 6)
+size = Vector3(0.3, 5, 6)
 
 [sub_resource type="BoxMesh" id="mesh_wall_mid"]
 size = Vector3(7, 4, 0.3)
@@ -213,13 +213,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("shape_wall_inner")
 
 [node name="WallInnerS" type="StaticBody3D" parent="." unique_id=55173596]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.5, 6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.0970204, 6)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="WallInnerS" unique_id=1159897439]
 material_override = SubResource("mat_wall")
 mesh = SubResource("mesh_wall_inner")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WallInnerS" unique_id=1070703720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("shape_wall_inner")
 
 [node name="WallMid" type="StaticBody3D" parent="." unique_id=856638162]
@@ -540,7 +541,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
 container_name = "Шкаф"
 loot_table = ExtResource("loot_office_cabinet")
-search_on_open = null
 
 [node name="Model" parent="CabinetLarge" unique_id=1042310760 instance=ExtResource("18_sfwq2")]
 
@@ -552,12 +552,11 @@ shape = SubResource("BoxShape3D_mrgcr")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
 container_name = "Шкаф"
-capacity = 8
+grid_columns = 4
 locked = true
 key_id = "office_key"
 consume_key = true
 loot_table = ExtResource("loot_office_cabinet_locked")
-search_on_open = null
 
 [node name="Model" parent="CabinetLarge2" unique_id=1623401501 instance=ExtResource("18_sfwq2")]
 
@@ -569,8 +568,8 @@ shape = SubResource("BoxShape3D_mrgcr")
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4.0623264, 0, 8.486761)
 script = ExtResource("17_py1f6")
 container_name = "Шкаф"
+grid_rows = 5
 loot_table = ExtResource("loot_office_cabinet")
-search_on_open = null
 
 [node name="Model" parent="CabinetLarge5" unique_id=1270057268 instance=ExtResource("18_sfwq2")]
 
@@ -583,7 +582,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -8.5473175)
 script = ExtResource("17_py1f6")
 container_name = "Шкаф"
 loot_table = ExtResource("loot_office_cabinet")
-search_on_open = null
 
 [node name="Model" parent="CabinetLarge3" unique_id=616173586 instance=ExtResource("18_sfwq2")]
 
@@ -596,7 +594,6 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 9.5,
 script = ExtResource("17_py1f6")
 container_name = "Шкаф"
 loot_table = ExtResource("loot_office_cabinet")
-search_on_open = null
 
 [node name="Model" parent="CabinetLarge4" unique_id=786670404 instance=ExtResource("18_sfwq2")]
 
@@ -607,5 +604,5 @@ shape = SubResource("BoxShape3D_mrgcr")
 [node name="Player" parent="." unique_id=1841613676 instance=ExtResource("15_km6hr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.474189, 0.006, 7.0322022)
 
-[node name="PoliceEnemy" parent="." instance=ExtResource("23_enemy")]
+[node name="PoliceEnemy" parent="." unique_id=1999240321 instance=ExtResource("23_enemy")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -5, 0, 0.5)

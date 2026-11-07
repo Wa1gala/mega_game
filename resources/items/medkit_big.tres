@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b27kw33c2xiv4"]
 
-[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="1_itemdata"]
-[ext_resource type="Texture2D" path="res://resources/items/items_png/medkit_big.png" id="2_icon"]
+[ext_resource type="Script" uid="uid://dl7b65sgdadcs" path="res://scripts/items/item_data.gd" id="1_itemdata"]
+[ext_resource type="Texture2D" uid="uid://bsvsvglrx8vrg" path="res://resources/items/items_png/medkit_big.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_itemdata")
@@ -11,3 +11,4 @@ icon = ExtResource("2_icon")
 description = "Полный набор для лечения."
 grid_size = Vector2i(2, 2)
 weight = 1.2
+heal_amount = 60

@@ -13,6 +13,9 @@ extends Resource
 @export var equip_slot: StringName = &""
 ## Размер в ячейках сетки (ширина, высота). Автомат занимает 3x2.
 @export var grid_size := Vector2i(1, 1)
+## Повёрнут ли экземпляр на 90° в инвентаре (клавиша R). Не сохраняется в .tres:
+## при повороте InventoryManager подменяет предмет его копией, чтобы не менять общий ресурс.
+var rotated := false
 ## true — в инвентаре рисовать PNG-иконку, даже если есть 3D-модель (для крупных предметов).
 @export var use_icon_in_ui := false
 ## Масштаб 3D-модели при выбросе в мир.
@@ -25,3 +28,16 @@ extends Resource
 @export var key_id := ""
 ## Для рюкзаков/разгрузки: на сколько кг увеличивает переносимый вес, пока надет.
 @export_range(0.0, 100.0, 0.5, "suffix:кг") var carry_bonus := 0.0
+## Для аптечек: сколько здоровья восполняет при использовании. 0 — предмет нельзя использовать.
+@export_range(0, 200, 1) var heal_amount := 0
+
+
+## Размер в ячейках с учётом поворота.
+func cell_size() -> Vector2i:
+	var s := Vector2i(maxi(grid_size.x, 1), maxi(grid_size.y, 1))
+	return Vector2i(s.y, s.x) if rotated else s
+
+
+## Можно ли вращать (не квадратный предмет).
+func can_rotate() -> bool:
+	return grid_size.x != grid_size.y
