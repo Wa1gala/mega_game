@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://coedpaavjixgd"]
+
+[ext_resource type="Script" uid="uid://c16npjjmc0xid" path="res://scripts/items/loot_entry.gd" id="e"]
+[ext_resource type="Resource" path="res://resources/items/ammo.tres" id="i0"]
+[ext_resource type="Resource" uid="uid://b27kw33c2xiv4" path="res://resources/items/medkit_big.tres" id="i1"]
+[ext_resource type="Resource" uid="uid://grhmcpblgmkm" path="res://resources/items/medkit_small.tres" id="i2"]
+[ext_resource type="Resource" uid="uid://b31rdqfdbpvso" path="res://resources/items/radio.tres" id="i3"]
+[ext_resource type="Resource" path="res://resources/items/lamp.tres" id="i4"]
+[ext_resource type="Resource" path="res://resources/items/knife.tres" id="i5"]
+[ext_resource type="Script" uid="uid://givpvi18qisj" path="res://scripts/items/loot_table.gd" id="t"]
+
+[sub_resource type="Resource" id="Resource_0"]
+script = ExtResource("e")
+item = ExtResource("i0")
+chance = 80
+max_count = 3
+
+[sub_resource type="Resource" id="Resource_1"]
+script = ExtResource("e")
+item = ExtResource("i1")
+
+[sub_resource type="Resource" id="Resource_2"]
+script = ExtResource("e")
+item = ExtResource("i2")
+chance = 60
+max_count = 2
+
+[sub_resource type="Resource" id="Resource_3"]
+script = ExtResource("e")
+item = ExtResource("i3")
+chance = 35
+
+[sub_resource type="Resource" id="Resource_4"]
+script = ExtResource("e")
+item = ExtResource("i4")
+chance = 25
+
+[sub_resource type="Resource" id="Resource_5"]
+script = ExtResource("e")
+item = ExtResource("i5")
+chance = 15
+
+[resource]
+script = ExtResource("t")
+entries = Array[ExtResource("e")]([SubResource("Resource_0"), SubResource("Resource_1"), SubResource("Resource_2"), SubResource("Resource_3"), SubResource("Resource_4"), SubResource("Resource_5")])
+max_entries = 4

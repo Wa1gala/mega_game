@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://du20jjlyes1vf" path="res://art/weapons/rifle/MachineGunPSX/GLB/MachineGunPSX.glb" id="3_weapon"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.43798828
+height = 1.7285156
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_sync"]
 properties/0/path = NodePath(".:position")
@@ -18,7 +20,7 @@ properties/1/replication_mode = 1
 script = ExtResource("1_player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1475761716]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.86816406, 0)
 shape = SubResource("CapsuleShape3D_body")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=903021500]
@@ -33,7 +35,7 @@ replication_config = SubResource("SceneReplicationConfig_sync")
 [node name="male_casual" parent="." unique_id=1927968805 instance=ExtResource("2_model")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.001034379, 0)
 
-[node name="WeaponAttachment" type="BoneAttachment3D" parent="male_casual/rig/Skeleton3D" parent_id_path=PackedInt32Array(1927968805, 1577021229) index="1" unique_id=838087093]
+[node name="WeaponAttachment" type="BoneAttachment3D" parent="male_casual/rig/Skeleton3D" parent_id_path=PackedInt32Array(1927968805, 1715184931) index="1" unique_id=838087093]
 transform = Transform3D(-0.9765064, -0.1869654, -0.10714042, 0.12881216, -0.10787326, -0.98578423, 0.17275006, -0.97642595, 0.12942241, -0.3053566, 0.023826946, 0.8953216)
 bone_name = "hand_right"
 bone_idx = 15

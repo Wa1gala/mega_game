@@ -1,0 +1,1034 @@
+[gd_scene format=3 uid="uid://d2lawbevp0du3"]
+
+[ext_resource type="PackedScene" uid="uid://b3tsua2iwd8sw" path="res://art/levels/office/chairs/office_chair_fancy.glb" id="23_q0vuh"]
+[ext_resource type="Texture2D" uid="uid://dytk5go0rpimi" path="res://art/levels/office/carpet_floor/floor_3x3_carpet.jpg" id="r1"]
+[ext_resource type="Texture2D" uid="uid://3av4u04ik1gc" path="res://art/levels/office/textures/ceilings/light_panel_prismatic/light_panel_prismatic_albedo.png" id="r2"]
+[ext_resource type="Texture2D" uid="uid://byed7sgf3vsvj" path="res://art/levels/office/textures/walls/wall_beige_chair_rail/wall_beige_chair_rail_albedo.png" id="r3"]
+[ext_resource type="PackedScene" uid="uid://c2g4n05y1bn2u" path="res://art/levels/desks/desk_1.tscn" id="r4"]
+[ext_resource type="PackedScene" uid="uid://31fpq5bpra0w" path="res://art/levels/desks/cluster_desks.tscn" id="r5"]
+[ext_resource type="PackedScene" uid="uid://cxeyiju6qe4lq" path="res://art/levels/office/desks/conference_desk.glb" id="r6"]
+[ext_resource type="PackedScene" uid="uid://b0blx0eel5pbo" path="res://art/levels/office/desks/conference_desk_squared.glb" id="r7"]
+[ext_resource type="PackedScene" uid="uid://m6qrki0irb6s" path="res://art/levels/office/desks/conference_desk_squared_alt.glb" id="r8"]
+[ext_resource type="PackedScene" uid="uid://cntv22y05m6vk" path="res://art/levels/office/chairs/conference_chair.glb" id="r9"]
+[ext_resource type="PackedScene" uid="uid://dxynib1acdx02" path="res://art/levels/office/extras/whiteboard.glb" id="r10"]
+[ext_resource type="PackedScene" uid="uid://djgla4xd17edu" path="res://art/levels/office/couches/couch_large_blue.glb" id="r11"]
+[ext_resource type="PackedScene" uid="uid://ykhqgskglwyd" path="res://art/levels/office/couches/armchair_blue.glb" id="r12"]
+[ext_resource type="PackedScene" uid="uid://yjjumxvmij7s" path="res://art/levels/office/couches/armchair_green.glb" id="r13"]
+[ext_resource type="PackedScene" uid="uid://cjan0c3e3l8hd" path="res://art/levels/office/extras/coffee_machine.glb" id="r14"]
+[ext_resource type="PackedScene" uid="uid://bi0ro6e5b8kkt" path="res://art/levels/office/extras/water_cooler.glb" id="r15"]
+[ext_resource type="PackedScene" uid="uid://ubwulshv5sk8" path="res://art/levels/office/file_cabinets/file_cabinet_large.glb" id="r17"]
+[ext_resource type="PackedScene" uid="uid://bsx4udgu2dxv3" path="res://art/levels/office/book_things/book_case.glb" id="r19"]
+[ext_resource type="PackedScene" uid="uid://rf7f8d81yme2" path="res://art/levels/office/extras/wall_clock.glb" id="r21"]
+[ext_resource type="PackedScene" uid="uid://dfg2be8ofcali" path="res://art/levels/office/extras/mug.glb" id="r22"]
+[ext_resource type="PackedScene" uid="uid://5sgy0k2htp7b" path="res://player.tscn" id="r24"]
+[ext_resource type="PackedScene" uid="uid://dgaitm8l3pp6" path="res://scenes/pause_menu.tscn" id="r25"]
+
+[sub_resource type="Environment" id="env"]
+background_mode = 1
+background_color = Color(0.012, 0.014, 0.016, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.05, 0.06, 0.07, 1)
+ambient_light_energy = 0.18
+tonemap_mode = 3
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 1.4
+ssao_intensity = 1.8
+ssao_power = 2.0
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.2
+glow_hdr_threshold = 0.7
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.09
+volumetric_fog_albedo = Color(0.62, 0.66, 0.6, 1)
+volumetric_fog_emission = Color(0.04, 0.05, 0.04, 1)
+volumetric_fog_emission_energy = 0.15
+volumetric_fog_gi_inject = 0.0
+volumetric_fog_anisotropy = 0.45
+volumetric_fog_length = 24.0
+
+[sub_resource type="StandardMaterial3D" id="mat_carpet"]
+cull_mode = 2
+albedo_texture = ExtResource("r1")
+uv1_scale = Vector3(117, 81, 1)
+texture_filter = 2
+
+[sub_resource type="BoxMesh" id="mesh_floor"]
+size = Vector3(39, 0.2, 27)
+
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(39, 0.2, 27)
+
+[sub_resource type="StandardMaterial3D" id="mat_ceiling"]
+cull_mode = 2
+albedo_texture = ExtResource("r2")
+roughness = 0.85
+uv1_scale = Vector3(97.5, 67.5, 1)
+texture_filter = 2
+
+[sub_resource type="BoxMesh" id="mesh_ceil"]
+size = Vector3(39, 0.2, 27)
+
+[sub_resource type="BoxMesh" id="mesh_pass_floor"]
+size = Vector3(3.5, 0.2, 5)
+
+[sub_resource type="BoxShape3D" id="shape_pass_floor"]
+size = Vector3(3.5, 0.2, 5)
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+cull_mode = 2
+albedo_texture = ExtResource("r3")
+roughness = 0.9
+uv1_scale = Vector3(23.4, 1.7, 1)
+texture_filter = 2
+
+[sub_resource type="BoxMesh" id="wm1"]
+size = Vector3(39, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws1"]
+size = Vector3(39, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm2"]
+size = Vector3(0.3, 5, 27)
+
+[sub_resource type="BoxShape3D" id="ws2"]
+size = Vector3(0.3, 5, 27)
+
+[sub_resource type="BoxMesh" id="wm3"]
+size = Vector3(0.3, 5, 27)
+
+[sub_resource type="BoxShape3D" id="ws3"]
+size = Vector3(0.3, 5, 27)
+
+[sub_resource type="BoxMesh" id="wm4"]
+size = Vector3(17, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws4"]
+size = Vector3(17, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm5"]
+size = Vector3(18.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws5"]
+size = Vector3(18.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm6"]
+size = Vector3(0.3, 5, 5)
+
+[sub_resource type="BoxShape3D" id="ws6"]
+size = Vector3(0.3, 5, 5)
+
+[sub_resource type="BoxMesh" id="wm7"]
+size = Vector3(0.3, 5, 5)
+
+[sub_resource type="BoxShape3D" id="ws7"]
+size = Vector3(0.3, 5, 5)
+
+[sub_resource type="BoxMesh" id="wm9"]
+size = Vector3(0.3, 5, 8.5)
+
+[sub_resource type="BoxShape3D" id="ws9"]
+size = Vector3(0.3, 5, 8.5)
+
+[sub_resource type="BoxMesh" id="wm10"]
+size = Vector3(5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws10"]
+size = Vector3(5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm11"]
+size = Vector3(4.1381836, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws11"]
+size = Vector3(4.1557617, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm12"]
+size = Vector3(0.3, 5, 8.647339)
+
+[sub_resource type="BoxShape3D" id="ws12"]
+size = Vector3(0.3, 5, 8.651855)
+
+[sub_resource type="BoxMesh" id="wm13"]
+size = Vector3(3.6, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws13"]
+size = Vector3(3.6, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm14"]
+size = Vector3(7.5, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws14"]
+size = Vector3(7.5, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm15"]
+size = Vector3(0.3, 5, 6.5)
+
+[sub_resource type="BoxShape3D" id="ws15"]
+size = Vector3(0.3, 5, 6.5)
+
+[sub_resource type="BoxMesh" id="wm16"]
+size = Vector3(2, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws16"]
+size = Vector3(2, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm17"]
+size = Vector3(2, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws17"]
+size = Vector3(2, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm18"]
+size = Vector3(0.3, 5, 6)
+
+[sub_resource type="BoxShape3D" id="ws18"]
+size = Vector3(0.3, 5, 6)
+
+[sub_resource type="BoxMesh" id="wm19"]
+size = Vector3(0.3, 5, 9.652588)
+
+[sub_resource type="BoxShape3D" id="ws19"]
+size = Vector3(0.3, 5, 9.651367)
+
+[sub_resource type="BoxMesh" id="wm20"]
+size = Vector3(4, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws20"]
+size = Vector3(4, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm21"]
+size = Vector3(3, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws21"]
+size = Vector3(3, 5, 0.3)
+
+[sub_resource type="BoxMesh" id="wm22"]
+size = Vector3(0.3, 5, 4.5)
+
+[sub_resource type="BoxShape3D" id="ws22"]
+size = Vector3(0.3, 5, 4.5)
+
+[sub_resource type="BoxMesh" id="wm23"]
+size = Vector3(0.3, 5, 4)
+
+[sub_resource type="BoxShape3D" id="ws23"]
+size = Vector3(0.3, 5, 4)
+
+[sub_resource type="BoxMesh" id="wm24"]
+size = Vector3(5.6660156, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="ws24"]
+size = Vector3(5.666504, 5, 0.3)
+
+[sub_resource type="BoxShape3D" id="bs_confdesk2"]
+size = Vector3(4.19, 0.88, 2.03)
+
+[sub_resource type="BoxShape3D" id="bs_confdesk"]
+size = Vector3(4.97, 0.88, 2.58)
+
+[sub_resource type="BoxShape3D" id="bs_cabLarge"]
+size = Vector3(1.44, 0.71, 0.7)
+
+[sub_resource type="BoxShape3D" id="bs_bookcase"]
+size = Vector3(2, 2.5, 0.49)
+
+[sub_resource type="BoxShape3D" id="bs_couchL"]
+size = Vector3(3.16, 1.19, 1.39)
+
+[sub_resource type="BoxShape3D" id="bs_coffee"]
+size = Vector3(1.25, 2.12, 1.28)
+
+[node name="OfficeBranch" type="Node3D" unique_id=2110366065]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1270943933]
+environment = SubResource("env")
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=57195977]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1444719838]
+material_override = SubResource("mat_carpet")
+mesh = SubResource("mesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=394152341]
+shape = SubResource("shape_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="." unique_id=1824092362]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ceiling" unique_id=1210910755]
+material_override = SubResource("mat_ceiling")
+mesh = SubResource("mesh_ceil")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling" unique_id=1299462643]
+shape = SubResource("shape_floor")
+
+[node name="PassageFloor" type="StaticBody3D" parent="." unique_id=475738908]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, -0.1, 16)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PassageFloor" unique_id=1567118461]
+material_override = SubResource("mat_carpet")
+mesh = SubResource("mesh_pass_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PassageFloor" unique_id=1322825617]
+shape = SubResource("shape_pass_floor")
+
+[node name="PassageCeiling" type="StaticBody3D" parent="." unique_id=1663547080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.9, 16)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PassageCeiling" unique_id=1657999449]
+material_override = SubResource("mat_ceiling")
+mesh = SubResource("mesh_pass_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PassageCeiling" unique_id=1480445133]
+shape = SubResource("shape_pass_floor")
+
+[node name="WallNorth" type="StaticBody3D" parent="." unique_id=1482923492]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -13.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallNorth" unique_id=1426976702]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallNorth" unique_id=402094857]
+shape = SubResource("ws1")
+
+[node name="WallEast" type="StaticBody3D" parent="." unique_id=500829172]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 2.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallEast" unique_id=713934858]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallEast" unique_id=2015766453]
+shape = SubResource("ws2")
+
+[node name="WallWest" type="StaticBody3D" parent="." unique_id=1518744327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 2.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallWest" unique_id=1580779612]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallWest" unique_id=1117598969]
+shape = SubResource("ws3")
+
+[node name="WallSouthW" type="StaticBody3D" parent="." unique_id=472628495]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 2.5, 13.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallSouthW" unique_id=310372468]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSouthW" unique_id=1969071782]
+shape = SubResource("ws4")
+
+[node name="WallSouthE" type="StaticBody3D" parent="." unique_id=1582633345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.25, 2.5, 13.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WallSouthE" unique_id=681919164]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WallSouthE" unique_id=820171952]
+shape = SubResource("ws5")
+
+[node name="PassageW" type="StaticBody3D" parent="." unique_id=1568493144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.5, 15.846321)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PassageW" unique_id=1814725968]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PassageW" unique_id=834849738]
+shape = SubResource("ws6")
+
+[node name="PassageE" type="StaticBody3D" parent="." unique_id=439192506]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.5, 16)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PassageE" unique_id=1573107960]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -0.15498161)
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PassageE" unique_id=714974971]
+shape = SubResource("ws7")
+
+[node name="KitchenE" type="StaticBody3D" parent="." unique_id=1719524487]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, -9.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KitchenE" unique_id=1987414307]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm9")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KitchenE" unique_id=1357365041]
+shape = SubResource("ws9")
+
+[node name="KitchenS1" type="StaticBody3D" parent="." unique_id=1754265685]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 2.5, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KitchenS1" unique_id=1754857920]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm10")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KitchenS1" unique_id=1085583275]
+shape = SubResource("ws10")
+
+[node name="KitchenS2" type="StaticBody3D" parent="." unique_id=1477764218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.75, 2.5, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KitchenS2" unique_id=413870479]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3190918, 0, 0)
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm11")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KitchenS2" unique_id=506890992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32788086, 0, 0)
+shape = SubResource("ws11")
+
+[node name="MeetingW" type="StaticBody3D" parent="." unique_id=1394973084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2.5, -9.25)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeetingW" unique_id=1632905350]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07366943)
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm12")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeetingW" unique_id=2143261251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.075927734)
+shape = SubResource("ws12")
+
+[node name="MeetingS1" type="StaticBody3D" parent="." unique_id=167761912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 2.5, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeetingS1" unique_id=1700850122]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm13")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeetingS1" unique_id=324658766]
+shape = SubResource("ws13")
+
+[node name="MeetingS2" type="StaticBody3D" parent="." unique_id=1129712995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.75, 2.5, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeetingS2" unique_id=77373192]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm14")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeetingS2" unique_id=920176526]
+shape = SubResource("ws14")
+
+[node name="RestW" type="StaticBody3D" parent="." unique_id=430891552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 2.5, -1.75)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RestW" unique_id=2111647586]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm15")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RestW" unique_id=1880384591]
+shape = SubResource("ws15")
+
+[node name="RestS1" type="StaticBody3D" parent="." unique_id=1129490128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 2.5, 1.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RestS1" unique_id=1472065268]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm16")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RestS1" unique_id=1940148588]
+shape = SubResource("ws16")
+
+[node name="RestS2" type="StaticBody3D" parent="." unique_id=1869537516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, 2.5, 1.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RestS2" unique_id=1289249929]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm17")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RestS2" unique_id=1468731101]
+shape = SubResource("ws17")
+
+[node name="OfficesE1" type="StaticBody3D" parent="." unique_id=498954970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OfficesE1" unique_id=789030661]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm18")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficesE1" unique_id=1988070208]
+shape = SubResource("ws18")
+
+[node name="OfficesE2" type="StaticBody3D" parent="." unique_id=1734831539]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 9)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OfficesE2" unique_id=1735589849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.32629395)
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm19")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficesE2" unique_id=842492832]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3256836)
+shape = SubResource("ws19")
+
+[node name="OfficesMid1" type="StaticBody3D" parent="." unique_id=1856079257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 2.5, 4)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OfficesMid1" unique_id=2047429969]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm20")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficesMid1" unique_id=947624317]
+shape = SubResource("ws20")
+
+[node name="OfficesMid2" type="StaticBody3D" parent="." unique_id=557275789]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 2.5, 4)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OfficesMid2" unique_id=2071358383]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm21")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficesMid2" unique_id=269913961]
+shape = SubResource("ws21")
+
+[node name="LoungeW1" type="StaticBody3D" parent="." unique_id=682045932]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.5, 3.75)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LoungeW1" unique_id=30140972]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm22")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LoungeW1" unique_id=644068941]
+shape = SubResource("ws22")
+
+[node name="LoungeW2" type="StaticBody3D" parent="." unique_id=1590879665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.5, 11.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LoungeW2" unique_id=793284346]
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm23")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LoungeW2" unique_id=1147058590]
+shape = SubResource("ws23")
+
+[node name="LoungeN" type="StaticBody3D" parent="." unique_id=713593383]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.75, 2.5, 1.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LoungeN" unique_id=203251300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08300781, 0, 0)
+material_override = SubResource("mat_wall")
+mesh = SubResource("wm24")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LoungeN" unique_id=149847186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08325195, 0, 0)
+shape = SubResource("ws24")
+
+[node name="Lighting" type="Node3D" parent="." unique_id=1140071869]
+
+[node name="CeilOpen1" type="SpotLight3D" parent="Lighting" unique_id=1584855192]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -7, 3.75, -1)
+light_color = Color(0.8, 0.86, 0.94, 1)
+light_energy = 5.4
+light_volumetric_fog_energy = 2.4
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen2" type="SpotLight3D" parent="Lighting" unique_id=2128271687]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -1.5, 3.75, -1)
+light_color = Color(0.76, 0.8, 0.84, 1)
+light_energy = 1.3
+light_volumetric_fog_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen3" type="SpotLight3D" parent="Lighting" unique_id=1346210549]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 10, 3.75, -1)
+light_color = Color(0.7, 0.72, 0.75, 1)
+light_energy = 6.135
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 36.483
+spot_attenuation = 0.9
+spot_angle = 84.15
+
+[node name="CeilOpen4" type="SpotLight3D" parent="Lighting" unique_id=1484774119]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -7, 3.75, 6.5)
+light_color = Color(0.82, 0.88, 0.96, 1)
+light_energy = 4.6
+light_volumetric_fog_energy = 2.1
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen5" type="SpotLight3D" parent="Lighting" unique_id=1771872428]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -1.5, 3.75, 6.5)
+light_color = Color(0.7, 0.72, 0.75, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen6" type="SpotLight3D" parent="Lighting" unique_id=1118320733]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 4, 3.75, 6.5)
+light_color = Color(0.9, 0.84, 0.7, 1)
+light_energy = 3.8
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen7" type="SpotLight3D" parent="Lighting" unique_id=476510800]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -7, 3.75, 12)
+light_color = Color(0.8, 0.82, 0.78, 1)
+light_energy = 2.1
+light_volumetric_fog_energy = 0.9
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilOpen8" type="SpotLight3D" parent="Lighting" unique_id=1271471546]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -1.5, 3.75, 12)
+light_color = Color(0.82, 0.87, 0.92, 1)
+light_energy = 4.4
+light_volumetric_fog_energy = 1.9
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilKitchen1" type="SpotLight3D" parent="Lighting" unique_id=1671860678]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -12.5, 3.75, -11)
+light_color = Color(0.88, 0.86, 0.78, 1)
+light_energy = 4.8
+light_volumetric_fog_energy = 2.0
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 12.0
+spot_attenuation = 0.9
+spot_angle = 76.0
+
+[node name="CeilKitchen2" type="SpotLight3D" parent="Lighting" unique_id=1419672602]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -12.5, 3.75, -7)
+light_color = Color(0.82, 0.87, 0.94, 1)
+light_energy = 0.0
+light_volumetric_fog_energy = 0.0
+shadow_bias = 0.05
+spot_range = 13.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilMeeting1" type="SpotLight3D" parent="Lighting" unique_id=557640664]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 8.5, 3.75, -11)
+light_color = Color(0.86, 0.9, 0.96, 1)
+light_energy = 5.0
+light_volumetric_fog_energy = 2.2
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 12.0
+spot_attenuation = 0.9
+spot_angle = 72.0
+
+[node name="CeilMeeting2" type="SpotLight3D" parent="Lighting" unique_id=475054910]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 15, 3.75, -11)
+light_color = Color(0.84, 0.88, 0.94, 1)
+light_energy = 2.4
+light_volumetric_fog_energy = 1.2
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 78.0
+
+[node name="CeilMeeting3" type="SpotLight3D" parent="Lighting" unique_id=206425259]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 11.5, 3.75, -7)
+light_color = Color(0.8, 0.82, 0.86, 1)
+light_energy = 0.9
+light_volumetric_fog_energy = 0.4
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 9.0
+spot_attenuation = 0.9
+spot_angle = 80.0
+
+[node name="CeilEntry" type="SpotLight3D" parent="Lighting" unique_id=1098074986]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 3.75, -11)
+light_color = Color(0.84, 0.88, 0.92, 1)
+light_energy = 3.2
+light_volumetric_fog_energy = 1.5
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 76.0
+
+[node name="CeilRest" type="SpotLight3D" parent="Lighting" unique_id=780681118]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 16.5, 3.75, -1.8)
+light_color = Color(0.88, 0.94, 0.96, 1)
+light_energy = 1.8
+light_volumetric_fog_energy = 0.8
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 7.0
+spot_attenuation = 0.9
+spot_angle = 78.0
+
+[node name="CeilOfficeA" type="SpotLight3D" parent="Lighting" unique_id=250292304]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -14.5, 3.75, -1)
+light_color = Color(0.84, 0.88, 0.92, 1)
+light_energy = 3.6
+light_volumetric_fog_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 76.0
+
+[node name="CeilOfficeB" type="SpotLight3D" parent="Lighting" unique_id=404335357]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -14.5, 3.75, 8.5)
+light_color = Color(0.86, 0.88, 0.9, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 1.3
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 28.999
+spot_attenuation = 0.9
+spot_angle = 78.0
+
+[node name="CeilLounge1" type="SpotLight3D" parent="Lighting" unique_id=1953184902]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 11, 3.75, 5)
+light_color = Color(1, 0.84, 0.62, 1)
+light_energy = 3.4
+light_volumetric_fog_energy = 2.2
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 12.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilLounge2" type="SpotLight3D" parent="Lighting" unique_id=1810328901]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 15.5, 3.75, 10.5)
+light_color = Color(1, 0.8, 0.55, 1)
+light_energy = 2.8
+light_volumetric_fog_energy = 2.0
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 11.0
+spot_attenuation = 0.9
+spot_angle = 74.0
+
+[node name="CeilPassage" type="SpotLight3D" parent="Lighting" unique_id=1565456272]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.75, 3.75, 16)
+light_color = Color(0.82, 0.86, 0.9, 1)
+light_energy = 1.6
+shadow_enabled = true
+shadow_bias = 0.05
+spot_range = 8.0
+spot_attenuation = 0.9
+spot_angle = 76.0
+
+[node name="FillOpenW" type="OmniLight3D" parent="Lighting" unique_id=532422893]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3.1, 3)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.9
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillOpenE" type="OmniLight3D" parent="Lighting" unique_id=1952588032]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3.1, 8)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.8
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillKitchen" type="OmniLight3D" parent="Lighting" unique_id=1591708870]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 3.1, -9)
+light_color = Color(0.88, 0.86, 0.8, 1)
+light_energy = 0.9
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillMeeting" type="OmniLight3D" parent="Lighting" unique_id=1639832807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 3.1, -10)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.8
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillEntry" type="OmniLight3D" parent="Lighting" unique_id=514355077]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1, -10)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillLounge" type="OmniLight3D" parent="Lighting" unique_id=252213758]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3.1, 8)
+light_color = Color(1, 0.86, 0.7, 1)
+light_energy = 0.8
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="FillOffices" type="OmniLight3D" parent="Lighting" unique_id=2086235226]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3.1, 4)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.7
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 11.0
+omni_attenuation = 1.6
+
+[node name="PassageFill" type="OmniLight3D" parent="Lighting" unique_id=29239067]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 3.1, 16)
+light_color = Color(0.78, 0.83, 0.9, 1)
+light_energy = 0.4
+light_volumetric_fog_energy = 0.0
+shadow_enabled = true
+omni_range = 6.0
+omni_attenuation = 1.6
+
+[node name="Kitchen" type="Node3D" parent="." unique_id=574820119]
+
+[node name="KitchenMug1" parent="Kitchen" unique_id=1263682120 instance=ExtResource("r22")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.06, -8.55)
+
+[node name="KitchenCooler" parent="Kitchen" unique_id=481391161 instance=ExtResource("r15")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6.9, 0, -6.2)
+
+[node name="KitchenIsland" type="StaticBody3D" parent="Kitchen" unique_id=1820020318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6, 0, -9.4)
+
+[node name="Model" parent="Kitchen/KitchenIsland" unique_id=595662292 instance=ExtResource("r7")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Kitchen/KitchenIsland" unique_id=945007276]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0)
+shape = SubResource("bs_confdesk2")
+
+[node name="KitchenChair1" parent="Kitchen" unique_id=335555176 instance=ExtResource("r9")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -15.2, 0, -9.4)
+
+[node name="KitchenChair2" parent="Kitchen" unique_id=1431489567 instance=ExtResource("r9")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10, 0, -9.4)
+
+[node name="KitchenChair3" parent="Kitchen" unique_id=1490046236 instance=ExtResource("r9")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -14, 0, -11.2)
+
+[node name="KitchenChair4" parent="Kitchen" unique_id=116911674 instance=ExtResource("r9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -7.6)
+
+[node name="MeetingRoom" type="Node3D" parent="." unique_id=132313565]
+
+[node name="MeetingDesk" type="StaticBody3D" parent="MeetingRoom" unique_id=1232981139]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -10)
+
+[node name="Model" parent="MeetingRoom/MeetingDesk" unique_id=731184540 instance=ExtResource("r6")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeetingRoom/MeetingDesk" unique_id=666757300]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0)
+shape = SubResource("bs_confdesk")
+
+[node name="MeetingChair1" parent="MeetingRoom" unique_id=1691710981 instance=ExtResource("r9")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9, 0, -10)
+
+[node name="MeetingChair2" parent="MeetingRoom" unique_id=1723344813 instance=ExtResource("r9")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14, 0, -10)
+
+[node name="MeetingChair3" parent="MeetingRoom" unique_id=843278877 instance=ExtResource("r9")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 10, 0, -12)
+
+[node name="MeetingChair4" parent="MeetingRoom" unique_id=1104178155 instance=ExtResource("r9")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 13, 0, -12)
+
+[node name="MeetingChair5" parent="MeetingRoom" unique_id=1392844092 instance=ExtResource("r9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -8)
+
+[node name="MeetingChair6" parent="MeetingRoom" unique_id=1339253806 instance=ExtResource("r9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -8)
+
+[node name="MeetingChair7" parent="MeetingRoom" unique_id=1544596710 instance=ExtResource("r9")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 11.5, 0, -12.2)
+
+[node name="MeetingChair8" parent="MeetingRoom" unique_id=1371529405 instance=ExtResource("r9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 0, -7.8)
+
+[node name="Model" parent="MeetingRoom" unique_id=161938164 instance=ExtResource("r10")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 19.2, 0, -10)
+
+[node name="Entry" type="Node3D" parent="." unique_id=575768807]
+
+[node name="EntryCabinet" type="StaticBody3D" parent="Entry" unique_id=946432466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -12.9)
+
+[node name="Model" parent="Entry/EntryCabinet" unique_id=980954660 instance=ExtResource("r17")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entry/EntryCabinet" unique_id=1814387960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.353, 0)
+shape = SubResource("bs_cabLarge")
+
+[node name="EntryCabinet2" parent="Entry" unique_id=288667057 instance=ExtResource("r17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4, 0, -12.9)
+
+[node name="EntryClock" parent="Entry" unique_id=1640947787 instance=ExtResource("r21")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, -13.1)
+
+[node name="EntryBookcase" type="StaticBody3D" parent="Entry" unique_id=546564361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0, -13)
+
+[node name="Model" parent="Entry/EntryBookcase" unique_id=320471676 instance=ExtResource("r19")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Entry/EntryBookcase" unique_id=1689148923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("bs_bookcase")
+
+[node name="Restroom" type="Node3D" parent="." unique_id=487847292]
+
+[node name="OfficeA" type="Node3D" parent="." unique_id=1106368880]
+
+[node name="OfficeADesk1" parent="OfficeA" unique_id=1869259732 instance=ExtResource("r4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.2, 0, -1.1)
+
+[node name="OfficeADesk2" parent="OfficeA" unique_id=1855237562 instance=ExtResource("r4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2, 0, -1.1)
+
+[node name="OfficeABookcase" type="StaticBody3D" parent="OfficeA" unique_id=1130285944]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -19, 0, 1.9)
+
+[node name="Model" parent="OfficeA/OfficeABookcase" unique_id=164782250 instance=ExtResource("r19")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeA/OfficeABookcase" unique_id=1774523819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("bs_bookcase")
+
+[node name="OfficeB" type="Node3D" parent="." unique_id=1019234498]
+
+[node name="OfficeBDesk1" parent="OfficeB" unique_id=330008697 instance=ExtResource("r4")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -15.2, 0, 8.2)
+
+[node name="OfficeBDesk2" parent="OfficeB" unique_id=996110787 instance=ExtResource("r4")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -12.2, 0, 8.2)
+
+[node name="OfficeBBookcase" type="StaticBody3D" parent="OfficeB" unique_id=1618537931]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -19, 0, 11.2)
+
+[node name="Model" parent="OfficeB/OfficeBBookcase" unique_id=1532444757 instance=ExtResource("r19")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OfficeB/OfficeBBookcase" unique_id=2015684137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("bs_bookcase")
+
+[node name="OpenSpace" type="Node3D" parent="." unique_id=1978772781]
+
+[node name="Cluster1" parent="OpenSpace" unique_id=1161093335 instance=ExtResource("r5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0.6)
+
+[node name="Cluster2" parent="OpenSpace" unique_id=1619820745 instance=ExtResource("r5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 0.6)
+
+[node name="Cluster3" parent="OpenSpace" unique_id=1509698436 instance=ExtResource("r5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 8.3)
+
+[node name="Cluster4" parent="OpenSpace" unique_id=623244056 instance=ExtResource("r5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 8.3)
+
+[node name="OpenCabinet" type="StaticBody3D" parent="OpenSpace" unique_id=672425179]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.2, 0, 12.6)
+
+[node name="Model" parent="OpenSpace/OpenCabinet" unique_id=276186413 instance=ExtResource("r17")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OpenSpace/OpenCabinet" unique_id=328365155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.353, 0)
+shape = SubResource("bs_cabLarge")
+
+[node name="OpenCabinet2" parent="OpenSpace" unique_id=1929860614 instance=ExtResource("r17")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.6, 0, 12.6)
+
+[node name="OpenBookcase" type="StaticBody3D" parent="OpenSpace" unique_id=1948865315]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.5879765, 0, 3)
+
+[node name="Model" parent="OpenSpace/OpenBookcase" unique_id=352162465 instance=ExtResource("r19")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OpenSpace/OpenBookcase" unique_id=1262676154]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("bs_bookcase")
+
+[node name="Lounge" type="Node3D" parent="." unique_id=1848593844]
+
+[node name="LoungeCouch" type="StaticBody3D" parent="Lounge" unique_id=2054728680]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 14.79627, 0, 12.6)
+
+[node name="Model" parent="Lounge/LoungeCouch" unique_id=1409073610 instance=ExtResource("r11")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lounge/LoungeCouch" unique_id=1007467915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.596, 0)
+shape = SubResource("bs_couchL")
+
+[node name="LoungeArmchair1" parent="Lounge" unique_id=234072381 instance=ExtResource("r12")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 18.596272, 0, 10.042309)
+
+[node name="LoungeArmchair2" parent="Lounge" unique_id=1553423452 instance=ExtResource("r13")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 11.99627, 0, 9.951797)
+
+[node name="LoungeTable" type="StaticBody3D" parent="Lounge" unique_id=115627256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.19627, 0, 10.042309)
+
+[node name="Model" parent="Lounge/LoungeTable" unique_id=1687377173 instance=ExtResource("r8")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lounge/LoungeTable" unique_id=345853826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, 0)
+shape = SubResource("bs_confdesk2")
+
+[node name="LoungeCoffee" type="StaticBody3D" parent="Lounge" unique_id=2005444142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.364837, 0, 2.4)
+
+[node name="Model" parent="Lounge/LoungeCoffee" unique_id=2069781262 instance=ExtResource("r14")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lounge/LoungeCoffee" unique_id=1319801495]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.062, 0)
+shape = SubResource("bs_coffee")
+
+[node name="LoungeCooler" parent="Lounge" unique_id=1834981328 instance=ExtResource("r15")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 9.120608, 0, 2.4)
+
+[node name="Passage" type="Node3D" parent="." unique_id=732497174]
+
+[node name="Player" parent="." unique_id=1543006053 instance=ExtResource("r24")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006, -6)
+
+[node name="PauseMenu" parent="." unique_id=1573459398 instance=ExtResource("r25")]
+
+[node name="office_chair_fancy2" parent="." unique_id=727158586 instance=ExtResource("23_q0vuh")]
+transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, 18.693192, 0.08003082, -4.1538696)
+
+[node name="office_chair_fancy4" parent="." unique_id=1462936975 instance=ExtResource("23_q0vuh")]
+transform = Transform3D(-0.8660254, 0, -0.5000001, 0, 1, 0, 0.5000001, 0, -0.8660254, 17.797752, 0.08003082, -4.1538696)
+
+[node name="office_chair_fancy3" parent="." unique_id=1882314433 instance=ExtResource("23_q0vuh")]
+transform = Transform3D(0.12940954, -0.9659258, -0.22414386, -0.48296297, -0.25881904, 0.83651626, -0.8660254, 0, -0.50000006, 18.693192, 1.0800308, -4.1538696)

@@ -1,7 +1,7 @@
 extends Control
 
 const PORT := 7777
-const LEVEL := "res://art/levels/test_office.tscn"
+const LEVEL := "res://art/levels/base.tscn"
 
 @onready var ip_address: LineEdit = %IPAddress
 @onready var host_button: Button = %HostButton
@@ -80,7 +80,8 @@ func _on_connection_failed() -> void:
 
 func _on_singleplayer_pressed() -> void:
 	_close_peer()
-	get_tree().change_scene_to_file(LEVEL)
+	# Одиночная игра: просто грузим уровень без сети/сервера.
+	get_tree().change_scene_to_file("res://art/levels/office_middle.tscn")
 
 
 func _on_exit_pressed() -> void:

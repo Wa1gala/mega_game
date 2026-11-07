@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://31fpq5bpra0w"]
+
+[ext_resource type="PackedScene" uid="uid://c2g4n05y1bn2u" path="res://art/levels/desks/desk_1.tscn" id="1_77lkg"]
+[ext_resource type="PackedScene" uid="uid://lnaq5ornyqlv" path="res://art/levels/office/dividers/divider_black_blue.glb" id="2_e80jj"]
+
+[node name="Cluster4" type="Node3D" unique_id=157854060]
+
+[node name="Desk1" parent="." unique_id=716065569 instance=ExtResource("1_77lkg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 0.36456633)
+
+[node name="Desk2" parent="." unique_id=1175691413 instance=ExtResource("1_77lkg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.4, 0, -0.9534732)
+
+[node name="Desk3" parent="." unique_id=1820335507 instance=ExtResource("1_77lkg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50413, 0, 0.36456633)
+
+[node name="Desk4" parent="." unique_id=1901720517 instance=ExtResource("1_77lkg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.50413, 0, -0.9534732)
+
+[node name="DivCol" parent="." unique_id=973761643 instance=ExtResource("2_e80jj")]
+transform = Transform3D(-4.1088704e-08, 0, 1.188, 0, 0.8, 0, -0.94, 0, -5.1929128e-08, 0, 0, -0.27141932)
+
+[node name="DivRow" parent="." unique_id=67907060 instance=ExtResource("2_e80jj")]
+transform = Transform3D(1.704, 0, 0, 0, 0.799, 0, 0, 0, 0.799, 0.05171895, 0, -0.3)
