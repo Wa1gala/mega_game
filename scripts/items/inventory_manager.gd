@@ -921,14 +921,6 @@ func _set_ui_visible(vis: bool) -> void:
 
 # ---------- Выброс в мир ----------
 
-func _local_player() -> Node3D:
-	for node in get_tree().get_nodes_in_group("player"):
-		var body := node as Node3D
-		if body != null and body.is_multiplayer_authority():
-			return body
-	return null
-
-
 func _spawn_pickup(item: ItemData) -> void:
 	var scene := get_tree().current_scene
 	if scene == null:
